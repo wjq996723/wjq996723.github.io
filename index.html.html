@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>芋泥球香柑.日记</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;font-family:"Microsoft YaHei",sans-serif}
+
+/* 蓝天白云 */
+body{
+background:#87CEEB;
+background-image:
+linear-gradient(rgba(255,255,255,0.8) 1px,transparent 1px),
+linear-gradient(90deg,rgba(255,255,255,0.4) 1px,transparent 1px);
+background-size:100px 100px;
+position:relative;
+overflow-x:hidden;
+}
+
+/* 绿叶 */
+.leaf{
+position:absolute;
+top:-100px;
+width:35px;
+height:55px;
+background:#52a675;
+border-radius:100% 0 100% 0;
+opacity:0.8;
+animation:fall linear 20s infinite;
+}
+@keyframes fall{
+0%{transform:translateY(-10vh) rotate(0deg)}
+100%{transform:translateY(110vh) rotate(360deg)}
+}
+
+/* 主卡片 */
+.card{
+position:relative;
+z-index:10;
+max-width:520px;
+margin:80px auto 60px;
+background:rgba(255,255,255,0.93);
+padding:36px 32px 30px;
+border-radius:22px;
+box-shadow:0 12px 40px rgba(0,0,0,0.18);
+text-align:center;
+backdrop-filter:blur(6px);
+}
+
+/* 头像 */
+.avatar{
+width:96px;
+height:96px;
+border-radius:50%;
+background:#ffeaa7;
+margin:0 auto 16px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:40px;
+box-shadow:0 4px 12px rgba(0,0,0,0.15);
+}
+.avatar img{
+width:100%;
+height:100%;
+border-radius:50%;
+object-fit:cover;
+}
+
+/* 标题 & 副标题 */
+.card h1{
+font-size:26px;
+color:#2d3436;
+margin-bottom:6px;
+}
+.subtitle{
+font-size:14px;
+color:#636e72;
+margin-bottom:18px;
+letter-spacing:1px;
+}
+
+/* 诗句 */
+.poem{
+font-size:19px;
+line-height:2;
+color:#4a4a4a;
+font-style:italic;
+margin-bottom:22px;
+}
+
+/* 碎碎念 */
+.mood{
+background:#f0f9ff;
+border-radius:14px;
+padding:16px;
+font-size:15px;
+color:#555;
+line-height:1.9;
+margin-bottom:18px;
+}
+
+/* 时间 */
+.time{
+font-size:13px;
+color:#888;
+}
+
+/* 底部签名 */
+.footer{
+position:fixed;
+bottom:18px;
+left:0;
+width:100%;
+text-align:center;
+z-index:10;
+font-size:14px;
+color:rgba(255,255,255,0.9);
+letter-spacing:2px;
+text-shadow:0 1px 6px rgba(0,0,0,0.25);
+}
+
+/* 小图标栏 */
+.icons{
+margin-top:14px;
+font-size:20px;
+letter-spacing:10px;
+opacity:0.9;
+}
+
+audio{display:none}
+</style>
+</head>
+
+<body>
+
+<!-- 音乐 -->
+<audio id="bgm" autoplay loop muted playsinline>
+  <source src="https://music.123ks.cn/md/5f5751410000543212130192.mp3" type="audio/mpeg">
+</audio>
+
+<!-- 绿叶 -->
+<div class="leaf" style="left:10%;animation-delay:0s"></div>
+<div class="leaf" style="left:25%;animation-delay:2s"></div>
+<div class="leaf" style="left:40%;animation-delay:4s"></div>
+<div class="leaf" style="left:55%;animation-delay:1s"></div>
+<div class="leaf" style="left:70%;animation-delay:5s"></div>
+<div class="leaf" style="left:85%;animation-delay:3s"></div>
+
+<!-- 主内容 -->
+<div class="card">
+  <!-- 头像 -->
+  <div class="avatar">🍠</div>
+
+  <h1>芋泥球香柑.日记</h1>
+  <div class="subtitle">Summer · Breeze · Jay Chou</div>
+
+  <div class="poem">栀子比众木，人间诚未多</div>
+
+  <div class="mood">
+    今天的风很轻，云走得很慢。<br>
+    耳机里刚好放到《爱在西元前》，<br>
+    忽然觉得，夏天真的来了。
+  </div>
+
+  <div class="time" id="time"></div>
+
+  <div class="icons">🍧 ☁️ 🍃 🎵 🍰</div>
+</div>
+
+<!-- 底部签名 -->
+<div class="footer">芋泥球香柑.日记</div>
+
+<script>
+/* 时间日期 */
+function updateTime(){
+  const now=new Date();
+  document.getElementById("time").innerText=
+    now.getFullYear()+"年"+
+    (now.getMonth()+1)+"月"+
+    now.getDate()+"日 · "+
+    now.toLocaleTimeString("zh-CN",{hour12:false});
+}
+updateTime();
+setInterval(updateTime,1000);
+
+/* 音乐自动播放 */
+document.addEventListener('DOMContentLoaded',function(){
+  const a=document.getElementById('bgm');
+  a.muted=false;
+  a.play().catch(()=>{
+    document.body.addEventListener('click',()=>a.play(),{once:true});
+  });
+});
+</script>
+
+</body>
+</html>
