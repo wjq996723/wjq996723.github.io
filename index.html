@@ -1,192 +1,255 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>芋泥球香柑.日记</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%;font-family:"Microsoft YaHei",sans-serif}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="description" content="芋泥球香柑的个人日记 · 记录被阳光亲吻过的瞬间">
+  <meta name="author" content="芋泥球香柑">
+  <title>芋泥球香柑 · 日记</title>
 
-/* 蓝天白云 */
-body{
-background:#87CEEB;
-background-image:
-linear-gradient(rgba(255,255,255,0.8) 1px,transparent 1px),
-linear-gradient(90deg,rgba(255,255,255,0.4) 1px,transparent 1px);
-background-size:100px 100px;
-position:relative;
-overflow-x:hidden;
-}
+  <!-- Favicon：极简叶子 -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M50 20 Q30 40 30 60 Q30 80 50 80 Q70 80 70 60 Q70 40 50 20 Z' fill='%237a9a4a'/><path d='M50 30 L50 75' stroke='%23455d28' stroke-width='1.5' fill='none'/></svg>">
 
-/* 绿叶 */
-.leaf{
-position:absolute;
-top:-100px;
-width:35px;
-height:55px;
-background:#52a675;
-border-radius:100% 0 100% 0;
-opacity:0.8;
-animation:fall linear 20s infinite;
-}
-@keyframes fall{
-0%{transform:translateY(-10vh) rotate(0deg)}
-100%{transform:translateY(110vh) rotate(360deg)}
-}
+  <!-- Fonts：衬线 + 无衬线，杂志感 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
 
-/* 主卡片 */
-.card{
-position:relative;
-z-index:10;
-max-width:520px;
-margin:80px auto 60px;
-background:rgba(255,255,255,0.93);
-padding:36px 32px 30px;
-border-radius:22px;
-box-shadow:0 12px 40px rgba(0,0,0,0.18);
-text-align:center;
-backdrop-filter:blur(6px);
-}
+  <link rel="stylesheet" href="css/style.css">
 
-/* 头像 */
-.avatar{
-width:96px;
-height:96px;
-border-radius:50%;
-background:#ffeaa7;
-margin:0 auto 16px;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:40px;
-box-shadow:0 4px 12px rgba(0,0,0,0.15);
-}
-
-/* 标题 */
-.card h1{
-font-size:26px;
-color:#2d3436;
-margin-bottom:6px;
-}
-.subtitle{
-font-size:14px;
-color:#636e72;
-margin-bottom:18px;
-letter-spacing:1px;
-}
-
-/* 诗句 */
-.poem{
-font-size:19px;
-line-height:2;
-color:#4a4a4a;
-font-style:italic;
-margin-bottom:22px;
-}
-
-/* 碎碎念 */
-.mood{
-background:#f0f9ff;
-border-radius:14px;
-padding:16px;
-font-size:15px;
-color:#555;
-line-height:1.9;
-margin-bottom:18px;
-}
-
-/* 时间 */
-.time{
-font-size:13px;
-color:#888;
-}
-
-/* 底部 */
-.footer{
-position:fixed;
-bottom:18px;
-left:0;
-width:100%;
-text-align:center;
-z-index:10;
-font-size:14px;
-color:rgba(255,255,255,0.9);
-letter-spacing:2px;
-text-shadow:0 1px 6px rgba(0,0,0,0.25);
-}
-
-/* 小图标 */
-.icons{
-margin-top:14px;
-font-size:20px;
-letter-spacing:10px;
-opacity:0.9;
-}
-
-audio{display:none}
-</style>
+  <!-- Markdown renderer -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
 </head>
-
 <body>
 
-<!-- 背景音乐 -->
-<audio id="bgm" autoplay loop muted playsinline>
-  <source src="https://music.123ks.cn/md/5f5751410000543212130192.mp3" type="audio/mpeg">
-</audio>
-
-<!-- 绿叶 -->
-<div class="leaf" style="left:10%;animation-delay:0s"></div>
-<div class="leaf" style="left:25%;animation-delay:2s"></div>
-<div class="leaf" style="left:40%;animation-delay:4s"></div>
-<div class="leaf" style="left:55%;animation-delay:1s"></div>
-<div class="leaf" style="left:70%;animation-delay:5s"></div>
-<div class="leaf" style="left:85%;animation-delay:3s"></div>
-
-<!-- 主卡片 -->
-<div class="card">
-  <div class="avatar">🍠</div>
-
-  <h1>芋泥球香柑.日记</h1>
-  <div class="subtitle">Summer · Breeze · Jay Chou</div>
-
-  <div class="poem">栀子比众木，人间诚未多</div>
-
-  <div class="mood">
-    今天的风很轻，云走得很慢。<br>
-    耳机里刚好放到《爱在西元前》，<br>
-    忽然觉得，夏天真的来了。
+  <!-- Loading -->
+  <div id="loading-screen" class="loading-screen">
+    <div class="loading-mark">芋泥球香柑</div>
+    <div class="loading-bar"></div>
   </div>
 
-  <div class="time" id="time"></div>
+  <!-- Navigation -->
+  <nav id="navbar" class="nav">
+    <div class="nav-inner">
+      <a href="#/" class="nav-logo">芋泥球香柑<span class="dot">·</span>日记</a>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="#/" class="nav-link" data-route="/">首页</a></li>
+        <li><a href="#/tags" class="nav-link" data-route="/tags">标签</a></li>
+        <li><a href="#/about" class="nav-link" data-route="/about">关于</a></li>
+        <li><a href="#/editor" class="nav-link" data-route="/editor">写日记</a></li>
+      </ul>
+      <button class="nav-toggle" id="nav-toggle" aria-label="菜单">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
 
-  <div class="icons">🍧 ☁️ 🍃 🎵 🍰</div>
-</div>
+  <!-- Main Content -->
+  <main id="app" class="app">
 
-<div class="footer">芋泥球香柑.日记</div>
+    <!-- Home View -->
+    <section id="view-home" class="view view-active">
+      <div class="hero">
+        <div class="hero-eyebrow">SUMMER · 2026 · PERSONAL JOURNAL</div>
+        <h1 class="hero-title">记录<span class="sep">·</span>被阳光亲吻过的<span class="sep">·</span>瞬间</h1>
+        <p class="hero-subtitle">Summer · Breeze · Green Foliage</p>
+        <p class="hero-poem">栀子比众木，人间诚未多</p>
+        <div class="hero-divider"></div>
+      </div>
 
-<script>
-/* 时间 */
-function updateTime(){
-  const now=new Date();
-  document.getElementById("time").innerText=
-    now.getFullYear()+"年"+
-    (now.getMonth()+1)+"月"+
-    now.getDate()+"日 · "+
-    now.toLocaleTimeString("zh-CN",{hour12:false});
-}
-updateTime();
-setInterval(updateTime,1000);
+      <div class="section">
+        <div class="search-box">
+          <span class="search-icon">⌕</span>
+          <input type="text" id="search-input" class="search-input" placeholder="搜索日记……">
+        </div>
+        <div class="tag-cloud" id="tag-filter">
+          <button class="tag-chip active" data-tag="all">全部</button>
+        </div>
+        <div class="diary-grid" id="diary-list"></div>
+        <div class="empty-state" id="empty-state" style="display:none">
+          <p>还没有日记</p>
+        </div>
+      </div>
+    </section>
 
-/* 音乐自动播放 */
-document.addEventListener('DOMContentLoaded',function(){
-  const a=document.getElementById('bgm');
-  a.muted=false;
-  a.play().catch(()=>{
-    document.body.addEventListener('click',()=>a.play(),{once:true});
-  });
-});
-</script>
+    <!-- Diary Detail View -->
+    <section id="view-diary" class="view">
+      <article class="diary-detail" id="diary-detail"></article>
+    </section>
 
+    <!-- Tags View -->
+    <section id="view-tags" class="view">
+      <div class="section">
+        <div class="section-head">
+          <div class="section-eyebrow">TAGS</div>
+          <h2 class="section-title">标签云</h2>
+          <div class="section-divider"></div>
+        </div>
+        <div class="tag-cloud" id="tag-cloud"></div>
+      </div>
+    </section>
+
+    <!-- About View -->
+    <section id="view-about" class="view">
+      <div class="about-scene">
+        <div class="about-sunlight"></div>
+        <div class="about-leaves">
+          <div class="leaf l-1"></div>
+          <div class="leaf l-2"></div>
+          <div class="leaf l-3"></div>
+          <div class="leaf l-4"></div>
+          <div class="leaf l-5"></div>
+          <div class="leaf l-6"></div>
+        </div>
+        <div class="about-blossoms">
+          <div class="bloom"></div>
+          <div class="bloom"></div>
+          <div class="bloom"></div>
+          <div class="bloom"></div>
+          <div class="bloom"></div>
+          <div class="bloom"></div>
+          <div class="bloom"></div>
+        </div>
+        <div class="about-moss-wall"></div>
+        <div class="about-content">
+          <div class="eyebrow">ABOUT</div>
+          <h2>关于这里</h2>
+          <p>你好，我是<strong>芋泥球香柑</strong>。</p>
+          <p>这是一座小小的园子，种满六月的绿荫，记下被阳光亲吻过的每一个瞬间。</p>
+          <p>欢迎路过，请随意坐。</p>
+          <div class="signature">— 芋泥球香柑 · 二〇二六夏</div>
+        </div>
+      </div>
+
+      <!-- Visitor / Guestbook -->
+      <div class="section">
+        <div class="section-head">
+          <div class="section-eyebrow">GUESTBOOK</div>
+          <h2 class="section-title">访客留名</h2>
+          <div class="section-divider"></div>
+          <p style="margin-top:1rem; color:var(--ink-faded); font-size:0.875rem;">留下你的足迹，让我知道你来过</p>
+        </div>
+        <div class="visitor-panel">
+          <div class="visitor-stats">
+            <div class="stat-card">
+              <div class="stat-num" id="stat-visitors">0</div>
+              <div class="stat-label">位访客</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num" id="stat-diaries">0</div>
+              <div class="stat-label">篇日记</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num" id="stat-tags">0</div>
+              <div class="stat-label">个标签</div>
+            </div>
+          </div>
+          <div class="visitor-form">
+            <h3>写下你的话</h3>
+            <div class="form-row">
+              <input type="text" id="guest-name" class="form-input" placeholder="你的昵称" maxlength="20">
+            </div>
+            <textarea id="guest-message" class="form-textarea" placeholder="留句话吧……" maxlength="200"></textarea>
+            <button class="btn btn-primary" id="guest-submit">留下足迹</button>
+          </div>
+          <div class="visitor-list">
+            <h3>最近的足迹</h3>
+            <div id="guestbook-list"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Editor View -->
+    <section id="view-editor" class="view">
+      <div class="section">
+        <div class="section-head">
+          <div class="section-eyebrow">EDITOR</div>
+          <h2 class="section-title">写日记</h2>
+          <div class="section-divider"></div>
+          <p style="margin-top:1rem; color:var(--ink-faded); font-size:0.875rem;">在这里写下今天的故事，保存后会出现在首页列表</p>
+        </div>
+        <div class="editor-wrap">
+          <div id="editor-warning" class="visitor-form" style="display:none">
+            <h3>提示</h3>
+            <p style="font-size:0.875rem; color:var(--ink-soft); line-height:1.7;">在线保存到 GitHub 需要配置 Token。<button class="btn" id="show-token-config" style="margin-left:0.5rem;">配置 Token</button></p>
+          </div>
+          <div id="token-config" class="visitor-form" style="display:none">
+            <h3>GitHub 配置</h3>
+            <input type="text" id="cfg-owner" class="form-input" placeholder="GitHub 用户名" style="margin-bottom:0.5rem;">
+            <input type="text" id="cfg-repo" class="form-input" placeholder="仓库名" style="margin-bottom:0.5rem;">
+            <input type="text" id="cfg-branch" class="form-input" placeholder="分支名" value="main" style="margin-bottom:0.5rem;">
+            <input type="password" id="cfg-token" class="form-input" placeholder="Personal Access Token (需 repo 权限)" style="margin-bottom:0.75rem;">
+            <div class="editor-actions">
+              <button class="btn btn-primary" id="save-config">保存配置</button>
+              <button class="btn" id="cancel-config">取消</button>
+            </div>
+          </div>
+          <input type="text" id="edit-title" class="editor-input title" placeholder="日记标题">
+          <div class="form-row">
+            <input type="date" id="edit-date" class="form-input">
+            <input type="text" id="edit-tags" class="form-input" placeholder="标签（用逗号分隔）">
+          </div>
+          <input type="text" id="edit-images" class="editor-input" placeholder="图片 URL（多个用逗号分隔，可选）">
+          <input type="text" id="edit-videos" class="editor-input" placeholder="视频 URL（多个用逗号分隔，可选）">
+          <div class="editor-area">
+            <textarea id="edit-content" class="editor-textarea" placeholder="在这里写下你的故事…… 支持 Markdown 格式"></textarea>
+            <div class="editor-preview" id="edit-preview">
+              <p style="color:var(--ink-light); font-style:italic;">预览区域</p>
+            </div>
+          </div>
+          <div class="editor-actions">
+            <button class="btn btn-primary" id="btn-save-diary">保存日记</button>
+            <button class="btn" id="btn-clear-diary">清空</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Music Player -->
+  <div class="music-player" id="music-player">
+    <div class="vinyl"></div>
+    <div class="play-icon" id="music-play-icon">▶</div>
+  </div>
+  <div class="music-panel" id="music-panel">
+    <div class="music-panel-title">六月夏日微风</div>
+    <div class="music-panel-artist">夏 日 · 轻 音 乐</div>
+    <div class="music-progress">
+      <div class="music-progress-bar" id="music-progress-bar"></div>
+    </div>
+    <div class="music-time">
+      <span id="music-current">0:00</span>
+      <span id="music-duration">0:00</span>
+    </div>
+    <div class="music-controls">
+      <button class="music-btn" id="music-toggle-play">▶</button>
+    </div>
+  </div>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightbox-close">×</button>
+    <img id="lightbox-img" src="" alt="">
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2026 芋泥球香柑 · 日记</p>
+    <p style="margin-top:0.25rem; font-size:0.75rem;">Summer Breeze · Powered by GitHub Pages</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/music.js"></script>
+  <script src="js/visitor.js"></script>
+  <script src="js/diary.js"></script>
+  <script src="js/editor.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
