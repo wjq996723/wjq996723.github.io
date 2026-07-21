@@ -1,0 +1,1848 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>芋泥球香柑 · 夏日手记</title>
+  <meta name="description" content="芋泥球香柑的夏日个人站 — 日记、运动与关于我" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&family=Noto+Serif+SC:wght@500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: oklch(0.97 0.02 95);
+      --surface: oklch(0.99 0.012 95 / 0.78);
+      --surface-solid: oklch(0.99 0.01 95);
+      --fg: oklch(0.28 0.04 145);
+      --muted: oklch(0.48 0.03 145);
+      --border: oklch(0.88 0.03 120);
+      --accent: oklch(0.52 0.11 145);
+      --accent-soft: oklch(0.92 0.04 145);
+      --warm: oklch(0.78 0.09 85);
+      --danger: oklch(0.55 0.16 25);
+      --success: oklch(0.58 0.12 150);
+      --shadow: 0 12px 40px oklch(0.35 0.04 145 / 0.12);
+      --shadow-sm: 0 4px 16px oklch(0.35 0.03 145 / 0.08);
+      --radius: 18px;
+      --radius-sm: 12px;
+      --nav-w: 240px;
+      --bottom-h: 68px;
+      --font-display: "Noto Serif SC", "Songti SC", Georgia, serif;
+      --font-body: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, monospace;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: var(--font-body);
+      color: var(--fg);
+      background: var(--bg);
+      line-height: 1.55;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    button, input, textarea, select { font: inherit; color: inherit; }
+    button { cursor: pointer; border: none; background: none; }
+    img, video { max-width: 100%; display: block; height: auto; }
+    a { color: inherit; text-decoration: none; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0); border: 0;
+    }
+
+    /* —— Immersive summer stage —— */
+    .stage {
+      position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
+    }
+    .stage-bg {
+      position: absolute; inset: -8%;
+      background:
+        linear-gradient(180deg, oklch(0.92 0.04 95 / 0.35) 0%, oklch(0.97 0.02 95 / 0.72) 55%, var(--bg) 100%),
+        url("assets/summer-bg.jpg") center / cover no-repeat;
+      transform: translate3d(0, 0, 0) scale(1.06);
+      will-change: transform;
+      transition: transform 0.6s var(--ease);
+    }
+    .stage-overlay {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 20% 15%, oklch(0.95 0.08 95 / 0.35), transparent 55%),
+        radial-gradient(ellipse 60% 40% at 80% 70%, oklch(0.75 0.08 145 / 0.18), transparent 50%),
+        linear-gradient(180deg, transparent 40%, var(--bg) 92%);
+    }
+    .light-spots {
+      position: absolute; inset: 0;
+      background-image:
+        radial-gradient(circle 80px at 18% 22%, oklch(0.98 0.06 95 / 0.45), transparent 70%),
+        radial-gradient(circle 50px at 62% 18%, oklch(0.97 0.05 90 / 0.35), transparent 70%),
+        radial-gradient(circle 70px at 78% 42%, oklch(0.96 0.06 100 / 0.3), transparent 70%),
+        radial-gradient(circle 40px at 35% 55%, oklch(0.97 0.05 95 / 0.28), transparent 70%);
+      animation: drift 28s ease-in-out infinite alternate;
+      mix-blend-mode: soft-light;
+    }
+    .leaf-drift {
+      position: absolute; inset: 0; opacity: 0.35;
+      background-image:
+        radial-gradient(ellipse 6px 3px at 12% 30%, oklch(0.55 0.12 145 / 0.5), transparent),
+        radial-gradient(ellipse 5px 2px at 40% 60%, oklch(0.5 0.1 140 / 0.4), transparent),
+        radial-gradient(ellipse 7px 3px at 70% 25%, oklch(0.58 0.11 150 / 0.45), transparent),
+        radial-gradient(ellipse 4px 2px at 85% 70%, oklch(0.52 0.1 145 / 0.35), transparent);
+      animation: leaf-sway 18s ease-in-out infinite alternate;
+    }
+    @keyframes drift {
+      from { transform: translate3d(-1.5%, -1%, 0) scale(1); }
+      to { transform: translate3d(2%, 1.5%, 0) scale(1.04); }
+    }
+    @keyframes leaf-sway {
+      from { transform: translate3d(0, 0, 0) rotate(0deg); }
+      to { transform: translate3d(2%, 1%, 0) rotate(1.5deg); }
+    }
+
+    /* —— Shell —— */
+    .app {
+      position: relative; z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr;
+      min-height: 100dvh;
+    }
+    .sidebar {
+      display: none;
+      flex-direction: column;
+      gap: 8px;
+      padding: 28px 20px;
+      border-right: 1px solid var(--border);
+      background: oklch(0.99 0.01 95 / 0.55);
+      backdrop-filter: blur(18px) saturate(1.2);
+      -webkit-backdrop-filter: blur(18px) saturate(1.2);
+      position: sticky; top: 0; height: 100dvh;
+    }
+    .brand {
+      padding: 8px 12px 24px;
+    }
+    .brand-mark {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+    .brand-sub {
+      margin-top: 6px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .nav-list { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+    .nav-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      color: var(--muted);
+      font-weight: 500;
+      font-size: 0.95rem;
+      letter-spacing: 0.02em;
+      transition: background 0.2s var(--ease), color 0.2s var(--ease), transform 0.15s var(--ease);
+      min-height: 48px;
+    }
+    .nav-item svg { width: 20px; height: 20px; flex-shrink: 0; stroke-width: 1.7; }
+    .nav-item:hover { background: oklch(0.95 0.02 120 / 0.7); color: var(--fg); }
+    .nav-item.is-active {
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+    .nav-item:active { transform: scale(0.98); }
+
+    .music-dock {
+      margin-top: auto;
+      padding: 14px;
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+    .music-title {
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .music-row {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .music-btn {
+      width: 44px; height: 44px; border-radius: 50%;
+      display: grid; place-items: center;
+      background: var(--accent);
+      color: oklch(0.99 0.01 95);
+      box-shadow: 0 6px 16px oklch(0.52 0.11 145 / 0.28);
+      transition: transform 0.15s var(--ease), filter 0.15s;
+      flex-shrink: 0;
+    }
+    .music-btn:hover { filter: brightness(1.05); }
+    .music-btn:active { transform: scale(0.95); }
+    .music-btn svg { width: 18px; height: 18px; }
+    .music-meta { min-width: 0; flex: 1; }
+    .music-name {
+      font-size: 0.88rem; font-weight: 550; white-space: nowrap;
+      overflow: hidden; text-overflow: ellipsis;
+    }
+    .music-hint { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+
+    .main {
+      min-width: 0;
+      padding: 0 0 calc(var(--bottom-h) + 20px);
+    }
+
+    /* —— Bottom nav (mobile) —— */
+    .bottom-nav {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      height: calc(var(--bottom-h) + env(safe-area-inset-bottom, 0px));
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+      background: oklch(0.99 0.01 95 / 0.88);
+      backdrop-filter: blur(20px) saturate(1.3);
+      -webkit-backdrop-filter: blur(20px) saturate(1.3);
+      border-top: 1px solid var(--border);
+      box-shadow: 0 -8px 30px oklch(0.35 0.03 145 / 0.06);
+    }
+    .bottom-nav .nav-item {
+      flex-direction: column; gap: 4px; justify-content: center;
+      border-radius: 0; padding: 8px 4px; font-size: 0.68rem;
+      min-height: var(--bottom-h);
+      letter-spacing: 0.02em;
+    }
+    .bottom-nav .nav-item svg { width: 22px; height: 22px; }
+
+    /* —— Floating music (mobile) —— */
+    .fab-music {
+      position: fixed; right: 16px; bottom: calc(var(--bottom-h) + 18px + env(safe-area-inset-bottom, 0px));
+      z-index: 35;
+      width: 52px; height: 52px; border-radius: 50%;
+      display: grid; place-items: center;
+      background: var(--accent);
+      color: oklch(0.99 0.01 95);
+      box-shadow: 0 10px 28px oklch(0.52 0.11 145 / 0.35);
+      transition: transform 0.2s var(--ease);
+    }
+    .fab-music:active { transform: scale(0.94); }
+    .fab-music svg { width: 22px; height: 22px; }
+    .fab-music.is-muted { background: var(--muted); box-shadow: var(--shadow-sm); }
+
+    /* —— Views —— */
+    .view { display: none; animation: fade-up 0.4s var(--ease); }
+    .view.is-active { display: block; }
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    /* —— Home —— */
+    .home {
+      min-height: 100dvh;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 32px 22px 40px;
+      position: relative;
+    }
+    .home-hero {
+      max-width: 560px;
+      padding: 28px 24px;
+      border-radius: 24px;
+      background: var(--surface);
+      border: 1px solid oklch(1 0 0 / 0.45);
+      backdrop-filter: blur(22px) saturate(1.25);
+      -webkit-backdrop-filter: blur(22px) saturate(1.25);
+      box-shadow: var(--shadow);
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 0.75rem; font-weight: 550;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+    .eyebrow::before {
+      content: ""; width: 18px; height: 1.5px; background: currentColor; border-radius: 2px;
+    }
+    .home-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 8vw, 3.4rem);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+    .home-sign {
+      margin-top: 14px;
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 36ch;
+      line-height: 1.65;
+    }
+    .home-actions {
+      display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px;
+    }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 44px; padding: 0 18px;
+      border-radius: 999px;
+      font-weight: 550; font-size: 0.92rem;
+      letter-spacing: 0.02em;
+      transition: transform 0.15s var(--ease), background 0.2s, box-shadow 0.2s, color 0.2s;
+      border: 1px solid transparent;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary {
+      background: var(--accent); color: oklch(0.99 0.01 95);
+      box-shadow: 0 8px 20px oklch(0.52 0.11 145 / 0.28);
+    }
+    .btn-primary:hover { filter: brightness(1.05); }
+    .btn-ghost {
+      background: oklch(1 0 0 / 0.45);
+      border-color: var(--border);
+      color: var(--fg);
+    }
+    .btn-ghost:hover { background: oklch(1 0 0 / 0.7); }
+    .btn-danger {
+      background: oklch(0.95 0.03 25); color: var(--danger);
+      border-color: oklch(0.88 0.05 25);
+    }
+    .btn-sm { min-height: 36px; padding: 0 12px; font-size: 0.82rem; }
+    .btn-icon {
+      width: 40px; height: 40px; min-height: 40px; padding: 0;
+      border-radius: 12px;
+      display: grid; place-items: center;
+      color: var(--muted);
+      background: transparent;
+    }
+    .btn-icon:hover { background: oklch(0.95 0.02 120); color: var(--fg); }
+    .btn-icon svg { width: 18px; height: 18px; stroke-width: 1.7; }
+
+    /* —— Page chrome —— */
+    .page {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 28px 18px 32px;
+    }
+    .page-head {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 16px; margin-bottom: 22px; flex-wrap: wrap;
+    }
+    .page-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.7rem, 4vw, 2.1rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+    .page-desc {
+      margin-top: 8px; color: var(--muted); font-size: 0.95rem; max-width: 42ch;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* —— Forms —— */
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field label {
+      font-size: 0.78rem; font-weight: 550; color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+    .field input, .field textarea, .field select {
+      width: 100%;
+      min-height: 44px;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: oklch(1 0 0 / 0.65);
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .field textarea { min-height: 110px; resize: vertical; line-height: 1.55; }
+    .field input:focus, .field textarea:focus, .field select:focus {
+      outline: none;
+      border-color: oklch(0.7 0.08 145);
+      box-shadow: 0 0 0 3px oklch(0.85 0.05 145 / 0.45);
+    }
+    .field-row {
+      display: grid; gap: 12px;
+      grid-template-columns: 1fr;
+    }
+    .composer {
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+    .composer-head {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; margin-bottom: 14px;
+    }
+    .composer-title {
+      font-weight: 600; font-size: 0.95rem;
+    }
+    .composer-grid {
+      display: grid; gap: 12px;
+    }
+    .media-row {
+      display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+    }
+    .file-btn {
+      position: relative; overflow: hidden;
+    }
+    .file-btn input {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer;
+    }
+    .previews {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .preview-item {
+      position: relative;
+      aspect-ratio: 1;
+      border-radius: 12px;
+      overflow: hidden;
+      background: oklch(0.94 0.02 120);
+      border: 1px solid var(--border);
+    }
+    .preview-item img, .preview-item video {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .preview-remove {
+      position: absolute; top: 4px; right: 4px;
+      width: 28px; height: 28px; border-radius: 50%;
+      background: oklch(0.2 0.02 145 / 0.65);
+      color: white;
+      display: grid; place-items: center;
+      font-size: 14px; line-height: 1;
+    }
+    .composer-actions {
+      display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; margin-top: 14px;
+    }
+
+    /* —— Diary list —— */
+    .list { display: flex; flex-direction: column; gap: 12px; }
+    .empty {
+      text-align: center; padding: 48px 20px; color: var(--muted);
+    }
+    .empty strong {
+      display: block; font-family: var(--font-display);
+      font-size: 1.15rem; color: var(--fg); margin-bottom: 8px; font-weight: 600;
+    }
+    .entry {
+      padding: 0; overflow: hidden;
+      transition: box-shadow 0.2s var(--ease);
+    }
+    .entry:hover { box-shadow: var(--shadow); }
+    .entry-head {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 16px 16px 12px;
+      width: 100%; text-align: left;
+      cursor: pointer;
+    }
+    .entry-date {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      padding-top: 4px;
+      min-width: 5.5rem;
+    }
+    .entry-main { flex: 1; min-width: 0; }
+    .entry-title {
+      font-weight: 600; font-size: 1.02rem;
+      letter-spacing: -0.01em;
+      line-height: 1.35;
+    }
+    .entry-snippet {
+      margin-top: 4px; color: var(--muted); font-size: 0.88rem;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .entry-tools {
+      display: flex; gap: 2px; flex-shrink: 0;
+    }
+    .entry-body {
+      display: none;
+      padding: 0 16px 16px;
+      border-top: 1px solid transparent;
+    }
+    .entry.is-open .entry-body {
+      display: block;
+      border-top-color: var(--border);
+      padding-top: 14px;
+    }
+    .entry-content {
+      white-space: pre-wrap;
+      font-size: 0.95rem;
+      line-height: 1.65;
+      max-width: 65ch;
+    }
+    .entry-media {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .entry-media img, .entry-media video {
+      width: 100%;
+      border-radius: 12px;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      background: oklch(0.94 0.02 120);
+    }
+    .mood-pill {
+      display: inline-flex; align-items: center; gap: 4px;
+      margin-top: 8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 550;
+      letter-spacing: 0.02em;
+    }
+
+    /* —— Sport —— */
+    .timeline { position: relative; display: flex; flex-direction: column; gap: 14px; }
+    .timeline::before {
+      content: "";
+      position: absolute; left: 11px; top: 8px; bottom: 8px;
+      width: 2px; background: var(--border);
+    }
+    .sport-card {
+      position: relative;
+      margin-left: 32px;
+      padding: 16px;
+    }
+    .sport-card::before {
+      content: "";
+      position: absolute; left: -27px; top: 22px;
+      width: 12px; height: 12px; border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 4px var(--accent-soft);
+    }
+    .sport-top {
+      display: flex; justify-content: space-between; gap: 12px; align-items: flex-start;
+    }
+    .sport-type {
+      font-weight: 600; font-size: 1.05rem; letter-spacing: -0.01em;
+    }
+    .sport-date {
+      font-family: var(--font-mono); font-size: 0.78rem; color: var(--muted);
+    }
+    .sport-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .stat {
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: oklch(0.97 0.015 120 / 0.7);
+    }
+    .stat-label {
+      font-size: 0.7rem; color: var(--muted);
+      letter-spacing: 0.04em; text-transform: uppercase;
+    }
+    .stat-value {
+      margin-top: 2px;
+      font-family: var(--font-mono);
+      font-size: 1.05rem;
+      font-weight: 550;
+      letter-spacing: -0.01em;
+    }
+    .stars {
+      display: inline-flex; gap: 2px; color: var(--warm);
+      font-size: 0.95rem; letter-spacing: 0.02em;
+    }
+    .range-wrap { display: flex; align-items: center; gap: 12px; }
+    .range-wrap input[type="range"] { flex: 1; accent-color: var(--accent); }
+    .range-val {
+      font-family: var(--font-mono); font-size: 0.9rem; min-width: 1.5rem; text-align: right;
+    }
+
+    /* —— About —— */
+    .about-card {
+      padding: 28px 22px;
+      display: grid; gap: 22px;
+    }
+    .about-top {
+      display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px;
+    }
+    .avatar-wrap {
+      position: relative;
+      width: 112px; height: 112px;
+    }
+    .avatar {
+      width: 112px; height: 112px; border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid oklch(1 0 0 / 0.8);
+      box-shadow: var(--shadow);
+      background: oklch(0.94 0.02 120);
+    }
+    .avatar-edit {
+      position: absolute; right: 2px; bottom: 2px;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--accent); color: white;
+      display: grid; place-items: center;
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+    .avatar-edit input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .avatar-edit svg { width: 16px; height: 16px; }
+    .about-name {
+      font-family: var(--font-display);
+      font-size: 1.6rem; font-weight: 600;
+      letter-spacing: -0.02em;
+      min-width: 8ch;
+      border-radius: 8px;
+      padding: 4px 8px;
+    }
+    .about-name:hover, .about-name:focus {
+      background: oklch(0.95 0.02 120 / 0.6);
+      outline: none;
+    }
+    .about-bio {
+      width: 100%;
+      max-width: 48ch;
+      margin: 0 auto;
+      padding: 14px 16px;
+      border-radius: var(--radius-sm);
+      border: 1px dashed transparent;
+      color: var(--muted);
+      line-height: 1.7;
+      text-align: left;
+      white-space: pre-wrap;
+    }
+    .about-bio:hover, .about-bio:focus {
+      border-color: var(--border);
+      background: oklch(1 0 0 / 0.4);
+      outline: none;
+      color: var(--fg);
+    }
+    .about-tags {
+      display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+    }
+    .tag {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 0.8rem;
+      font-weight: 550;
+      letter-spacing: 0.02em;
+    }
+    .about-note {
+      font-size: 0.82rem; color: var(--muted); text-align: center;
+    }
+
+    /* —— Toast —— */
+    .toast-host {
+      position: fixed; left: 50%; bottom: calc(var(--bottom-h) + 28px + env(safe-area-inset-bottom, 0px));
+      transform: translateX(-50%);
+      z-index: 50;
+      display: flex; flex-direction: column; gap: 8px;
+      pointer-events: none; width: min(90vw, 360px);
+    }
+    .toast {
+      padding: 12px 16px;
+      border-radius: 14px;
+      background: oklch(0.25 0.03 145 / 0.92);
+      color: oklch(0.98 0.01 95);
+      font-size: 0.88rem;
+      text-align: center;
+      box-shadow: var(--shadow);
+      animation: toast-in 0.3s var(--ease);
+    }
+    @keyframes toast-in {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    /* —— Inline edit —— */
+    [contenteditable="true"] { cursor: text; }
+    .editable-hint::after {
+      content: "点击编辑";
+      margin-left: 8px;
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .editable-hint:hover::after { opacity: 1; }
+
+    /* —— Desktop —— */
+    @media (min-width: 900px) {
+      .app { grid-template-columns: var(--nav-w) 1fr; }
+      .sidebar { display: flex; }
+      .bottom-nav, .fab-music { display: none; }
+      .main { padding: 0; }
+      .toast-host { bottom: 28px; left: calc(50% + var(--nav-w) / 2); }
+      .home {
+        min-height: 100dvh;
+        padding: 48px 56px 64px;
+        justify-content: center;
+      }
+      .home-hero { padding: 40px 36px; max-width: 580px; }
+      .page { padding: 40px 40px 56px; }
+      .field-row { grid-template-columns: 1fr 1fr; }
+      .field-row.three { grid-template-columns: repeat(3, 1fr); }
+      .sport-stats { grid-template-columns: repeat(4, 1fr); }
+      .about-card { padding: 40px; }
+      .about-top { flex-direction: row; text-align: left; align-items: center; gap: 28px; }
+      .about-bio { margin: 0; max-width: none; }
+      .about-tags { justify-content: flex-start; }
+      .about-name-wrap { flex: 1; }
+      .timeline::before { left: 15px; }
+      .sport-card { margin-left: 40px; }
+      .sport-card::before { left: -31px; width: 14px; height: 14px; }
+    }
+
+    @media (min-width: 1200px) {
+      .page { max-width: 880px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Immersive summer backdrop -->
+  <div class="stage" aria-hidden="true" data-od-id="stage">
+    <div class="stage-bg" id="stageBg"></div>
+    <div class="stage-overlay"></div>
+    <div class="light-spots"></div>
+    <div class="leaf-drift"></div>
+  </div>
+
+  <div class="app" data-od-id="app-shell">
+    <!-- Desktop sidebar -->
+    <aside class="sidebar" data-od-id="sidebar" aria-label="主导航">
+      <div class="brand" data-od-id="brand">
+        <div class="brand-mark">芋泥球香柑</div>
+        <div class="brand-sub">夏日手记</div>
+      </div>
+      <nav class="nav-list" id="sideNav">
+        <button type="button" class="nav-item is-active" data-view="home" data-od-id="nav-home">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5z"/></svg>
+          首页
+        </button>
+        <button type="button" class="nav-item" data-view="diary" data-od-id="nav-diary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 4h10a2 2 0 0 1 2 2v14l-4-2-4 2-4-2-4 2V6a2 2 0 0 1 2-2z"/><path d="M9 8h6M9 12h6"/></svg>
+          个人日记
+        </button>
+        <button type="button" class="nav-item" data-view="sport" data-od-id="nav-sport">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          运动记录
+        </button>
+        <button type="button" class="nav-item" data-view="about" data-od-id="nav-about">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="9" r="3.5"/><path d="M5.5 19.5c1.2-3.2 3.6-4.8 6.5-4.8s5.3 1.6 6.5 4.8"/></svg>
+          关于我
+        </button>
+      </nav>
+      <div class="music-dock" data-od-id="music-dock">
+        <div class="music-title">背景音乐</div>
+        <div class="music-row">
+          <button type="button" class="music-btn" id="musicToggle" aria-label="播放或暂停音乐" data-od-id="music-toggle">
+            <svg id="iconPlay" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5L8 5.5z"/></svg>
+            <svg id="iconPause" viewBox="0 0 24 24" fill="currentColor" hidden><path d="M7 5h3.5v14H7V5zm6.5 0H17v14h-3.5V5z"/></svg>
+          </button>
+          <div class="music-meta">
+            <div class="music-name">卡农 · Canon in D</div>
+            <div class="music-hint" id="musicHint">轻触播放 · 音量适中</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main" id="main" data-od-id="main">
+      <!-- HOME -->
+      <section class="view is-active home" id="view-home" data-od-id="view-home" aria-label="首页">
+        <div class="home-hero" data-od-id="home-hero">
+          <div class="eyebrow">Summer Notes</div>
+          <h1 class="home-title" data-od-id="home-title">芋泥球香柑</h1>
+          <p class="home-sign" data-od-id="home-sign">阳光穿过树叶的日子里，把小事记下来，把脚步也留下。</p>
+          <div class="home-actions">
+            <button type="button" class="btn btn-primary" data-go="diary" data-od-id="cta-diary">写一篇日记</button>
+            <button type="button" class="btn btn-ghost" data-go="sport" data-od-id="cta-sport">记录运动</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- DIARY -->
+      <section class="view page" id="view-diary" data-od-id="view-diary" aria-label="个人日记" hidden>
+        <header class="page-head">
+          <div>
+            <h2 class="page-title" data-od-id="diary-title">个人日记</h2>
+            <p class="page-desc">像备忘录一样点开就能写，图片与短视频可本地预览。</p>
+          </div>
+          <button type="button" class="btn btn-primary" id="diaryNewBtn" data-od-id="diary-new">新建日记</button>
+        </header>
+
+        <div class="card composer" id="diaryComposer" hidden data-od-id="diary-composer">
+          <div class="composer-head">
+            <div class="composer-title" id="diaryComposerTitle">新日记</div>
+            <button type="button" class="btn-icon" id="diaryComposerClose" aria-label="收起编辑">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </button>
+          </div>
+          <div class="composer-grid">
+            <div class="field-row">
+              <div class="field">
+                <label for="diaryDate">日期</label>
+                <input type="date" id="diaryDate" />
+              </div>
+              <div class="field">
+                <label for="diaryTitle">标题</label>
+                <input type="text" id="diaryTitle" placeholder="今天的小标题" maxlength="80" />
+              </div>
+            </div>
+            <div class="field">
+              <label for="diaryBody">正文</label>
+              <textarea id="diaryBody" placeholder="写点什么… 阳光、风、或一句随想"></textarea>
+            </div>
+            <div class="media-row">
+              <label class="btn btn-ghost btn-sm file-btn">
+                添加图片
+                <input type="file" id="diaryImages" accept="image/*" multiple />
+              </label>
+              <label class="btn btn-ghost btn-sm file-btn">
+                添加短视频
+                <input type="file" id="diaryVideos" accept="video/*" multiple />
+              </label>
+            </div>
+            <div class="previews" id="diaryPreviews"></div>
+            <div class="composer-actions">
+              <button type="button" class="btn btn-ghost" id="diaryCancel">取消</button>
+              <button type="button" class="btn btn-primary" id="diarySave" data-od-id="diary-save">保存</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="list" id="diaryList" data-od-id="diary-list"></div>
+      </section>
+
+      <!-- SPORT -->
+      <section class="view page" id="view-sport" data-od-id="view-sport" aria-label="运动记录" hidden>
+        <header class="page-head">
+          <div>
+            <h2 class="page-title" data-od-id="sport-title">运动记录</h2>
+            <p class="page-desc">日期、类型、时长、距离、配速与心情，一笔写清。</p>
+          </div>
+          <button type="button" class="btn btn-primary" id="sportNewBtn" data-od-id="sport-new">添加记录</button>
+        </header>
+
+        <div class="card composer" id="sportComposer" hidden data-od-id="sport-composer">
+          <div class="composer-head">
+            <div class="composer-title" id="sportComposerTitle">新运动</div>
+            <button type="button" class="btn-icon" id="sportComposerClose" aria-label="收起编辑">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </button>
+          </div>
+          <div class="composer-grid">
+            <div class="field-row">
+              <div class="field">
+                <label for="sportDate">日期</label>
+                <input type="date" id="sportDate" />
+              </div>
+              <div class="field">
+                <label for="sportType">运动类型</label>
+                <select id="sportType">
+                  <option value="跑步">跑步</option>
+                  <option value="骑行">骑行</option>
+                  <option value="步行">步行</option>
+                  <option value="游泳">游泳</option>
+                  <option value="力量训练">力量训练</option>
+                  <option value="瑜伽">瑜伽</option>
+                  <option value="球类">球类</option>
+                  <option value="其他">其他</option>
+                </select>
+              </div>
+            </div>
+            <div class="field-row three">
+              <div class="field">
+                <label for="sportDuration">时长（分钟）</label>
+                <input type="number" id="sportDuration" min="0" step="1" placeholder="30" />
+              </div>
+              <div class="field">
+                <label for="sportDistance">距离（公里）</label>
+                <input type="number" id="sportDistance" min="0" step="0.01" placeholder="5.0" />
+              </div>
+              <div class="field">
+                <label for="sportPace">配速</label>
+                <input type="text" id="sportPace" placeholder="例如 5'40&quot;/km" />
+              </div>
+            </div>
+            <div class="field">
+              <label for="sportMood">心情评分</label>
+              <div class="range-wrap">
+                <input type="range" id="sportMood" min="1" max="5" step="1" value="4" />
+                <span class="range-val" id="sportMoodVal">4</span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="sportNote">备注</label>
+              <textarea id="sportNote" placeholder="今天的状态、路线或感受（可选）"></textarea>
+            </div>
+            <div class="media-row">
+              <label class="btn btn-ghost btn-sm file-btn">
+                截图 / 照片
+                <input type="file" id="sportImages" accept="image/*" multiple />
+              </label>
+              <label class="btn btn-ghost btn-sm file-btn">
+                视频
+                <input type="file" id="sportVideos" accept="video/*" multiple />
+              </label>
+            </div>
+            <div class="previews" id="sportPreviews"></div>
+            <div class="composer-actions">
+              <button type="button" class="btn btn-ghost" id="sportCancel">取消</button>
+              <button type="button" class="btn btn-primary" id="sportSave" data-od-id="sport-save">保存</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline" id="sportList" data-od-id="sport-list"></div>
+      </section>
+
+      <!-- ABOUT -->
+      <section class="view page" id="view-about" data-od-id="view-about" aria-label="关于我" hidden>
+        <header class="page-head">
+          <div>
+            <h2 class="page-title" data-od-id="about-title">关于我</h2>
+            <p class="page-desc">点击姓名或简介即可编辑，头像可本地更换。</p>
+          </div>
+        </header>
+        <div class="card about-card" data-od-id="about-card">
+          <div class="about-top">
+            <div class="avatar-wrap">
+              <img class="avatar" id="aboutAvatar" src="assets/avatar.jpg" alt="头像" data-od-id="about-avatar" />
+              <label class="avatar-edit" title="更换头像">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 17.5V20h2.5L18 8.5 15.5 6 4 17.5z"/><path d="M13.5 7.5l3 3"/></svg>
+                <input type="file" id="aboutAvatarInput" accept="image/*" />
+              </label>
+            </div>
+            <div class="about-name-wrap">
+              <div
+                class="about-name editable-hint"
+                id="aboutName"
+                contenteditable="true"
+                spellcheck="false"
+                data-od-id="about-name"
+                role="textbox"
+                aria-label="姓名"
+              >芋泥球香柑</div>
+              <div class="about-tags" id="aboutTags" data-od-id="about-tags">
+                <span class="tag">夏日观察者</span>
+                <span class="tag">慢跑</span>
+                <span class="tag">手帐</span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="about-bio"
+            id="aboutBio"
+            contenteditable="true"
+            spellcheck="false"
+            data-od-id="about-bio"
+            role="textbox"
+            aria-label="自我介绍"
+          >喜欢在树荫下散步，把阳光、风声和脚步记进本子里。这里是我的夏日手记：日记、运动，以及一点点关于我。</div>
+          <p class="about-note">数据保存在本机浏览器 localStorage，可离线使用。</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Mobile bottom nav -->
+  <nav class="bottom-nav" id="bottomNav" aria-label="底部导航" data-od-id="bottom-nav">
+    <button type="button" class="nav-item is-active" data-view="home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5z"/></svg>
+      首页
+    </button>
+    <button type="button" class="nav-item" data-view="diary">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 4h10a2 2 0 0 1 2 2v14l-4-2-4 2-4-2-4 2V6a2 2 0 0 1 2-2z"/><path d="M9 8h6M9 12h6"/></svg>
+      日记
+    </button>
+    <button type="button" class="nav-item" data-view="sport">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+      运动
+    </button>
+    <button type="button" class="nav-item" data-view="about">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="9" r="3.5"/><path d="M5.5 19.5c1.2-3.2 3.6-4.8 6.5-4.8s5.3 1.6 6.5 4.8"/></svg>
+      我
+    </button>
+  </nav>
+
+  <button type="button" class="fab-music" id="fabMusic" aria-label="播放或静音背景音乐" data-od-id="fab-music">
+    <svg id="fabIconPlay" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5L8 5.5z"/></svg>
+    <svg id="fabIconPause" viewBox="0 0 24 24" fill="currentColor" hidden><path d="M7 5h3.5v14H7V5zm6.5 0H17v14h-3.5V5z"/></svg>
+  </button>
+
+  <div class="toast-host" id="toastHost" aria-live="polite"></div>
+
+  <!--
+    音频：优先使用本地 assets/canon-in-d.mp3（卡农）。
+    若浏览器自动播放被拦截，会显示提示，用户点击播放按钮即可。
+    预留后端接口位置：见 window.API 占位对象。
+  -->
+  <audio id="bgm" loop preload="auto" playsinline>
+    <source src="assets/canon-in-d.mp3" type="audio/mpeg" />
+    <source src="assets/ambient.mp3" type="audio/mpeg" />
+  </audio>
+
+  <script>
+  (function () {
+    "use strict";
+
+    /* ========== 预留后端接口位置 ========== */
+    const API = {
+      baseUrl: null, // 例如 "https://api.example.com"
+      async sync() {
+        // 若配置 baseUrl，可在此把 diary/sport/profile 同步到服务器
+        if (!this.baseUrl) return;
+      },
+    };
+    window.API = API;
+
+    const STORAGE_KEY = "yuniqiu-summer-site-v1";
+    const MEDIA_DB = "yuniqiu-media-v1"; // session 内媒体用内存 Map，metadata 进 localStorage
+
+    const $ = (sel, root) => (root || document).querySelector(sel);
+    const $$ = (sel, root) => Array.from((root || document).querySelectorAll(sel));
+
+    /* session 媒体缓存：id -> dataURL（会话内可预览；刷新后媒体需重传） */
+    const mediaStore = new Map();
+
+    const defaultState = () => ({
+      diaries: [
+        {
+          id: uid(),
+          date: daysAgo(2),
+          title: "树荫下的十分钟",
+          body: "午后风很软，光斑在草地上慢慢挪动。把耳机音量调低一点，卡农刚好合适。",
+          media: [],
+          createdAt: Date.now() - 2 * 864e5,
+          updatedAt: Date.now() - 2 * 864e5,
+        },
+        {
+          id: uid(),
+          date: daysAgo(5),
+          title: "第一次把运动写进本子",
+          body: "跑完两公里，配速不算快，但心情是五星。想把这种轻盈记久一点。",
+          media: [],
+          createdAt: Date.now() - 5 * 864e5,
+          updatedAt: Date.now() - 5 * 864e5,
+        },
+      ],
+      sports: [
+        {
+          id: uid(),
+          date: daysAgo(1),
+          type: "跑步",
+          duration: 32,
+          distance: 5.2,
+          pace: "6'09\"/km",
+          mood: 5,
+          note: "傍晚河边，风里有青草味。",
+          media: [],
+          createdAt: Date.now() - 864e5,
+          updatedAt: Date.now() - 864e5,
+        },
+      ],
+      profile: {
+        name: "芋泥球香柑",
+        bio: "喜欢在树荫下散步，把阳光、风声和脚步记进本子里。这里是我的夏日手记：日记、运动，以及一点点关于我。",
+        avatar: "assets/avatar.jpg",
+      },
+      musicMuted: false,
+    });
+
+    function uid() {
+      return "id_" + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+    }
+    function daysAgo(n) {
+      const d = new Date();
+      d.setDate(d.getDate() - n);
+      return d.toISOString().slice(0, 10);
+    }
+    function today() {
+      return new Date().toISOString().slice(0, 10);
+    }
+    function fmtDate(iso) {
+      if (!iso) return "";
+      const [y, m, d] = iso.split("-");
+      return y + "." + m + "." + d;
+    }
+    function escapeHtml(s) {
+      return String(s ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+    function stars(n) {
+      const v = Math.max(1, Math.min(5, Number(n) || 1));
+      return "★".repeat(v) + "☆".repeat(5 - v);
+    }
+
+    /* —— Persistence —— */
+    let state = load();
+
+    function load() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return defaultState();
+        const parsed = JSON.parse(raw);
+        return {
+          ...defaultState(),
+          ...parsed,
+          diaries: Array.isArray(parsed.diaries) ? parsed.diaries : defaultState().diaries,
+          sports: Array.isArray(parsed.sports) ? parsed.sports : defaultState().sports,
+          profile: { ...defaultState().profile, ...(parsed.profile || {}) },
+        };
+      } catch (e) {
+        return defaultState();
+      }
+    }
+
+    function save() {
+      const payload = {
+        diaries: state.diaries.map(stripHeavy),
+        sports: state.sports.map(stripHeavy),
+        profile: {
+          name: state.profile.name,
+          bio: state.profile.bio,
+          // 头像若为 dataURL 过大则不写盘，仅会话保留
+          avatar: (state.profile.avatar || "").startsWith("data:")
+            ? "assets/avatar.jpg"
+            : state.profile.avatar,
+        },
+        musicMuted: state.musicMuted,
+        _avatarSession: (state.profile.avatar || "").startsWith("data:")
+          ? state.profile.avatar
+          : null,
+      };
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          diaries: payload.diaries,
+          sports: payload.sports,
+          profile: payload.profile,
+          musicMuted: payload.musicMuted,
+        }));
+      } catch (e) {
+        toast("本地存储空间不足，文字已尽量保存");
+      }
+      if (API.baseUrl) API.sync().catch(() => {});
+    }
+
+    function stripHeavy(item) {
+      return {
+        ...item,
+        media: (item.media || []).map((m) => ({
+          id: m.id,
+          type: m.type,
+          name: m.name || "",
+          // dataURL 不进 localStorage，会话内靠 mediaStore
+        })),
+      };
+    }
+
+    /* —— Toast —— */
+    function toast(msg) {
+      const host = $("#toastHost");
+      const el = document.createElement("div");
+      el.className = "toast";
+      el.textContent = msg;
+      host.appendChild(el);
+      setTimeout(() => {
+        el.style.opacity = "0";
+        el.style.transition = "opacity .25s";
+        setTimeout(() => el.remove(), 280);
+      }, 2200);
+    }
+
+    /* —— Media helpers —— */
+    function readFiles(fileList) {
+      const files = Array.from(fileList || []);
+      return Promise.all(
+        files.map(
+          (file) =>
+            new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onload = () => {
+                const id = uid();
+                const type = file.type.startsWith("video/") ? "video" : "image";
+                const url = reader.result;
+                mediaStore.set(id, url);
+                resolve({ id, type, name: file.name, url });
+              };
+              reader.onerror = reject;
+              reader.readAsDataURL(file);
+            })
+        )
+      );
+    }
+
+    function mediaUrl(m) {
+      if (!m) return "";
+      if (m.url) return m.url;
+      return mediaStore.get(m.id) || "";
+    }
+
+    function renderPreviews(container, list, onRemove) {
+      container.innerHTML = "";
+      list.forEach((m, idx) => {
+        const url = mediaUrl(m);
+        if (!url) return;
+        const div = document.createElement("div");
+        div.className = "preview-item";
+        if (m.type === "video") {
+          const v = document.createElement("video");
+          v.src = url;
+          v.muted = true;
+          div.appendChild(v);
+        } else {
+          const img = document.createElement("img");
+          img.src = url;
+          img.alt = m.name || "预览";
+          div.appendChild(img);
+        }
+        const rm = document.createElement("button");
+        rm.type = "button";
+        rm.className = "preview-remove";
+        rm.setAttribute("aria-label", "删除");
+        rm.textContent = "×";
+        rm.addEventListener("click", (e) => {
+          e.stopPropagation();
+          onRemove(idx);
+        });
+        div.appendChild(rm);
+        container.appendChild(div);
+      });
+    }
+
+    /* —— Navigation —— */
+    let currentView = "home";
+
+    function showView(name) {
+      currentView = name;
+      $$(".view").forEach((v) => {
+        const on = v.id === "view-" + name;
+        v.classList.toggle("is-active", on);
+        if (on) v.removeAttribute("hidden");
+        else v.setAttribute("hidden", "");
+      });
+      $$(".nav-item[data-view]").forEach((btn) => {
+        btn.classList.toggle("is-active", btn.getAttribute("data-view") === name);
+      });
+      if (name !== "home") window.scrollTo(0, 0);
+      try {
+        localStorage.setItem("yuniqiu-last-view", name);
+      } catch (_) {}
+    }
+
+    $$("#sideNav .nav-item, #bottomNav .nav-item").forEach((btn) => {
+      btn.addEventListener("click", () => showView(btn.getAttribute("data-view")));
+    });
+    $$("[data-go]").forEach((btn) => {
+      btn.addEventListener("click", () => showView(btn.getAttribute("data-go")));
+    });
+
+    /* —— Music —— */
+    const bgm = $("#bgm");
+    bgm.volume = 0.38;
+    let musicPlaying = false;
+
+    function setMusicUI(playing) {
+      musicPlaying = playing;
+      const iconPlay = $("#iconPlay");
+      const iconPause = $("#iconPause");
+      const fabPlay = $("#fabIconPlay");
+      const fabPause = $("#fabIconPause");
+      if (iconPlay) iconPlay.hidden = playing;
+      if (iconPause) iconPause.hidden = !playing;
+      if (fabPlay) fabPlay.hidden = playing;
+      if (fabPause) fabPause.hidden = !playing;
+      $("#fabMusic").classList.toggle("is-muted", !playing);
+      $("#musicHint").textContent = playing ? "播放中 · 卡农" : "已暂停 · 轻触继续";
+    }
+
+    async function playMusic() {
+      try {
+        await bgm.play();
+        setMusicUI(true);
+        state.musicMuted = false;
+        save();
+      } catch (e) {
+        setMusicUI(false);
+        $("#musicHint").textContent = "浏览器拦截了自动播放，请点击播放";
+        toast("请点击播放按钮开启音乐");
+      }
+    }
+
+    function pauseMusic() {
+      bgm.pause();
+      setMusicUI(false);
+      state.musicMuted = true;
+      save();
+    }
+
+    function toggleMusic() {
+      if (musicPlaying && !bgm.paused) pauseMusic();
+      else playMusic();
+    }
+
+    $("#musicToggle").addEventListener("click", toggleMusic);
+    $("#fabMusic").addEventListener("click", toggleMusic);
+
+    // 尝试自动播放；失败则等首次交互
+    function tryAutoplay() {
+      if (state.musicMuted) {
+        setMusicUI(false);
+        $("#musicHint").textContent = "已静音 · 轻触播放";
+        return;
+      }
+      playMusic();
+    }
+
+    let unlocked = false;
+    function unlockOnce() {
+      if (unlocked) return;
+      unlocked = true;
+      if (!state.musicMuted && bgm.paused) playMusic();
+    }
+    ["pointerdown", "keydown", "touchstart"].forEach((ev) => {
+      document.addEventListener(ev, unlockOnce, { once: true, passive: true });
+    });
+
+    /* —— Parallax —— */
+    const stageBg = $("#stageBg");
+    let raf = 0;
+    function onScroll() {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        const y = window.scrollY || 0;
+        const shift = Math.min(y * 0.06, 48);
+        stageBg.style.transform = "translate3d(0, " + shift + "px, 0) scale(1.06)";
+        raf = 0;
+      });
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    /* —— Diary —— */
+    let diaryDraft = emptyDiaryDraft();
+    let diaryEditId = null;
+
+    function emptyDiaryDraft() {
+      return { date: today(), title: "", body: "", media: [] };
+    }
+
+    function openDiaryComposer(entry) {
+      const box = $("#diaryComposer");
+      box.hidden = false;
+      if (entry) {
+        diaryEditId = entry.id;
+        diaryDraft = {
+          date: entry.date,
+          title: entry.title,
+          body: entry.body,
+          media: (entry.media || []).map((m) => ({
+            ...m,
+            url: mediaUrl(m),
+          })),
+        };
+        $("#diaryComposerTitle").textContent = "编辑日记";
+      } else {
+        diaryEditId = null;
+        diaryDraft = emptyDiaryDraft();
+        $("#diaryComposerTitle").textContent = "新日记";
+      }
+      $("#diaryDate").value = diaryDraft.date;
+      $("#diaryTitle").value = diaryDraft.title;
+      $("#diaryBody").value = diaryDraft.body;
+      bindDiaryPreviewRemove();
+      $("#diaryTitle").focus();
+    }
+
+    function bindDiaryPreviewRemove() {
+      renderPreviews($("#diaryPreviews"), diaryDraft.media, (i) => {
+        diaryDraft.media.splice(i, 1);
+        bindDiaryPreviewRemove();
+      });
+    }
+
+    function closeDiaryComposer() {
+      $("#diaryComposer").hidden = true;
+      diaryEditId = null;
+      diaryDraft = emptyDiaryDraft();
+      $("#diaryImages").value = "";
+      $("#diaryVideos").value = "";
+    }
+
+    function saveDiary() {
+      const date = $("#diaryDate").value || today();
+      const title = ($("#diaryTitle").value || "").trim() || "无题";
+      const body = ($("#diaryBody").value || "").trim();
+      if (!body && diaryDraft.media.length === 0) {
+        toast("写点文字或加一张图吧");
+        return;
+      }
+      const now = Date.now();
+      if (diaryEditId) {
+        const idx = state.diaries.findIndex((d) => d.id === diaryEditId);
+        if (idx >= 0) {
+          state.diaries[idx] = {
+            ...state.diaries[idx],
+            date,
+            title,
+            body,
+            media: diaryDraft.media.map(({ id, type, name, url }) => {
+              if (url) mediaStore.set(id, url);
+              return { id, type, name, url };
+            }),
+            updatedAt: now,
+          };
+        }
+        toast("日记已更新");
+      } else {
+        state.diaries.unshift({
+          id: uid(),
+          date,
+          title,
+          body,
+          media: diaryDraft.media.map(({ id, type, name, url }) => {
+            if (url) mediaStore.set(id, url);
+            return { id, type, name, url };
+          }),
+          createdAt: now,
+          updatedAt: now,
+        });
+        toast("日记已保存");
+      }
+      save();
+      closeDiaryComposer();
+      renderDiaries();
+    }
+
+    function deleteDiary(id) {
+      state.diaries = state.diaries.filter((d) => d.id !== id);
+      save();
+      renderDiaries();
+      toast("已删除");
+    }
+
+    function renderDiaries() {
+      const list = $("#diaryList");
+      const items = [...state.diaries].sort((a, b) => {
+        if (a.date !== b.date) return a.date < b.date ? 1 : -1;
+        return (b.updatedAt || 0) - (a.updatedAt || 0);
+      });
+      if (!items.length) {
+        list.innerHTML =
+          '<div class="card empty"><strong>还没有日记</strong>点右上角「新建日记」，留下今天的光。</div>';
+        return;
+      }
+      list.innerHTML = items
+        .map((d) => {
+          const snippet = escapeHtml((d.body || "").slice(0, 90));
+          const mediaHtml = (d.media || [])
+            .map((m) => {
+              const url = mediaUrl(m);
+              if (!url) {
+                return '<div class="preview-item" style="display:grid;place-items:center;font-size:11px;color:var(--muted);padding:8px;text-align:center">媒体仅会话内可预览</div>';
+              }
+              if (m.type === "video") {
+                return '<video src="' + url + '" controls playsinline></video>';
+              }
+              return '<img src="' + url + '" alt="" loading="lazy" />';
+            })
+            .join("");
+          return (
+            '<article class="card entry" data-id="' +
+            d.id +
+            '" data-od-id="diary-entry-' +
+            d.id +
+            '">' +
+            '<div class="entry-head" data-toggle>' +
+            '<div class="entry-date">' +
+            fmtDate(d.date) +
+            "</div>" +
+            '<div class="entry-main">' +
+            '<div class="entry-title">' +
+            escapeHtml(d.title) +
+            "</div>" +
+            '<div class="entry-snippet">' +
+            snippet +
+            (d.body && d.body.length > 90 ? "…" : "") +
+            "</div>" +
+            "</div>" +
+            '<div class="entry-tools" data-stop>' +
+            '<button type="button" class="btn-icon" data-edit aria-label="编辑">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 17.5V20h2.5L18 8.5 15.5 6 4 17.5z"/><path d="M13.5 7.5l3 3"/></svg>' +
+            "</button>" +
+            '<button type="button" class="btn-icon" data-del aria-label="删除">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 7h14M9 7V5h6v2m-8 0 1 12h6l1-12"/></svg>' +
+            "</button>" +
+            "</div>" +
+            "</div>" +
+            '<div class="entry-body">' +
+            '<div class="entry-content">' +
+            escapeHtml(d.body) +
+            "</div>" +
+            (mediaHtml ? '<div class="entry-media">' + mediaHtml + "</div>" : "") +
+            "</div>" +
+            "</article>"
+          );
+        })
+        .join("");
+
+      list.querySelectorAll(".entry").forEach((el) => {
+        const id = el.getAttribute("data-id");
+        el.querySelector("[data-toggle]").addEventListener("click", (e) => {
+          if (e.target.closest("[data-stop]")) return;
+          el.classList.toggle("is-open");
+        });
+        el.querySelector("[data-edit]").addEventListener("click", (e) => {
+          e.stopPropagation();
+          const entry = state.diaries.find((d) => d.id === id);
+          if (entry) openDiaryComposer(entry);
+        });
+        el.querySelector("[data-del]").addEventListener("click", (e) => {
+          e.stopPropagation();
+          deleteDiary(id);
+        });
+      });
+    }
+
+    $("#diaryNewBtn").addEventListener("click", () => openDiaryComposer(null));
+    $("#diaryComposerClose").addEventListener("click", closeDiaryComposer);
+    $("#diaryCancel").addEventListener("click", closeDiaryComposer);
+    $("#diarySave").addEventListener("click", saveDiary);
+
+    $("#diaryImages").addEventListener("change", async (e) => {
+      const added = await readFiles(e.target.files);
+      diaryDraft.media = diaryDraft.media.concat(added);
+      bindDiaryPreviewRemove();
+      e.target.value = "";
+    });
+    $("#diaryVideos").addEventListener("change", async (e) => {
+      const added = await readFiles(e.target.files);
+      diaryDraft.media = diaryDraft.media.concat(added);
+      bindDiaryPreviewRemove();
+      e.target.value = "";
+    });
+
+    /* —— Sport —— */
+    let sportDraft = emptySportDraft();
+    let sportEditId = null;
+
+    function emptySportDraft() {
+      return {
+        date: today(),
+        type: "跑步",
+        duration: "",
+        distance: "",
+        pace: "",
+        mood: 4,
+        note: "",
+        media: [],
+      };
+    }
+
+    function openSportComposer(entry) {
+      $("#sportComposer").hidden = false;
+      if (entry) {
+        sportEditId = entry.id;
+        sportDraft = {
+          date: entry.date,
+          type: entry.type,
+          duration: entry.duration,
+          distance: entry.distance,
+          pace: entry.pace || "",
+          mood: entry.mood || 4,
+          note: entry.note || "",
+          media: (entry.media || []).map((m) => ({ ...m, url: mediaUrl(m) })),
+        };
+        $("#sportComposerTitle").textContent = "编辑记录";
+      } else {
+        sportEditId = null;
+        sportDraft = emptySportDraft();
+        $("#sportComposerTitle").textContent = "新运动";
+      }
+      $("#sportDate").value = sportDraft.date;
+      $("#sportType").value = sportDraft.type;
+      $("#sportDuration").value = sportDraft.duration;
+      $("#sportDistance").value = sportDraft.distance;
+      $("#sportPace").value = sportDraft.pace;
+      $("#sportMood").value = sportDraft.mood;
+      $("#sportMoodVal").textContent = sportDraft.mood;
+      $("#sportNote").value = sportDraft.note;
+      bindSportPreviewRemove();
+    }
+
+    function bindSportPreviewRemove() {
+      renderPreviews($("#sportPreviews"), sportDraft.media, (i) => {
+        sportDraft.media.splice(i, 1);
+        bindSportPreviewRemove();
+      });
+    }
+
+    function closeSportComposer() {
+      $("#sportComposer").hidden = true;
+      sportEditId = null;
+      sportDraft = emptySportDraft();
+      $("#sportImages").value = "";
+      $("#sportVideos").value = "";
+    }
+
+    function saveSport() {
+      const date = $("#sportDate").value || today();
+      const type = $("#sportType").value || "其他";
+      const duration = Number($("#sportDuration").value) || 0;
+      const distance = Number($("#sportDistance").value) || 0;
+      const pace = ($("#sportPace").value || "").trim();
+      const mood = Number($("#sportMood").value) || 3;
+      const note = ($("#sportNote").value || "").trim();
+      if (!duration && !distance) {
+        toast("请至少填写时长或距离");
+        return;
+      }
+      const now = Date.now();
+      const media = sportDraft.media.map(({ id, type: t, name, url }) => {
+        if (url) mediaStore.set(id, url);
+        return { id, type: t, name, url };
+      });
+      if (sportEditId) {
+        const idx = state.sports.findIndex((s) => s.id === sportEditId);
+        if (idx >= 0) {
+          state.sports[idx] = {
+            ...state.sports[idx],
+            date,
+            type,
+            duration,
+            distance,
+            pace,
+            mood,
+            note,
+            media,
+            updatedAt: now,
+          };
+        }
+        toast("运动记录已更新");
+      } else {
+        state.sports.unshift({
+          id: uid(),
+          date,
+          type,
+          duration,
+          distance,
+          pace,
+          mood,
+          note,
+          media,
+          createdAt: now,
+          updatedAt: now,
+        });
+        toast("运动记录已保存");
+      }
+      save();
+      closeSportComposer();
+      renderSports();
+    }
+
+    function deleteSport(id) {
+      state.sports = state.sports.filter((s) => s.id !== id);
+      save();
+      renderSports();
+      toast("已删除");
+    }
+
+    function renderSports() {
+      const list = $("#sportList");
+      const items = [...state.sports].sort((a, b) => {
+        if (a.date !== b.date) return a.date < b.date ? 1 : -1;
+        return (b.updatedAt || 0) - (a.updatedAt || 0);
+      });
+      if (!items.length) {
+        list.innerHTML =
+          '<div class="card empty" style="margin-left:0"><strong>还没有运动记录</strong>跑一段、走一圈，回来记一笔。</div>';
+        return;
+      }
+      list.innerHTML = items
+        .map((s) => {
+          const mediaHtml = (s.media || [])
+            .map((m) => {
+              const url = mediaUrl(m);
+              if (!url) {
+                return '<div class="preview-item" style="aspect-ratio:4/3;display:grid;place-items:center;font-size:11px;color:var(--muted);padding:8px;text-align:center;border-radius:12px;border:1px solid var(--border)">媒体仅会话内</div>';
+              }
+              if (m.type === "video") {
+                return '<video src="' + url + '" controls playsinline style="width:100%;border-radius:12px;aspect-ratio:4/3;object-fit:cover"></video>';
+              }
+              return '<img src="' + url + '" alt="" loading="lazy" style="width:100%;border-radius:12px;aspect-ratio:4/3;object-fit:cover" />';
+            })
+            .join("");
+          return (
+            '<article class="card sport-card" data-id="' +
+            s.id +
+            '" data-od-id="sport-card-' +
+            s.id +
+            '">' +
+            '<div class="sport-top">' +
+            "<div>" +
+            '<div class="sport-type">' +
+            escapeHtml(s.type) +
+            "</div>" +
+            '<div class="sport-date">' +
+            fmtDate(s.date) +
+            "</div>" +
+            "</div>" +
+            '<div class="entry-tools">' +
+            '<button type="button" class="btn-icon" data-edit aria-label="编辑">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 17.5V20h2.5L18 8.5 15.5 6 4 17.5z"/><path d="M13.5 7.5l3 3"/></svg>' +
+            "</button>" +
+            '<button type="button" class="btn-icon" data-del aria-label="删除">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 7h14M9 7V5h6v2m-8 0 1 12h6l1-12"/></svg>' +
+            "</button>" +
+            "</div>" +
+            "</div>" +
+            '<div class="sport-stats">' +
+            '<div class="stat"><div class="stat-label">时长</div><div class="stat-value">' +
+            (s.duration || "—") +
+            '<span style="font-size:.75rem;color:var(--muted);margin-left:2px">分</span></div></div>' +
+            '<div class="stat"><div class="stat-label">距离</div><div class="stat-value">' +
+            (s.distance || "—") +
+            '<span style="font-size:.75rem;color:var(--muted);margin-left:2px">km</span></div></div>' +
+            '<div class="stat"><div class="stat-label">配速</div><div class="stat-value" style="font-size:.95rem">' +
+            escapeHtml(s.pace || "—") +
+            "</div></div>" +
+            '<div class="stat"><div class="stat-label">心情</div><div class="stat-value"><span class="stars" aria-label="' +
+            s.mood +
+            '星">' +
+            stars(s.mood) +
+            "</span></div></div>" +
+            "</div>" +
+            (s.note
+              ? '<p style="margin-top:12px;color:var(--muted);font-size:.9rem;line-height:1.55">' +
+                escapeHtml(s.note) +
+                "</p>"
+              : "") +
+            (mediaHtml
+              ? '<div class="entry-media" style="margin-top:12px">' + mediaHtml + "</div>"
+              : "") +
+            "</article>"
+          );
+        })
+        .join("");
+
+      list.querySelectorAll(".sport-card").forEach((el) => {
+        const id = el.getAttribute("data-id");
+        el.querySelector("[data-edit]").addEventListener("click", () => {
+          const entry = state.sports.find((s) => s.id === id);
+          if (entry) openSportComposer(entry);
+        });
+        el.querySelector("[data-del]").addEventListener("click", () => deleteSport(id));
+      });
+    }
+
+    $("#sportNewBtn").addEventListener("click", () => openSportComposer(null));
+    $("#sportComposerClose").addEventListener("click", closeSportComposer);
+    $("#sportCancel").addEventListener("click", closeSportComposer);
+    $("#sportSave").addEventListener("click", saveSport);
+    $("#sportMood").addEventListener("input", (e) => {
+      $("#sportMoodVal").textContent = e.target.value;
+    });
+    $("#sportImages").addEventListener("change", async (e) => {
+      const added = await readFiles(e.target.files);
+      sportDraft.media = sportDraft.media.concat(added);
+      bindSportPreviewRemove();
+      e.target.value = "";
+    });
+    $("#sportVideos").addEventListener("change", async (e) => {
+      const added = await readFiles(e.target.files);
+      sportDraft.media = sportDraft.media.concat(added);
+      bindSportPreviewRemove();
+      e.target.value = "";
+    });
+
+    /* —— About —— */
+    function renderAbout() {
+      const p = state.profile;
+      $("#aboutName").textContent = p.name || "芋泥球香柑";
+      $("#aboutBio").textContent =
+        p.bio ||
+        "喜欢在树荫下散步，把阳光、风声和脚步记进本子里。";
+      if (p.avatar) $("#aboutAvatar").src = p.avatar;
+      // restore session avatar if any
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        // already in state
+      } catch (_) {}
+    }
+
+    let aboutSaveTimer = 0;
+    function scheduleAboutSave() {
+      clearTimeout(aboutSaveTimer);
+      aboutSaveTimer = setTimeout(() => {
+        state.profile.name = ($("#aboutName").textContent || "").trim() || "芋泥球香柑";
+        state.profile.bio = ($("#aboutBio").textContent || "").trim();
+        save();
+        toast("资料已保存");
+      }, 500);
+    }
+
+    $("#aboutName").addEventListener("input", scheduleAboutSave);
+    $("#aboutName").addEventListener("blur", () => {
+      if (!($("#aboutName").textContent || "").trim()) {
+        $("#aboutName").textContent = "芋泥球香柑";
+      }
+      scheduleAboutSave();
+    });
+    $("#aboutBio").addEventListener("input", scheduleAboutSave);
+    $("#aboutBio").addEventListener("blur", scheduleAboutSave);
+
+    $("#aboutAvatarInput").addEventListener("change", async (e) => {
+      const files = e.target.files;
+      if (!files || !files[0]) return;
+      const [m] = await readFiles(files);
+      state.profile.avatar = m.url;
+      $("#aboutAvatar").src = m.url;
+      // 会话内显示；localStorage 只保留路径占位，见 save()
+      toast("头像已更新（当前会话）");
+      e.target.value = "";
+    });
+
+    /* —— Init —— */
+    function init() {
+      // restore last view optionally stay home first
+      renderDiaries();
+      renderSports();
+      renderAbout();
+      tryAutoplay();
+    }
+
+    init();
+  })();
+  </script>
+</body>
+</html>
