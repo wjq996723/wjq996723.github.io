@@ -1,1848 +1,2460 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>芋泥球香柑 · 夏日手记</title>
-  <meta name="description" content="芋泥球香柑的夏日个人站 — 日记、运动与关于我" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&family=Noto+Serif+SC:wght@500;600&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --bg: oklch(0.97 0.02 95);
-      --surface: oklch(0.99 0.012 95 / 0.78);
-      --surface-solid: oklch(0.99 0.01 95);
-      --fg: oklch(0.28 0.04 145);
-      --muted: oklch(0.48 0.03 145);
-      --border: oklch(0.88 0.03 120);
-      --accent: oklch(0.52 0.11 145);
-      --accent-soft: oklch(0.92 0.04 145);
-      --warm: oklch(0.78 0.09 85);
-      --danger: oklch(0.55 0.16 25);
-      --success: oklch(0.58 0.12 150);
-      --shadow: 0 12px 40px oklch(0.35 0.04 145 / 0.12);
-      --shadow-sm: 0 4px 16px oklch(0.35 0.03 145 / 0.08);
-      --radius: 18px;
-      --radius-sm: 12px;
-      --nav-w: 240px;
-      --bottom-h: 68px;
-      --font-display: "Noto Serif SC", "Songti SC", Georgia, serif;
-      --font-body: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-      --font-mono: "JetBrains Mono", ui-monospace, monospace;
-      --ease: cubic-bezier(0.22, 1, 0.36, 1);
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>每日生活助手</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
-    body {
-      font-family: var(--font-body);
-      color: var(--fg);
-      background: var(--bg);
-      line-height: 1.55;
-      min-height: 100dvh;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-    }
-    button, input, textarea, select { font: inherit; color: inherit; }
-    button { cursor: pointer; border: none; background: none; }
-    img, video { max-width: 100%; display: block; height: auto; }
-    a { color: inherit; text-decoration: none; }
-    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-    .sr-only {
-      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
-      overflow: hidden; clip: rect(0,0,0,0); border: 0;
-    }
+:root {
+    --bg-dark: #1a1a2e;
+    --bg-card: #16213e;
+    --bg-sidebar: #0f3460;
+    --accent-green: #4ade80;
+    --accent-blue: #60a5fa;
+    --accent-purple: #a78bfa;
+    --accent-pink: #f472b6;
+    --accent-orange: #fb923c;
+    --accent-yellow: #fbbf24;
+    --accent-red: #f87171;
+    --accent-teal: #2dd4bf;
+    --text-primary: #e2e8f0;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --border-color: #334155;
+    --hover-bg: #1e293b;
+    --shadow: 0 4px 20px rgba(0,0,0,0.3);
+    --radius: 12px;
+    --radius-lg: 16px;
+    --transition: all 0.3s ease;
+}
 
-    /* —— Immersive summer stage —— */
-    .stage {
-      position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
-    }
-    .stage-bg {
-      position: absolute; inset: -8%;
-      background:
-        linear-gradient(180deg, oklch(0.92 0.04 95 / 0.35) 0%, oklch(0.97 0.02 95 / 0.72) 55%, var(--bg) 100%),
-        url("assets/summer-bg.jpg") center / cover no-repeat;
-      transform: translate3d(0, 0, 0) scale(1.06);
-      will-change: transform;
-      transition: transform 0.6s var(--ease);
-    }
-    .stage-overlay {
-      position: absolute; inset: 0;
-      background:
-        radial-gradient(ellipse 80% 50% at 20% 15%, oklch(0.95 0.08 95 / 0.35), transparent 55%),
-        radial-gradient(ellipse 60% 40% at 80% 70%, oklch(0.75 0.08 145 / 0.18), transparent 50%),
-        linear-gradient(180deg, transparent 40%, var(--bg) 92%);
-    }
-    .light-spots {
-      position: absolute; inset: 0;
-      background-image:
-        radial-gradient(circle 80px at 18% 22%, oklch(0.98 0.06 95 / 0.45), transparent 70%),
-        radial-gradient(circle 50px at 62% 18%, oklch(0.97 0.05 90 / 0.35), transparent 70%),
-        radial-gradient(circle 70px at 78% 42%, oklch(0.96 0.06 100 / 0.3), transparent 70%),
-        radial-gradient(circle 40px at 35% 55%, oklch(0.97 0.05 95 / 0.28), transparent 70%);
-      animation: drift 28s ease-in-out infinite alternate;
-      mix-blend-mode: soft-light;
-    }
-    .leaf-drift {
-      position: absolute; inset: 0; opacity: 0.35;
-      background-image:
-        radial-gradient(ellipse 6px 3px at 12% 30%, oklch(0.55 0.12 145 / 0.5), transparent),
-        radial-gradient(ellipse 5px 2px at 40% 60%, oklch(0.5 0.1 140 / 0.4), transparent),
-        radial-gradient(ellipse 7px 3px at 70% 25%, oklch(0.58 0.11 150 / 0.45), transparent),
-        radial-gradient(ellipse 4px 2px at 85% 70%, oklch(0.52 0.1 145 / 0.35), transparent);
-      animation: leaf-sway 18s ease-in-out infinite alternate;
-    }
-    @keyframes drift {
-      from { transform: translate3d(-1.5%, -1%, 0) scale(1); }
-      to { transform: translate3d(2%, 1.5%, 0) scale(1.04); }
-    }
-    @keyframes leaf-sway {
-      from { transform: translate3d(0, 0, 0) rotate(0deg); }
-      to { transform: translate3d(2%, 1%, 0) rotate(1.5deg); }
-    }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+}
 
-    /* —— Shell —— */
-    .app {
-      position: relative; z-index: 1;
-      display: grid;
-      grid-template-columns: 1fr;
-      min-height: 100dvh;
-    }
-    .sidebar {
-      display: none;
-      flex-direction: column;
-      gap: 8px;
-      padding: 28px 20px;
-      border-right: 1px solid var(--border);
-      background: oklch(0.99 0.01 95 / 0.55);
-      backdrop-filter: blur(18px) saturate(1.2);
-      -webkit-backdrop-filter: blur(18px) saturate(1.2);
-      position: sticky; top: 0; height: 100dvh;
-    }
-    .brand {
-      padding: 8px 12px 24px;
-    }
-    .brand-mark {
-      font-family: var(--font-display);
-      font-size: 1.35rem;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      line-height: 1.2;
-    }
-    .brand-sub {
-      margin-top: 6px;
-      font-size: 0.78rem;
-      color: var(--muted);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-    .nav-list { display: flex; flex-direction: column; gap: 4px; flex: 1; }
-    .nav-item {
-      display: flex; align-items: center; gap: 12px;
-      padding: 12px 14px;
-      border-radius: 14px;
-      color: var(--muted);
-      font-weight: 500;
-      font-size: 0.95rem;
-      letter-spacing: 0.02em;
-      transition: background 0.2s var(--ease), color 0.2s var(--ease), transform 0.15s var(--ease);
-      min-height: 48px;
-    }
-    .nav-item svg { width: 20px; height: 20px; flex-shrink: 0; stroke-width: 1.7; }
-    .nav-item:hover { background: oklch(0.95 0.02 120 / 0.7); color: var(--fg); }
-    .nav-item.is-active {
-      background: var(--accent-soft);
-      color: var(--accent);
-    }
-    .nav-item:active { transform: scale(0.98); }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
-    .music-dock {
-      margin-top: auto;
-      padding: 14px;
-      border-radius: var(--radius-sm);
-      background: var(--surface);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-sm);
-    }
-    .music-title {
-      font-size: 0.72rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 8px;
-    }
-    .music-row {
-      display: flex; align-items: center; gap: 10px;
-    }
-    .music-btn {
-      width: 44px; height: 44px; border-radius: 50%;
-      display: grid; place-items: center;
-      background: var(--accent);
-      color: oklch(0.99 0.01 95);
-      box-shadow: 0 6px 16px oklch(0.52 0.11 145 / 0.28);
-      transition: transform 0.15s var(--ease), filter 0.15s;
-      flex-shrink: 0;
-    }
-    .music-btn:hover { filter: brightness(1.05); }
-    .music-btn:active { transform: scale(0.95); }
-    .music-btn svg { width: 18px; height: 18px; }
-    .music-meta { min-width: 0; flex: 1; }
-    .music-name {
-      font-size: 0.88rem; font-weight: 550; white-space: nowrap;
-      overflow: hidden; text-overflow: ellipsis;
-    }
-    .music-hint { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+/* ===== 侧边栏 ===== */
+.sidebar {
+    width: 240px;
+    min-width: 240px;
+    background: linear-gradient(180deg, #0f172a 0%, #1a1a2e 100%);
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border-color);
+    overflow-y: auto;
+}
+.sidebar-header {
+    padding: 28px 20px 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+.sidebar-header h1 {
+    font-size: 20px;
+    background: linear-gradient(135deg, var(--accent-green), var(--accent-teal));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 4px;
+}
+.sidebar-header p {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+.nav-menu {
+    flex: 1;
+    padding: 12px 10px;
+}
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 4px;
+    transition: var(--transition);
+    position: relative;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+.nav-item:hover {
+    background: var(--hover-bg);
+    color: var(--text-primary);
+}
+.nav-item.active {
+    background: rgba(74, 222, 128, 0.12);
+    color: var(--accent-green);
+    font-weight: 600;
+}
+.nav-item.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 60%;
+    background: var(--accent-green);
+    border-radius: 0 3px 3px 0;
+}
+.nav-icon { font-size: 18px; margin-right: 12px; }
+.nav-text { flex: 1; }
+.nav-badge {
+    background: var(--accent-red);
+    color: #fff;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 10px;
+}
+.sidebar-footer {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border-color);
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: center;
+}
 
-    .main {
-      min-width: 0;
-      padding: 0 0 calc(var(--bottom-h) + 20px);
-    }
+/* ===== 主内容区 ===== */
+.main-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 28px 32px;
+}
+.page-header {
+    margin-bottom: 24px;
+}
+.page-header h2 {
+    font-size: 24px;
+    margin-bottom: 6px;
+}
+.page-header p {
+    font-size: 13px;
+    color: var(--text-muted);
+}
 
-    /* —— Bottom nav (mobile) —— */
-    .bottom-nav {
-      position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
-      display: grid; grid-template-columns: repeat(4, 1fr);
-      height: calc(var(--bottom-h) + env(safe-area-inset-bottom, 0px));
-      padding-bottom: env(safe-area-inset-bottom, 0px);
-      background: oklch(0.99 0.01 95 / 0.88);
-      backdrop-filter: blur(20px) saturate(1.3);
-      -webkit-backdrop-filter: blur(20px) saturate(1.3);
-      border-top: 1px solid var(--border);
-      box-shadow: 0 -8px 30px oklch(0.35 0.03 145 / 0.06);
-    }
-    .bottom-nav .nav-item {
-      flex-direction: column; gap: 4px; justify-content: center;
-      border-radius: 0; padding: 8px 4px; font-size: 0.68rem;
-      min-height: var(--bottom-h);
-      letter-spacing: 0.02em;
-    }
-    .bottom-nav .nav-item svg { width: 22px; height: 22px; }
+/* ===== 卡片 ===== */
+.card {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 22px;
+    margin-bottom: 18px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
+}
+.card-title {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    color: var(--text-primary);
+}
 
-    /* —— Floating music (mobile) —— */
-    .fab-music {
-      position: fixed; right: 16px; bottom: calc(var(--bottom-h) + 18px + env(safe-area-inset-bottom, 0px));
-      z-index: 35;
-      width: 52px; height: 52px; border-radius: 50%;
-      display: grid; place-items: center;
-      background: var(--accent);
-      color: oklch(0.99 0.01 95);
-      box-shadow: 0 10px 28px oklch(0.52 0.11 145 / 0.35);
-      transition: transform 0.2s var(--ease);
-    }
-    .fab-music:active { transform: scale(0.94); }
-    .fab-music svg { width: 22px; height: 22px; }
-    .fab-music.is-muted { background: var(--muted); box-shadow: var(--shadow-sm); }
+/* ===== 统计卡片 ===== */
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 14px;
+    margin-bottom: 18px;
+}
+.stat-card {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 18px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+}
+.stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+.stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+}
 
-    /* —— Views —— */
-    .view { display: none; animation: fade-up 0.4s var(--ease); }
-    .view.is-active { display: block; }
-    @keyframes fade-up {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: none; }
-    }
+/* ===== 子标签 ===== */
+.sub-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+.sub-tab {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 13px;
+    transition: var(--transition);
+}
+.sub-tab:hover { background: var(--hover-bg); }
+.sub-tab.active {
+    background: var(--accent-green);
+    color: #0f172a;
+    font-weight: 600;
+    border-color: var(--accent-green);
+}
+.sub-panel { display: none; }
+.sub-panel.active { display: block; animation: fadeIn 0.3s ease; }
 
-    /* —— Home —— */
-    .home {
-      min-height: 100dvh;
-      display: flex; flex-direction: column; justify-content: flex-end;
-      padding: 32px 22px 40px;
-      position: relative;
-    }
-    .home-hero {
-      max-width: 560px;
-      padding: 28px 24px;
-      border-radius: 24px;
-      background: var(--surface);
-      border: 1px solid oklch(1 0 0 / 0.45);
-      backdrop-filter: blur(22px) saturate(1.25);
-      -webkit-backdrop-filter: blur(22px) saturate(1.25);
-      box-shadow: var(--shadow);
-    }
-    .eyebrow {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-size: 0.75rem; font-weight: 550;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 14px;
-    }
-    .eyebrow::before {
-      content: ""; width: 18px; height: 1.5px; background: currentColor; border-radius: 2px;
-    }
-    .home-title {
-      font-family: var(--font-display);
-      font-size: clamp(2.2rem, 8vw, 3.4rem);
-      font-weight: 600;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-    }
-    .home-sign {
-      margin-top: 14px;
-      font-size: 1.05rem;
-      color: var(--muted);
-      max-width: 36ch;
-      line-height: 1.65;
-    }
-    .home-actions {
-      display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px;
-    }
-    .btn {
-      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      min-height: 44px; padding: 0 18px;
-      border-radius: 999px;
-      font-weight: 550; font-size: 0.92rem;
-      letter-spacing: 0.02em;
-      transition: transform 0.15s var(--ease), background 0.2s, box-shadow 0.2s, color 0.2s;
-      border: 1px solid transparent;
-    }
-    .btn:active { transform: scale(0.97); }
-    .btn-primary {
-      background: var(--accent); color: oklch(0.99 0.01 95);
-      box-shadow: 0 8px 20px oklch(0.52 0.11 145 / 0.28);
-    }
-    .btn-primary:hover { filter: brightness(1.05); }
-    .btn-ghost {
-      background: oklch(1 0 0 / 0.45);
-      border-color: var(--border);
-      color: var(--fg);
-    }
-    .btn-ghost:hover { background: oklch(1 0 0 / 0.7); }
-    .btn-danger {
-      background: oklch(0.95 0.03 25); color: var(--danger);
-      border-color: oklch(0.88 0.05 25);
-    }
-    .btn-sm { min-height: 36px; padding: 0 12px; font-size: 0.82rem; }
-    .btn-icon {
-      width: 40px; height: 40px; min-height: 40px; padding: 0;
-      border-radius: 12px;
-      display: grid; place-items: center;
-      color: var(--muted);
-      background: transparent;
-    }
-    .btn-icon:hover { background: oklch(0.95 0.02 120); color: var(--fg); }
-    .btn-icon svg { width: 18px; height: 18px; stroke-width: 1.7; }
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
-    /* —— Page chrome —— */
-    .page {
-      max-width: 820px;
-      margin: 0 auto;
-      padding: 28px 18px 32px;
-    }
-    .page-head {
-      display: flex; align-items: flex-start; justify-content: space-between;
-      gap: 16px; margin-bottom: 22px; flex-wrap: wrap;
-    }
-    .page-title {
-      font-family: var(--font-display);
-      font-size: clamp(1.7rem, 4vw, 2.1rem);
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      line-height: 1.15;
-    }
-    .page-desc {
-      margin-top: 8px; color: var(--muted); font-size: 0.95rem; max-width: 42ch;
-    }
+/* ===== 待办 ===== */
+.todo-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 14px;
+    border-radius: 10px;
+    margin-bottom: 6px;
+    background: var(--hover-bg);
+    transition: var(--transition);
+}
+.todo-item.completed .todo-text {
+    text-decoration: line-through;
+    color: var(--text-muted);
+}
+.todo-checkbox {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid var(--border-color);
+    margin-right: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    flex-shrink: 0;
+}
+.todo-checkbox:hover { border-color: var(--accent-green); }
+.todo-checkbox.checked {
+    background: var(--accent-green);
+    border-color: var(--accent-green);
+}
+.todo-checkbox.checked::after {
+    content: '✓';
+    color: #0f172a;
+    font-size: 13px;
+    font-weight: 700;
+}
+.todo-text { flex: 1; font-size: 14px; }
+.todo-delete {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 18px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    opacity: 0;
+    transition: var(--transition);
+}
+.todo-item:hover .todo-delete { opacity: 1; }
+.todo-delete:hover { background: rgba(248,113,113,0.2); color: var(--accent-red); }
+.todo-priority {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-right: 8px;
+    font-weight: 600;
+}
+.priority-high { background: rgba(248,113,113,0.2); color: var(--accent-red); }
+.priority-mid { background: rgba(251,146,60,0.2); color: var(--accent-orange); }
+.priority-low { background: rgba(100,116,139,0.2); color: var(--text-muted); }
 
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      box-shadow: var(--shadow-sm);
-    }
+.add-todo-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+}
+.add-todo-row input {
+    flex: 1;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: var(--hover-bg);
+    color: var(--text-primary);
+    font-size: 14px;
+    outline: none;
+}
+.add-todo-row input:focus { border-color: var(--accent-green); }
+.add-todo-row select {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: var(--hover-bg);
+    color: var(--text-primary);
+    font-size: 13px;
+    outline: none;
+}
 
-    /* —— Forms —— */
-    .field { display: flex; flex-direction: column; gap: 6px; }
-    .field label {
-      font-size: 0.78rem; font-weight: 550; color: var(--muted);
-      letter-spacing: 0.04em;
-    }
-    .field input, .field textarea, .field select {
-      width: 100%;
-      min-height: 44px;
-      padding: 10px 14px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
-      background: oklch(1 0 0 / 0.65);
-      transition: border-color 0.15s, box-shadow 0.15s;
-    }
-    .field textarea { min-height: 110px; resize: vertical; line-height: 1.55; }
-    .field input:focus, .field textarea:focus, .field select:focus {
-      outline: none;
-      border-color: oklch(0.7 0.08 145);
-      box-shadow: 0 0 0 3px oklch(0.85 0.05 145 / 0.45);
-    }
-    .field-row {
-      display: grid; gap: 12px;
-      grid-template-columns: 1fr;
-    }
-    .composer {
-      padding: 18px;
-      margin-bottom: 18px;
-    }
-    .composer-head {
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 12px; margin-bottom: 14px;
-    }
-    .composer-title {
-      font-weight: 600; font-size: 0.95rem;
-    }
-    .composer-grid {
-      display: grid; gap: 12px;
-    }
-    .media-row {
-      display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
-    }
-    .file-btn {
-      position: relative; overflow: hidden;
-    }
-    .file-btn input {
-      position: absolute; inset: 0; opacity: 0; cursor: pointer;
-    }
-    .previews {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
-      gap: 8px;
-      margin-top: 10px;
-    }
-    .preview-item {
-      position: relative;
-      aspect-ratio: 1;
-      border-radius: 12px;
-      overflow: hidden;
-      background: oklch(0.94 0.02 120);
-      border: 1px solid var(--border);
-    }
-    .preview-item img, .preview-item video {
-      width: 100%; height: 100%; object-fit: cover;
-    }
-    .preview-remove {
-      position: absolute; top: 4px; right: 4px;
-      width: 28px; height: 28px; border-radius: 50%;
-      background: oklch(0.2 0.02 145 / 0.65);
-      color: white;
-      display: grid; place-items: center;
-      font-size: 14px; line-height: 1;
-    }
-    .composer-actions {
-      display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; margin-top: 14px;
-    }
+/* ===== 按钮 ===== */
+.btn-add {
+    padding: 10px 18px;
+    border-radius: 8px;
+    border: none;
+    background: var(--accent-green);
+    color: #0f172a;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    white-space: nowrap;
+}
+.btn-add:hover { filter: brightness(1.1); transform: translateY(-1px); }
+.btn-cancel {
+    padding: 10px 18px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 13px;
+    cursor: pointer;
+}
+.btn-confirm {
+    padding: 10px 18px;
+    border-radius: 8px;
+    border: none;
+    background: var(--accent-green);
+    color: #0f172a;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
 
-    /* —— Diary list —— */
-    .list { display: flex; flex-direction: column; gap: 12px; }
-    .empty {
-      text-align: center; padding: 48px 20px; color: var(--muted);
-    }
-    .empty strong {
-      display: block; font-family: var(--font-display);
-      font-size: 1.15rem; color: var(--fg); margin-bottom: 8px; font-weight: 600;
-    }
-    .entry {
-      padding: 0; overflow: hidden;
-      transition: box-shadow 0.2s var(--ease);
-    }
-    .entry:hover { box-shadow: var(--shadow); }
-    .entry-head {
-      display: flex; align-items: flex-start; gap: 12px;
-      padding: 16px 16px 12px;
-      width: 100%; text-align: left;
-      cursor: pointer;
-    }
-    .entry-date {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--muted);
-      letter-spacing: 0.02em;
-      white-space: nowrap;
-      padding-top: 4px;
-      min-width: 5.5rem;
-    }
-    .entry-main { flex: 1; min-width: 0; }
-    .entry-title {
-      font-weight: 600; font-size: 1.02rem;
-      letter-spacing: -0.01em;
-      line-height: 1.35;
-    }
-    .entry-snippet {
-      margin-top: 4px; color: var(--muted); font-size: 0.88rem;
-      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-    .entry-tools {
-      display: flex; gap: 2px; flex-shrink: 0;
-    }
-    .entry-body {
-      display: none;
-      padding: 0 16px 16px;
-      border-top: 1px solid transparent;
-    }
-    .entry.is-open .entry-body {
-      display: block;
-      border-top-color: var(--border);
-      padding-top: 14px;
-    }
-    .entry-content {
-      white-space: pre-wrap;
-      font-size: 0.95rem;
-      line-height: 1.65;
-      max-width: 65ch;
-    }
-    .entry-media {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 8px;
-      margin-top: 14px;
-    }
-    .entry-media img, .entry-media video {
-      width: 100%;
-      border-radius: 12px;
-      aspect-ratio: 4/3;
-      object-fit: cover;
-      background: oklch(0.94 0.02 120);
-    }
-    .mood-pill {
-      display: inline-flex; align-items: center; gap: 4px;
-      margin-top: 8px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: var(--accent-soft);
-      color: var(--accent);
-      font-size: 0.75rem;
-      font-weight: 550;
-      letter-spacing: 0.02em;
-    }
+/* ===== 进度条 ===== */
+.progress-bar {
+    height: 8px;
+    background: var(--hover-bg);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 16px;
+}
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-green), var(--accent-teal));
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
 
-    /* —— Sport —— */
-    .timeline { position: relative; display: flex; flex-direction: column; gap: 14px; }
-    .timeline::before {
-      content: "";
-      position: absolute; left: 11px; top: 8px; bottom: 8px;
-      width: 2px; background: var(--border);
-    }
-    .sport-card {
-      position: relative;
-      margin-left: 32px;
-      padding: 16px;
-    }
-    .sport-card::before {
-      content: "";
-      position: absolute; left: -27px; top: 22px;
-      width: 12px; height: 12px; border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 0 4px var(--accent-soft);
-    }
-    .sport-top {
-      display: flex; justify-content: space-between; gap: 12px; align-items: flex-start;
-    }
-    .sport-type {
-      font-weight: 600; font-size: 1.05rem; letter-spacing: -0.01em;
-    }
-    .sport-date {
-      font-family: var(--font-mono); font-size: 0.78rem; color: var(--muted);
-    }
-    .sport-stats {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-top: 14px;
-    }
-    .stat {
-      padding: 10px 12px;
-      border-radius: 12px;
-      background: oklch(0.97 0.015 120 / 0.7);
-    }
-    .stat-label {
-      font-size: 0.7rem; color: var(--muted);
-      letter-spacing: 0.04em; text-transform: uppercase;
-    }
-    .stat-value {
-      margin-top: 2px;
-      font-family: var(--font-mono);
-      font-size: 1.05rem;
-      font-weight: 550;
-      letter-spacing: -0.01em;
-    }
-    .stars {
-      display: inline-flex; gap: 2px; color: var(--warm);
-      font-size: 0.95rem; letter-spacing: 0.02em;
-    }
-    .range-wrap { display: flex; align-items: center; gap: 12px; }
-    .range-wrap input[type="range"] { flex: 1; accent-color: var(--accent); }
-    .range-val {
-      font-family: var(--font-mono); font-size: 0.9rem; min-width: 1.5rem; text-align: right;
-    }
+/* ===== 喝水 ===== */
+.water-progress {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+.water-circle {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: conic-gradient(var(--accent-blue) calc(var(--progress) * 1%), var(--hover-bg) 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.water-circle-inner {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.water-amount { font-size: 26px; font-weight: 700; color: var(--accent-blue); }
+.water-label { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.water-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+.water-stat { text-align: center; }
+.water-stat-value { font-size: 20px; font-weight: 700; }
+.water-stat-label { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.water-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
+}
+.water-item {
+    text-align: center;
+    padding: 14px 10px;
+    border-radius: 10px;
+    background: var(--hover-bg);
+    cursor: pointer;
+    transition: var(--transition);
+}
+.water-item:hover { background: #243349; }
+.water-item.done {
+    background: rgba(74,222,128,0.12);
+    border: 1px solid rgba(74,222,128,0.3);
+}
+.water-cup-icon { font-size: 28px; margin-bottom: 4px; }
+.water-time { font-size: 13px; font-weight: 600; }
+.water-ml { font-size: 11px; color: var(--text-muted); }
 
-    /* —— About —— */
-    .about-card {
-      padding: 28px 22px;
-      display: grid; gap: 22px;
-    }
-    .about-top {
-      display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px;
-    }
-    .avatar-wrap {
-      position: relative;
-      width: 112px; height: 112px;
-    }
-    .avatar {
-      width: 112px; height: 112px; border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid oklch(1 0 0 / 0.8);
-      box-shadow: var(--shadow);
-      background: oklch(0.94 0.02 120);
-    }
-    .avatar-edit {
-      position: absolute; right: 2px; bottom: 2px;
-      width: 36px; height: 36px; border-radius: 50%;
-      background: var(--accent); color: white;
-      display: grid; place-items: center;
-      box-shadow: var(--shadow-sm);
-      overflow: hidden;
-    }
-    .avatar-edit input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
-    .avatar-edit svg { width: 16px; height: 16px; }
-    .about-name {
-      font-family: var(--font-display);
-      font-size: 1.6rem; font-weight: 600;
-      letter-spacing: -0.02em;
-      min-width: 8ch;
-      border-radius: 8px;
-      padding: 4px 8px;
-    }
-    .about-name:hover, .about-name:focus {
-      background: oklch(0.95 0.02 120 / 0.6);
-      outline: none;
-    }
-    .about-bio {
-      width: 100%;
-      max-width: 48ch;
-      margin: 0 auto;
-      padding: 14px 16px;
-      border-radius: var(--radius-sm);
-      border: 1px dashed transparent;
-      color: var(--muted);
-      line-height: 1.7;
-      text-align: left;
-      white-space: pre-wrap;
-    }
-    .about-bio:hover, .about-bio:focus {
-      border-color: var(--border);
-      background: oklch(1 0 0 / 0.4);
-      outline: none;
-      color: var(--fg);
-    }
-    .about-tags {
-      display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
-    }
-    .tag {
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: var(--accent-soft);
-      color: var(--accent);
-      font-size: 0.8rem;
-      font-weight: 550;
-      letter-spacing: 0.02em;
-    }
-    .about-note {
-      font-size: 0.82rem; color: var(--muted); text-align: center;
-    }
+/* ===== 吃药 ===== */
+.medicine-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+}
+.medicine-card {
+    text-align: center;
+    padding: 20px 14px;
+    border-radius: 12px;
+    background: var(--hover-bg);
+    cursor: pointer;
+    transition: var(--transition);
+    border: 2px solid transparent;
+}
+.medicine-card:hover { transform: translateY(-2px); }
+.medicine-card.taken {
+    background: rgba(74,222,128,0.1);
+    border-color: var(--accent-green);
+}
+.medicine-icon { font-size: 36px; margin-bottom: 8px; }
+.medicine-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.medicine-desc { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; }
+.medicine-streak { font-size: 12px; color: var(--accent-orange); }
+.add-medicine {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.add-medicine input {
+    flex: 1;
+    min-width: 140px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: var(--hover-bg);
+    color: var(--text-primary);
+    font-size: 13px;
+    outline: none;
+}
 
-    /* —— Toast —— */
-    .toast-host {
-      position: fixed; left: 50%; bottom: calc(var(--bottom-h) + 28px + env(safe-area-inset-bottom, 0px));
-      transform: translateX(-50%);
-      z-index: 50;
-      display: flex; flex-direction: column; gap: 8px;
-      pointer-events: none; width: min(90vw, 360px);
-    }
-    .toast {
-      padding: 12px 16px;
-      border-radius: 14px;
-      background: oklch(0.25 0.03 145 / 0.92);
-      color: oklch(0.98 0.01 95);
-      font-size: 0.88rem;
-      text-align: center;
-      box-shadow: var(--shadow);
-      animation: toast-in 0.3s var(--ease);
-    }
-    @keyframes toast-in {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: none; }
-    }
+/* ===== 日历 ===== */
+.period-calendar, .study-calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin: 16px 0;
+}
+.cal-header {
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-muted);
+    padding: 6px 0;
+    font-weight: 600;
+}
+.cal-day, .study-cal-day {
+    text-align: center;
+    padding: 8px 4px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: default;
+    min-height: 36px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.cal-day.empty, .study-cal-day.empty { visibility: hidden; }
+.cal-day.today, .study-cal-day.today {
+    border: 2px solid var(--accent-blue);
+    font-weight: 700;
+}
+.cal-day.period {
+    background: rgba(244,114,182,0.2);
+    color: var(--accent-pink);
+    font-weight: 600;
+}
+.cal-day.period-start {
+    background: var(--accent-pink);
+    color: #fff;
+}
+.cal-day.predicted {
+    background: rgba(167,139,250,0.15);
+    color: var(--accent-purple);
+    border: 1px dashed var(--accent-purple);
+}
+.cal-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 8px;
+}
+.cal-nav button {
+    background: var(--hover-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+}
+.cal-month { font-size: 15px; font-weight: 600; }
+.period-info {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 16px;
+}
+.period-info-item { text-align: center; }
+.period-info-value { font-size: 18px; font-weight: 700; color: var(--accent-pink); }
+.period-info-label { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.period-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+.period-form label {
+    display: block;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+}
+.period-form input, .period-form textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: var(--hover-bg);
+    color: var(--text-primary);
+    font-size: 13px;
+    outline: none;
+}
+.period-form textarea { resize: vertical; min-height: 60px; }
 
-    /* —— Inline edit —— */
-    [contenteditable="true"] { cursor: text; }
-    .editable-hint::after {
-      content: "点击编辑";
-      margin-left: 8px;
-      font-size: 0.72rem;
-      color: var(--muted);
-      font-weight: 400;
-      letter-spacing: 0.02em;
-      opacity: 0;
-      transition: opacity 0.2s;
-    }
-    .editable-hint:hover::after { opacity: 1; }
+/* ===== 养生 ===== */
+.health-card {
+    padding: 18px;
+    border-radius: 12px;
+    background: var(--hover-bg);
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: var(--transition);
+    border: 1px solid transparent;
+}
+.health-card:hover { border-color: var(--accent-green); transform: translateY(-1px); }
+.health-tag {
+    display: inline-block;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 10px;
+    background: rgba(74,222,128,0.15);
+    color: var(--accent-green);
+    margin-bottom: 8px;
+}
+.health-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+.health-content { font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
+.health-actions { display: flex; gap: 10px; margin-top: 14px; }
+.btn-favorite, .btn-note {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: var(--hover-bg);
+    color: var(--text-primary);
+    font-size: 13px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+.btn-favorite.active { background: rgba(244,114,182,0.15); border-color: var(--accent-pink); color: var(--accent-pink); }
 
-    /* —— Desktop —— */
-    @media (min-width: 900px) {
-      .app { grid-template-columns: var(--nav-w) 1fr; }
-      .sidebar { display: flex; }
-      .bottom-nav, .fab-music { display: none; }
-      .main { padding: 0; }
-      .toast-host { bottom: 28px; left: calc(50% + var(--nav-w) / 2); }
-      .home {
-        min-height: 100dvh;
-        padding: 48px 56px 64px;
-        justify-content: center;
-      }
-      .home-hero { padding: 40px 36px; max-width: 580px; }
-      .page { padding: 40px 40px 56px; }
-      .field-row { grid-template-columns: 1fr 1fr; }
-      .field-row.three { grid-template-columns: repeat(3, 1fr); }
-      .sport-stats { grid-template-columns: repeat(4, 1fr); }
-      .about-card { padding: 40px; }
-      .about-top { flex-direction: row; text-align: left; align-items: center; gap: 28px; }
-      .about-bio { margin: 0; max-width: none; }
-      .about-tags { justify-content: flex-start; }
-      .about-name-wrap { flex: 1; }
-      .timeline::before { left: 15px; }
-      .sport-card { margin-left: 40px; }
-      .sport-card::before { left: -31px; width: 14px; height: 14px; }
-    }
+/* ===== 备忘录 ===== */
+.memo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 14px;
+}
+.memo-card {
+    background: var(--hover-bg);
+    border-radius: 12px;
+    padding: 18px;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    border: 1px solid transparent;
+}
+.memo-card:hover { border-color: var(--accent-blue); transform: translateY(-2px); }
+.memo-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.memo-card-title { font-size: 14px; font-weight: 600; }
+.memo-card-date { font-size: 11px; color: var(--text-muted); }
+.memo-card-content {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.memo-card-delete {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 18px;
+    cursor: pointer;
+    opacity: 0;
+    transition: var(--transition);
+}
+.memo-card:hover .memo-card-delete { opacity: 1; }
+.memo-card-delete:hover { color: var(--accent-red); }
+.add-memo-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    border: 2px dashed var(--border-color);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: var(--transition);
+    color: var(--text-muted);
+    min-height: 120px;
+}
+.add-memo-btn:hover { border-color: var(--accent-green); color: var(--accent-green); }
+.plus-icon { font-size: 32px; margin-bottom: 6px; }
 
-    @media (min-width: 1200px) {
-      .page { max-width: 880px; }
-    }
+/* ===== 记账 ===== */
+.account-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+.account-tab {
+    padding: 10px 24px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: var(--transition);
+}
+.account-tab.active {
+    background: var(--accent-green);
+    color: #0f172a;
+    border-color: var(--accent-green);
+}
+.account-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr auto;
+    gap: 10px;
+    align-items: center;
+}
+.account-form input, .account-form select {
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: var(--hover-bg);
+    color: var(--text-primary);
+    font-size: 14px;
+    outline: none;
+}
+.account-list { margin-top: 8px; }
+.account-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 14px;
+    border-radius: 10px;
+    margin-bottom: 6px;
+    background: var(--hover-bg);
+}
+.account-item-info { display: flex; align-items: center; gap: 12px; }
+.account-item-icon { font-size: 22px; }
+.account-item-name { font-size: 14px; font-weight: 500; }
+.account-item-category { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.account-item-amount { font-size: 15px; font-weight: 700; }
+.account-item-amount.expense { color: var(--accent-red); }
+.account-item-amount.income { color: var(--accent-green); }
 
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
-  </style>
+/* ===== 存钱 ===== */
+.savings-goal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px 0 20px;
+}
+.savings-circle {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: conic-gradient(var(--accent-yellow) calc(var(--savings-progress) * 1%), var(--hover-bg) 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+}
+.savings-circle-inner {
+    width: 146px;
+    height: 146px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.savings-amount { font-size: 24px; font-weight: 700; color: var(--accent-yellow); }
+.savings-label { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.savings-form {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.savings-form input {
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: var(--hover-bg);
+    color: var(--text-primary);
+    font-size: 14px;
+    outline: none;
+    flex: 1;
+    min-width: 120px;
+}
+.savings-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 14px;
+    border-radius: 8px;
+    margin-bottom: 6px;
+    background: var(--hover-bg);
+}
+.savings-item-date { font-size: 13px; color: var(--text-muted); }
+.savings-item-amount { font-size: 14px; font-weight: 600; color: var(--accent-yellow); }
+
+/* ===== 学习打卡 ===== */
+.study-hero {
+    text-align: center;
+    padding: 30px 20px;
+    background: linear-gradient(135deg, rgba(167,139,250,0.1), rgba(96,165,250,0.1));
+    border-radius: var(--radius-lg);
+    margin-bottom: 20px;
+    border: 1px solid rgba(167,139,250,0.2);
+}
+.study-hero-icon { font-size: 48px; margin-bottom: 10px; }
+.study-hero-title { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+.study-hero-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; }
+.study-input-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.study-input-row input {
+    width: 100px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: var(--hover-bg);
+    color: var(--text-primary);
+    font-size: 16px;
+    text-align: center;
+    outline: none;
+}
+.study-cal-day.studied {
+    background: rgba(167,139,250,0.15);
+    color: var(--accent-purple);
+    font-weight: 600;
+}
+.study-hours {
+    font-size: 9px;
+    color: var(--accent-purple);
+    margin-top: 1px;
+}
+
+/* ===== 复盘 ===== */
+.review-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+}
+.review-card {
+    background: var(--hover-bg);
+    border-radius: var(--radius);
+    padding: 20px;
+    text-align: center;
+}
+.review-card-value { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+.review-card-label { font-size: 12px; color: var(--text-muted); }
+.review-textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 14px;
+    background: var(--hover-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    color: var(--text-primary);
+    font-size: 14px;
+    outline: none;
+    resize: vertical;
+    font-family: inherit;
+    line-height: 1.6;
+    margin-bottom: 4px;
+}
+.review-textarea:focus { border-color: var(--accent-green); }
+
+/* ===== 模态框 ===== */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+.modal-overlay.show { display: flex; }
+.modal {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.modal h3 { font-size: 18px; margin-bottom: 16px; }
+.modal label { font-size: 13px; color: var(--text-muted); display: block; margin: 12px 0 6px; }
+.modal input, .modal textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: var(--hover-bg);
+    color: var(--text-primary);
+    font-size: 14px;
+    outline: none;
+    margin-bottom: 8px;
+}
+.modal textarea { min-height: 100px; resize: vertical; }
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+/* ===== Toast ===== */
+.toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--accent-green);
+    color: #0f172a;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    z-index: 2000;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast.error { background: var(--accent-red); color: #fff; }
+
+/* ===== 健身 ===== */
+.fitness-ring {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+}
+
+/* ===== 响应式 ===== */
+@media (max-width: 768px) {
+    .sidebar { width: 200px; min-width: 200px; }
+    .main-content { padding: 20px 16px; }
+    .account-form { grid-template-columns: 1fr 1fr; }
+    .period-form { grid-template-columns: 1fr; }
+}
+</style>
 </head>
 <body>
-  <!-- Immersive summer backdrop -->
-  <div class="stage" aria-hidden="true" data-od-id="stage">
-    <div class="stage-bg" id="stageBg"></div>
-    <div class="stage-overlay"></div>
-    <div class="light-spots"></div>
-    <div class="leaf-drift"></div>
-  </div>
 
-  <div class="app" data-od-id="app-shell">
-    <!-- Desktop sidebar -->
-    <aside class="sidebar" data-od-id="sidebar" aria-label="主导航">
-      <div class="brand" data-od-id="brand">
-        <div class="brand-mark">芋泥球香柑</div>
-        <div class="brand-sub">夏日手记</div>
-      </div>
-      <nav class="nav-list" id="sideNav">
-        <button type="button" class="nav-item is-active" data-view="home" data-od-id="nav-home">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5z"/></svg>
-          首页
-        </button>
-        <button type="button" class="nav-item" data-view="diary" data-od-id="nav-diary">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 4h10a2 2 0 0 1 2 2v14l-4-2-4 2-4-2-4 2V6a2 2 0 0 1 2-2z"/><path d="M9 8h6M9 12h6"/></svg>
-          个人日记
-        </button>
-        <button type="button" class="nav-item" data-view="sport" data-od-id="nav-sport">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-          运动记录
-        </button>
-        <button type="button" class="nav-item" data-view="about" data-od-id="nav-about">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="9" r="3.5"/><path d="M5.5 19.5c1.2-3.2 3.6-4.8 6.5-4.8s5.3 1.6 6.5 4.8"/></svg>
-          关于我
-        </button>
-      </nav>
-      <div class="music-dock" data-od-id="music-dock">
-        <div class="music-title">背景音乐</div>
-        <div class="music-row">
-          <button type="button" class="music-btn" id="musicToggle" aria-label="播放或暂停音乐" data-od-id="music-toggle">
-            <svg id="iconPlay" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5L8 5.5z"/></svg>
-            <svg id="iconPause" viewBox="0 0 24 24" fill="currentColor" hidden><path d="M7 5h3.5v14H7V5zm6.5 0H17v14h-3.5V5z"/></svg>
-          </button>
-          <div class="music-meta">
-            <div class="music-name">卡农 · Canon in D</div>
-            <div class="music-hint" id="musicHint">轻触播放 · 音量适中</div>
-          </div>
+<aside class="sidebar">
+    <div class="sidebar-header">
+        <h1>🌿 生活助手</h1>
+        <p>你的每日贴心伙伴</p>
+    </div>
+    <nav class="nav-menu" id="navMenu"></nav>
+    <div class="sidebar-footer">
+        <span id="todayDate"></span>
+    </div>
+</aside>
+
+<main class="main-content" id="mainContent"></main>
+
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modalContent"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ========== 全局状态 ==========
+const state = {
+    currentPage: 'daily-plan',
+    currentSubTab: 'routine',
+    routineTodos: [
+        { id: 1, text: '吃早餐', done: false, fixed: true },
+        { id: 2, text: '运动锻炼', done: false, fixed: true },
+        { id: 3, text: '23:00前睡觉', done: false, fixed: true },
+    ],
+    workTodos: [
+        { id: 101, text: '回复客户邮件', done: true, priority: 'high' },
+        { id: 102, text: '完成月度报表', done: false, priority: 'high' },
+        { id: 103, text: '团队周会准备材料', done: false, priority: 'mid' },
+        { id: 104, text: '整理项目文档', done: true, priority: 'low' },
+    ],
+    waterGoal: 1000,
+    waterPerTime: 200,
+    waterTimes: 5,
+    waterInterval: 2,
+    waterHistory: {},
+    periodStart: '',
+    periodEnd: '',
+    periodCycle: 28,
+    periodDuration: 5,
+    periodNotes: {},
+    medicines: [
+        { name: '维生素C', desc: '每日一次，饭后', streak: 5, history: { '2026-07-30': true, '2026-07-29': true, '2026-07-28': true, '2026-07-27': true, '2026-07-26': true } },
+        { name: '钙片', desc: '每日一次，睡前', streak: 3, history: { '2026-07-30': true, '2026-07-29': true, '2026-07-28': true } },
+    ],
+    healthFavorites: ['每天按揉3个"长寿穴"'],
+    healthNotes: '今天试了玫瑰花茶，感觉心情放松了不少。坚持八段锦一周了，肩颈确实舒服很多。',
+    memos: [
+        { title: '周末采购清单', content: '牛奶、鸡蛋、全麦面包、牛油果、鸡胸肉、西兰花、燕麦片', date: '2026-07-28' },
+        { title: '灵感随笔', content: '想做一个个人理财App，核心功能：预算管理+消费分析+存钱挑战。先画个原型试试。', date: '2026-07-29' },
+        { title: '朋友生日提醒', content: '小李8月5号生日，记得提前买礼物🎁', date: '2026-07-30' },
+    ],
+    accounts: [
+        { type: 'expense', amount: 28.5, category: '🍜 餐饮', note: '午餐', date: '2026-07-30' },
+        { type: 'expense', amount: 6, category: '🚌 交通', note: '地铁', date: '2026-07-30' },
+        { type: 'expense', amount: 89.9, category: '🛒 购物', note: '网购书籍', date: '2026-07-29' },
+        { type: 'expense', amount: 45, category: '🍜 餐饮', note: '晚餐', date: '2026-07-29' },
+        { type: 'expense', amount: 15, category: '📱 通讯', note: '话费充值', date: '2026-07-28' },
+        { type: 'income', amount: 8500, category: '💼 工资', note: '7月工资', date: '2026-07-25' },
+        { type: 'income', amount: 200, category: '💰 兼职', note: '设计接单', date: '2026-07-22' },
+    ],
+    accountType: 'expense',
+    savingsGoal: 10000,
+    savingsCurrent: 3200,
+    savingsHistory: [
+        { amount: 1000, date: '2026-07-05' },
+        { amount: 800, date: '2026-07-12' },
+        { amount: 600, date: '2026-07-19' },
+        { amount: 500, date: '2026-07-26' },
+        { amount: 300, date: '2026-07-30' },
+    ],
+    fitnessWeek: {
+        '2026-07-24': true,
+        '2026-07-25': true,
+        '2026-07-26': true,
+        '2026-07-28': true,
+        '2026-07-30': true,
+    },
+    fitnessStreak: 2,
+    fitnessTotal: 15,
+    fitnessRecords: [
+        { content: '跑步30分钟 + 深蹲50个 + 平板支撑3组', date: '2026-07-30' },
+        { content: '瑜伽拉伸20分钟 + 哑铃训练', date: '2026-07-28' },
+        { content: '户外快走5公里', date: '2026-07-26' },
+    ],
+    studyRecords: {
+        '2026-07-28': 2.5,
+        '2026-07-29': 1.5,
+        '2026-07-30': 3,
+    },
+    reviews: {
+        '2026-07': {
+            summary: '这个月整体节奏不错，工作按时完成，健身坚持了15天，存钱也达到了32%。学习上投入时间还不够，下月要增加到每天2小时。',
+            achievements: '✅ 完成季度项目交付\n✅ 坚持健身15天\n✅ 读完2本书\n✅ 存钱达3200元\n✅ 养成早起习惯',
+            improvements: '⚠️ 学习时间不稳定，有几天完全没碰\n⚠️ 记账有几天漏记\n⚠️ 晚睡情况出现3次\n⚠️ 零食消费超预算',
+            nextMonth: '🎯 每天至少学AI 2小时\n🎯 健身目标20天\n🎯 存钱再存3000\n🎯 早睡达标率90%\n🎯 读完3本书',
+        }
+    },
+};
+
+// ========== 导航配置 ==========
+const navItems = [
+    { id: 'daily-plan', icon: '📋', text: '每日计划' },
+    { id: 'health', icon: '☕', text: '养生知识' },
+    { id: 'memo', icon: '📝', text: '备忘录' },
+    { id: 'fitness', icon: '💪', text: '健身打卡' },
+    { id: 'savings', icon: '💰', text: '存钱计划' },
+    { id: 'account', icon: '🧾', text: '每日记账' },
+    { id: 'review', icon: '✍️', text: '月计划复盘' },
+    { id: 'study', icon: '🎓', text: 'AI学习打卡' },
+];
+
+// ========== 养生知识库 ==========
+const healthKnowledge = [
+    { type: 'text', tag: '💧 饮水养生', title: '每天第一杯水的正确喝法', content: '清晨起床后空腹喝一杯温水（约200-300ml），水温以接近体温为宜（35-40°C）。这能唤醒肠胃、促进代谢、稀释血液黏稠度。避免冰水或过烫的水。建议小口慢饮，而非一次性灌入。坚持30天，你会发现皮肤状态和排便都有明显改善。' },
+    { type: 'text', tag: '🥗 饮食养生', title: '五谷为养：杂粮搭配公式', content: '《黄帝内经》云："五谷为养，五果为助，五畜为益，五菜为充"。推荐每日主食中杂粮占1/3：\n• 红豆+薏米 → 祛湿\n• 黑米+黑豆 → 补肾\n• 燕麦+小米 → 养胃\n• 绿豆+百合 → 清心\n每周轮换搭配，营养均衡不易腻。' },
+    { type: 'text', tag: '🌙 睡眠养生', title: '子午觉的黄金法则', content: '子时（23:00-1:00）胆经当令，午时（11:00-13:00）心经当令。\n• 晚上23点前入睡，保证胆气生发\n• 中午小憩15-20分钟，养心护神\n• 睡前1小时远离手机蓝光\n• 卧室温度保持18-22°C最佳\n坚持"子午觉"，比任何补品都管用。' },
+    { type: 'text', tag: '🧘 运动养生', title: '八段锦：8分钟通全身经络', content: '八段锦是我国传统养生功法，动作柔和缓慢，适合各年龄段：\n1. 双手托天理三焦\n2. 左右开弓似射雕\n3. 调理脾胃须单举\n4. 五劳七伤往后瞧\n5. 摇头摆尾去心火\n6. 两手攀足固肾腰\n7. 攒拳怒目增气力\n8. 背后七颠百病消\n每天早晨练习一遍，约8分钟，疏通经络效果显著。' },
+    { type: 'text', tag: '🍵 茶饮养生', title: '二十四节气茶饮指南', content: '春饮花茶疏肝：玫瑰花3g + 茉莉花2g\n夏饮绿茶清热：龙井/碧螺春 + 菊花2朵\n秋饮乌龙润燥：铁观音 + 麦冬3g\n冬饮红茶温阳：正山小种 + 桂圆2颗\n每日饮茶量控制在3-5g干茶，饭后半小时饮用最佳。忌空腹饮浓茶。' },
+    { type: 'text', tag: '🦶 穴位养生', title: '每天按揉3个"长寿穴"', content: '① 足三里（膝盖下3寸）：健脾和胃，被称为"长寿第一穴"，每天按揉3分钟\n② 涌泉穴（脚底前1/3凹陷处）：补肾益精，睡前搓脚心100次\n③ 合谷穴（虎口处）：缓解头痛、牙痛，提神醒脑\n每个穴位按揉3-5分钟，以酸胀感为宜，贵在坚持。' },
+    { type: 'video', tag: '🎬 视频推荐', title: '【视频】10分钟晨间拉伸完整版', content: '跟着专业瑜伽老师做一套10分钟的晨间拉伸，唤醒全身肌肉，改善体态，缓解久坐带来的腰背酸痛。适合零基础入门。' },
+    { type: 'video', tag: '🎬 视频推荐', title: '【视频】中医教你四季养生要点', content: '三甲医院中医科主任讲解春生、夏长、秋收、冬藏的养生核心原则，结合现代人的生活习惯给出实用建议。' },
+    { type: 'text', tag: '🍎 水果养生', title: '应季水果时间表', content: '春：草莓、樱桃、桑葚 → 养肝补血\n夏：西瓜、桃子、荔枝 → 生津解暑\n秋：梨、葡萄、石榴 → 润肺生津\n冬：橙子、柚子、苹果 → 健脾温胃\n应季水果营养最高、农药最少、价格最实惠。每天200-350g为宜。' },
+    { type: 'text', tag: '🧠 情志养生', title: '情绪管理：七情六欲的平衡', content: '中医认为"怒伤肝、喜伤心、思伤脾、忧伤肺、恐伤肾"。\n• 遇到愤怒：深呼吸6次，默数到10\n• 过度思虑：起身走动，换个环境\n• 焦虑不安：写下来，把模糊的担心变成具体的待办\n• 睡前冥想5分钟：关注呼吸，放空大脑\n情绪稳定是最好的养生。' },
+];
+
+// ========== 工具函数 ==========
+function $(id) { return document.getElementById(id); }
+function today() { return new Date().toISOString().slice(0,10); }
+function todayDisplay() { return new Date().toLocaleDateString('zh-CN', { year:'numeric', month:'long', day:'numeric', weekday:'long' }); }
+
+function showToast(msg, type) {
+    const t = $('toast');
+    t.textContent = msg;
+    t.className = 'toast show' + (type === 'error' ? ' error' : '');
+    setTimeout(() => { t.className = 'toast'; }, 2500);
+}
+
+function formatMoney(n) {
+    return Number(n).toLocaleString('zh-CN', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+}
+
+function escapeHtml(s) {
+    const d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+}
+
+// ========== localStorage 持久化 ==========
+const STORAGE_KEY = 'lifeAssistantState_v1';
+
+function loadState() {
+    try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+            const parsed = JSON.parse(saved);
+            Object.assign(state, parsed);
+        }
+    } catch(e) { /* 忽略 */ }
+}
+
+function saveState() {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch(e) { /* 忽略 */ }
+}
+
+// ========== 导航渲染 ==========
+function renderNav() {
+    const menu = $('navMenu');
+    menu.innerHTML = navItems.map(item => `
+        <div class="nav-item ${state.currentPage === item.id ? 'active' : ''}" data-id="${item.id}">
+            <span class="nav-icon">${item.icon}</span>
+            <span class="nav-text">${item.text}</span>
         </div>
-      </div>
-    </aside>
+    `).join('');
 
-    <main class="main" id="main" data-od-id="main">
-      <!-- HOME -->
-      <section class="view is-active home" id="view-home" data-od-id="view-home" aria-label="首页">
-        <div class="home-hero" data-od-id="home-hero">
-          <div class="eyebrow">Summer Notes</div>
-          <h1 class="home-title" data-od-id="home-title">芋泥球香柑</h1>
-          <p class="home-sign" data-od-id="home-sign">阳光穿过树叶的日子里，把小事记下来，把脚步也留下。</p>
-          <div class="home-actions">
-            <button type="button" class="btn btn-primary" data-go="diary" data-od-id="cta-diary">写一篇日记</button>
-            <button type="button" class="btn btn-ghost" data-go="sport" data-od-id="cta-sport">记录运动</button>
-          </div>
+    menu.querySelectorAll('.nav-item').forEach(el => {
+        el.addEventListener('click', () => switchPage(el.dataset.id));
+    });
+
+    $('todayDate').textContent = todayDisplay();
+}
+
+function switchPage(pageId) {
+    state.currentPage = pageId;
+    renderNav();
+    renderPage();
+}
+
+// ========== 页面渲染分发 ==========
+function renderPage() {
+    const main = $('mainContent');
+    switch(state.currentPage) {
+        case 'daily-plan': renderDailyPlan(main); break;
+        case 'health': renderHealth(main); break;
+        case 'memo': renderMemo(main); break;
+        case 'fitness': renderFitness(main); break;
+        case 'savings': renderSavings(main); break;
+        case 'account': renderAccount(main); break;
+        case 'review': renderReview(main); break;
+        case 'study': renderStudy(main); break;
+    }
+    saveState();
+}
+
+// ========== 每日计划 ==========
+function renderDailyPlan(container) {
+    container.innerHTML = `
+        <div class="page-header">
+            <h2>📋 每日计划</h2>
+            <p>规划每一天，让生活更有条理</p>
         </div>
-      </section>
-
-      <!-- DIARY -->
-      <section class="view page" id="view-diary" data-od-id="view-diary" aria-label="个人日记" hidden>
-        <header class="page-head">
-          <div>
-            <h2 class="page-title" data-od-id="diary-title">个人日记</h2>
-            <p class="page-desc">像备忘录一样点开就能写，图片与短视频可本地预览。</p>
-          </div>
-          <button type="button" class="btn btn-primary" id="diaryNewBtn" data-od-id="diary-new">新建日记</button>
-        </header>
-
-        <div class="card composer" id="diaryComposer" hidden data-od-id="diary-composer">
-          <div class="composer-head">
-            <div class="composer-title" id="diaryComposerTitle">新日记</div>
-            <button type="button" class="btn-icon" id="diaryComposerClose" aria-label="收起编辑">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 6l12 12M18 6L6 18"/></svg>
-            </button>
-          </div>
-          <div class="composer-grid">
-            <div class="field-row">
-              <div class="field">
-                <label for="diaryDate">日期</label>
-                <input type="date" id="diaryDate" />
-              </div>
-              <div class="field">
-                <label for="diaryTitle">标题</label>
-                <input type="text" id="diaryTitle" placeholder="今天的小标题" maxlength="80" />
-              </div>
-            </div>
-            <div class="field">
-              <label for="diaryBody">正文</label>
-              <textarea id="diaryBody" placeholder="写点什么… 阳光、风、或一句随想"></textarea>
-            </div>
-            <div class="media-row">
-              <label class="btn btn-ghost btn-sm file-btn">
-                添加图片
-                <input type="file" id="diaryImages" accept="image/*" multiple />
-              </label>
-              <label class="btn btn-ghost btn-sm file-btn">
-                添加短视频
-                <input type="file" id="diaryVideos" accept="video/*" multiple />
-              </label>
-            </div>
-            <div class="previews" id="diaryPreviews"></div>
-            <div class="composer-actions">
-              <button type="button" class="btn btn-ghost" id="diaryCancel">取消</button>
-              <button type="button" class="btn btn-primary" id="diarySave" data-od-id="diary-save">保存</button>
-            </div>
-          </div>
+        <div class="sub-tabs">
+            <button class="sub-tab ${state.currentSubTab==='routine'?'active':''}" data-tab="routine">🏠 日常计划</button>
+            <button class="sub-tab ${state.currentSubTab==='work'?'active':''}" data-tab="work">💼 工作计划</button>
+            <button class="sub-tab ${state.currentSubTab==='water'?'active':''}" data-tab="water">💧 喝水提醒</button>
+            <button class="sub-tab ${state.currentSubTab==='period'?'active':''}" data-tab="period">🌸 月经记录</button>
+            <button class="sub-tab ${state.currentSubTab==='medicine'?'active':''}" data-tab="medicine">💊 吃药打卡</button>
         </div>
+        <div class="sub-panel ${state.currentSubTab==='routine'?'active':''}">${renderRoutine()}</div>
+        <div class="sub-panel ${state.currentSubTab==='work'?'active':''}">${renderWork()}</div>
+        <div class="sub-panel ${state.currentSubTab==='water'?'active':''}">${renderWater()}</div>
+        <div class="sub-panel ${state.currentSubTab==='period'?'active':''}">${renderPeriod()}</div>
+        <div class="sub-panel ${state.currentSubTab==='medicine'?'active':''}">${renderMedicine()}</div>
+    `;
 
-        <div class="list" id="diaryList" data-od-id="diary-list"></div>
-      </section>
+    container.querySelectorAll('.sub-tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+            state.currentSubTab = btn.dataset.tab;
+            renderPage();
+        });
+    });
+}
 
-      <!-- SPORT -->
-      <section class="view page" id="view-sport" data-od-id="view-sport" aria-label="运动记录" hidden>
-        <header class="page-head">
-          <div>
-            <h2 class="page-title" data-od-id="sport-title">运动记录</h2>
-            <p class="page-desc">日期、类型、时长、距离、配速与心情，一笔写清。</p>
-          </div>
-          <button type="button" class="btn btn-primary" id="sportNewBtn" data-od-id="sport-new">添加记录</button>
-        </header>
+// --- 日常计划 ---
+function renderRoutine() {
+    const total = state.routineTodos.length;
+    const done = state.routineTodos.filter(t => t.done).length;
+    const pct = total ? Math.round(done/total*100) : 0;
 
-        <div class="card composer" id="sportComposer" hidden data-od-id="sport-composer">
-          <div class="composer-head">
-            <div class="composer-title" id="sportComposerTitle">新运动</div>
-            <button type="button" class="btn-icon" id="sportComposerClose" aria-label="收起编辑">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 6l12 12M18 6L6 18"/></svg>
-            </button>
-          </div>
-          <div class="composer-grid">
-            <div class="field-row">
-              <div class="field">
-                <label for="sportDate">日期</label>
-                <input type="date" id="sportDate" />
-              </div>
-              <div class="field">
-                <label for="sportType">运动类型</label>
-                <select id="sportType">
-                  <option value="跑步">跑步</option>
-                  <option value="骑行">骑行</option>
-                  <option value="步行">步行</option>
-                  <option value="游泳">游泳</option>
-                  <option value="力量训练">力量训练</option>
-                  <option value="瑜伽">瑜伽</option>
-                  <option value="球类">球类</option>
-                  <option value="其他">其他</option>
+    return `
+        <div class="card">
+            <div class="card-title">🏠 日常计划 <span style="font-size:12px;color:var(--text-muted);margin-left:auto;">${done}/${total} 已完成</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+            ${state.routineTodos.map(t => `
+                <div class="todo-item ${t.done?'completed':''}">
+                    <div class="todo-checkbox ${t.done?'checked':''}" onclick="toggleRoutine(${t.id})"></div>
+                    <span class="todo-text">${t.text}${t.fixed?' 🔒':''}</span>
+                    ${t.fixed?'':`<button class="todo-delete" onclick="deleteRoutine(${t.id})">×</button>`}
+                </div>
+            `).join('')}
+            <div class="add-todo-row">
+                <input type="text" id="newRoutineInput" placeholder="添加自定义待办..." onkeydown="if(event.key==='Enter')addRoutine()">
+                <button class="btn-add" onclick="addRoutine()">➕ 添加</button>
+            </div>
+        </div>
+    `;
+}
+
+function toggleRoutine(id) {
+    const t = state.routineTodos.find(x => x.id === id);
+    if (t) { t.done = !t.done; renderPage(); }
+}
+
+function addRoutine() {
+    const input = $('newRoutineInput');
+    const text = input.value.trim();
+    if (!text) return showToast('请输入待办内容', 'error');
+    state.routineTodos.push({ id: Date.now(), text, done: false, fixed: false });
+    input.value = '';
+    renderPage();
+    showToast('已添加待办 ✅');
+}
+
+function deleteRoutine(id) {
+    state.routineTodos = state.routineTodos.filter(t => t.id !== id);
+    renderPage();
+}
+
+// --- 工作计划 ---
+function renderWork() {
+    const total = state.workTodos.length;
+    const done = state.workTodos.filter(t => t.done).length;
+    const pct = total ? Math.round(done/total*100) : 0;
+
+    return `
+        <div class="card">
+            <div class="card-title">💼 工作计划 <span style="font-size:12px;color:var(--text-muted);margin-left:auto;">${done}/${total} 已完成</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+            ${state.workTodos.length === 0 ? '<p style="color:var(--text-muted);text-align:center;padding:20px;">暂无工作事项，添加你的第一个任务吧 ✨</p>' : ''}
+            ${state.workTodos.map(t => `
+                <div class="todo-item ${t.done?'completed':''}">
+                    <div class="todo-checkbox ${t.done?'checked':''}" onclick="toggleWork(${t.id})"></div>
+                    <span class="todo-text">${t.text}</span>
+                    <span class="todo-priority priority-${t.priority||'low'}">${{high:'高',mid:'中',low:'低'}[t.priority||'low']}</span>
+                    <button class="todo-delete" onclick="deleteWork(${t.id})">×</button>
+                </div>
+            `).join('')}
+            <div class="add-todo-row">
+                <input type="text" id="newWorkInput" placeholder="输入工作事项..." onkeydown="if(event.key==='Enter')addWork()">
+                <select id="newWorkPriority">
+                    <option value="high">高优先级</option>
+                    <option value="mid" selected>中优先级</option>
+                    <option value="low">低优先级</option>
                 </select>
-              </div>
+                <button class="btn-add" onclick="addWork()">➕ 添加</button>
             </div>
-            <div class="field-row three">
-              <div class="field">
-                <label for="sportDuration">时长（分钟）</label>
-                <input type="number" id="sportDuration" min="0" step="1" placeholder="30" />
-              </div>
-              <div class="field">
-                <label for="sportDistance">距离（公里）</label>
-                <input type="number" id="sportDistance" min="0" step="0.01" placeholder="5.0" />
-              </div>
-              <div class="field">
-                <label for="sportPace">配速</label>
-                <input type="text" id="sportPace" placeholder="例如 5'40&quot;/km" />
-              </div>
-            </div>
-            <div class="field">
-              <label for="sportMood">心情评分</label>
-              <div class="range-wrap">
-                <input type="range" id="sportMood" min="1" max="5" step="1" value="4" />
-                <span class="range-val" id="sportMoodVal">4</span>
-              </div>
-            </div>
-            <div class="field">
-              <label for="sportNote">备注</label>
-              <textarea id="sportNote" placeholder="今天的状态、路线或感受（可选）"></textarea>
-            </div>
-            <div class="media-row">
-              <label class="btn btn-ghost btn-sm file-btn">
-                截图 / 照片
-                <input type="file" id="sportImages" accept="image/*" multiple />
-              </label>
-              <label class="btn btn-ghost btn-sm file-btn">
-                视频
-                <input type="file" id="sportVideos" accept="video/*" multiple />
-              </label>
-            </div>
-            <div class="previews" id="sportPreviews"></div>
-            <div class="composer-actions">
-              <button type="button" class="btn btn-ghost" id="sportCancel">取消</button>
-              <button type="button" class="btn btn-primary" id="sportSave" data-od-id="sport-save">保存</button>
-            </div>
-          </div>
         </div>
+    `;
+}
 
-        <div class="timeline" id="sportList" data-od-id="sport-list"></div>
-      </section>
+function toggleWork(id) {
+    const t = state.workTodos.find(x => x.id === id);
+    if (t) { t.done = !t.done; renderPage(); }
+}
 
-      <!-- ABOUT -->
-      <section class="view page" id="view-about" data-od-id="view-about" aria-label="关于我" hidden>
-        <header class="page-head">
-          <div>
-            <h2 class="page-title" data-od-id="about-title">关于我</h2>
-            <p class="page-desc">点击姓名或简介即可编辑，头像可本地更换。</p>
-          </div>
-        </header>
-        <div class="card about-card" data-od-id="about-card">
-          <div class="about-top">
-            <div class="avatar-wrap">
-              <img class="avatar" id="aboutAvatar" src="assets/avatar.jpg" alt="头像" data-od-id="about-avatar" />
-              <label class="avatar-edit" title="更换头像">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 17.5V20h2.5L18 8.5 15.5 6 4 17.5z"/><path d="M13.5 7.5l3 3"/></svg>
-                <input type="file" id="aboutAvatarInput" accept="image/*" />
-              </label>
+function addWork() {
+    const input = $('newWorkInput');
+    const prio = $('newWorkPriority');
+    const text = input.value.trim();
+    if (!text) return showToast('请输入工作内容', 'error');
+    state.workTodos.push({ id: Date.now(), text, done: false, priority: prio.value });
+    input.value = '';
+    renderPage();
+    showToast('已添加工作事项 ✅');
+}
+
+function deleteWork(id) {
+    state.workTodos = state.workTodos.filter(t => t.id !== id);
+    renderPage();
+}
+
+// --- 喝水提醒 ---
+function renderWater() {
+    const todayKey = today();
+    const done = state.waterHistory[todayKey] || 0;
+    const consumed = done * state.waterPerTime;
+    const remaining = Math.max(0, state.waterGoal - consumed);
+    const pct = Math.min(100, Math.round(consumed / state.waterGoal * 100));
+
+    const times = [];
+    for (let i = 0; i < state.waterTimes; i++) {
+        const hour = 8 + i * state.waterInterval;
+        times.push({ idx: i, time: String(hour).padStart(2,'0') + ':00', done: i < done });
+    }
+
+    return `
+        <div class="card">
+            <div class="card-title">💧 喝水提醒（目标 ${state.waterGoal}ml）</div>
+            <div class="water-progress">
+                <div class="water-circle" style="--progress:${pct}">
+                    <div class="water-circle-inner">
+                        <div class="water-amount">${consumed}ml</div>
+                        <div class="water-label">/ ${state.waterGoal}ml</div>
+                    </div>
+                </div>
             </div>
-            <div class="about-name-wrap">
-              <div
-                class="about-name editable-hint"
-                id="aboutName"
-                contenteditable="true"
-                spellcheck="false"
-                data-od-id="about-name"
-                role="textbox"
-                aria-label="姓名"
-              >芋泥球香柑</div>
-              <div class="about-tags" id="aboutTags" data-od-id="about-tags">
-                <span class="tag">夏日观察者</span>
-                <span class="tag">慢跑</span>
-                <span class="tag">手帐</span>
-              </div>
+            <div class="water-stats">
+                <div class="water-stat">
+                    <div class="water-stat-value" style="color:var(--accent-green);">${done}</div>
+                    <div class="water-stat-label">已完成次数</div>
+                </div>
+                <div class="water-stat">
+                    <div class="water-stat-value" style="color:var(--accent-blue);">${consumed}ml</div>
+                    <div class="water-stat-label">已饮水量</div>
+                </div>
+                <div class="water-stat">
+                    <div class="water-stat-value" style="color:var(--accent-orange);">${remaining}ml</div>
+                    <div class="water-stat-label">剩余</div>
+                </div>
             </div>
-          </div>
-          <div
-            class="about-bio"
-            id="aboutBio"
-            contenteditable="true"
-            spellcheck="false"
-            data-od-id="about-bio"
-            role="textbox"
-            aria-label="自我介绍"
-          >喜欢在树荫下散步，把阳光、风声和脚步记进本子里。这里是我的夏日手记：日记、运动，以及一点点关于我。</div>
-          <p class="about-note">数据保存在本机浏览器 localStorage，可离线使用。</p>
+            <div class="water-list">
+                ${times.map(t => `
+                    <div class="water-item ${t.done?'done':''}" onclick="drinkWater(${t.idx})">
+                        <div class="water-cup-icon">${t.done?'🥤':'🥛'}</div>
+                        <div class="water-time">${t.time}</div>
+                        <div class="water-ml">${state.waterPerTime}ml</div>
+                    </div>
+                `).join('')}
+            </div>
         </div>
-      </section>
-    </main>
-  </div>
+        <div class="card">
+            <div class="card-title">📅 喝水历史（最近7天）</div>
+            ${renderWaterHistory()}
+        </div>
+    `;
+}
 
-  <!-- Mobile bottom nav -->
-  <nav class="bottom-nav" id="bottomNav" aria-label="底部导航" data-od-id="bottom-nav">
-    <button type="button" class="nav-item is-active" data-view="home">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5z"/></svg>
-      首页
-    </button>
-    <button type="button" class="nav-item" data-view="diary">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 4h10a2 2 0 0 1 2 2v14l-4-2-4 2-4-2-4 2V6a2 2 0 0 1 2-2z"/><path d="M9 8h6M9 12h6"/></svg>
-      日记
-    </button>
-    <button type="button" class="nav-item" data-view="sport">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-      运动
-    </button>
-    <button type="button" class="nav-item" data-view="about">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="9" r="3.5"/><path d="M5.5 19.5c1.2-3.2 3.6-4.8 6.5-4.8s5.3 1.6 6.5 4.8"/></svg>
-      我
-    </button>
-  </nav>
+function renderWaterHistory() {
+    const days = [];
+    for (let i = 6; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        const key = d.toISOString().slice(0,10);
+        const count = state.waterHistory[key] || 0;
+        days.push({ date: (d.getMonth()+1) + '/' + d.getDate(), count });
+    }
+    const max = Math.max(...days.map(d => d.count), 1);
+    return `
+        <div style="display:flex;align-items:flex-end;gap:12px;height:100px;padding:10px 0;">
+            ${days.map(d => `
+                <div style="flex:1;text-align:center;">
+                    <div style="height:${d.count/max*80}px;background:${d.count>0?'var(--accent-blue)':'var(--hover-bg)'};border-radius:6px 6px 0 0;min-height:4px;transition:all 0.3s;"></div>
+                    <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">${d.date}</div>
+                    <div style="font-size:12px;color:var(--accent-blue);font-weight:600;">${d.count}×</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
 
-  <button type="button" class="fab-music" id="fabMusic" aria-label="播放或静音背景音乐" data-od-id="fab-music">
-    <svg id="fabIconPlay" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5L8 5.5z"/></svg>
-    <svg id="fabIconPause" viewBox="0 0 24 24" fill="currentColor" hidden><path d="M7 5h3.5v14H7V5zm6.5 0H17v14h-3.5V5z"/></svg>
-  </button>
+function drinkWater(idx) {
+    const todayKey = today();
+    const current = state.waterHistory[todayKey] || 0;
+    if (idx <= current) {
+        state.waterHistory[todayKey] = Math.max(0, current - 1);
+    } else {
+        state.waterHistory[todayKey] = idx + 1;
+    }
+    renderPage();
+}
 
-  <div class="toast-host" id="toastHost" aria-live="polite"></div>
+// --- 月经记录 ---
+let calOffset = 0;
 
-  <!--
-    音频：优先使用本地 assets/canon-in-d.mp3（卡农）。
-    若浏览器自动播放被拦截，会显示提示，用户点击播放按钮即可。
-    预留后端接口位置：见 window.API 占位对象。
-  -->
-  <audio id="bgm" loop preload="auto" playsinline>
-    <source src="assets/canon-in-d.mp3" type="audio/mpeg" />
-    <source src="assets/ambient.mp3" type="audio/mpeg" />
-  </audio>
+function renderPeriod() {
+    const todayDate = new Date();
+    const year = todayDate.getFullYear();
+    const month = todayDate.getMonth() + calOffset;
+    const displayYear = new Date(year, month, 1).getFullYear();
+    const displayMonth = new Date(year, month, 1).getMonth();
+    const daysInMonth = new Date(displayYear, displayMonth + 1, 0).getDate();
+    const firstDay = new Date(displayYear, displayMonth, 1).getDay();
 
-  <script>
-  (function () {
-    "use strict";
+    const periodDays = getPeriodDays();
+    const predictedDays = getPredictedPeriodDays();
 
-    /* ========== 预留后端接口位置 ========== */
-    const API = {
-      baseUrl: null, // 例如 "https://api.example.com"
-      async sync() {
-        // 若配置 baseUrl，可在此把 diary/sport/profile 同步到服务器
-        if (!this.baseUrl) return;
-      },
+    let calendar = '';
+    ['日','一','二','三','四','五','六'].forEach(d => {
+        calendar += `<div class="cal-header">${d}</div>`;
+    });
+    for (let i = 0; i < firstDay; i++) calendar += '<div class="cal-day empty"></div>';
+    for (let d = 1; d <= daysInMonth; d++) {
+        const dateStr = `${displayYear}-${String(displayMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+        let cls = 'cal-day';
+        if (dateStr === today()) cls += ' today';
+        if (periodDays.includes(dateStr)) cls += ' period';
+        if (state.periodStart === dateStr) cls += ' period-start';
+        if (predictedDays.includes(dateStr) && !periodDays.includes(dateStr)) cls += ' predicted';
+        calendar += `<div class="${cls}" onclick="setPeriodDate('${dateStr}')">${d}</div>`;
+    }
+
+    let nextPeriod = '未设置';
+    if (state.periodStart) {
+        const next = new Date(state.periodStart);
+        next.setDate(next.getDate() + state.periodCycle);
+        nextPeriod = next.toLocaleDateString('zh-CN', {month:'short', day:'numeric'});
+    }
+
+    return `
+        <div class="card">
+            <div class="card-title">🌸 经期记录</div>
+            <div class="cal-nav">
+                <button onclick="prevMonth()">◀</button>
+                <span class="cal-month">${displayYear}年${displayMonth+1}月</span>
+                <button onclick="nextMonth()">▶</button>
+            </div>
+            <div class="period-calendar">${calendar}</div>
+            <div class="period-info">
+                <div class="period-info-item">
+                    <div class="period-info-value">${nextPeriod}</div>
+                    <div class="period-info-label">预估下次经期</div>
+                </div>
+                <div class="period-info-item">
+                    <div class="period-info-value">${state.periodCycle}天</div>
+                    <div class="period-info-label">周期长度</div>
+                </div>
+                <div class="period-info-item">
+                    <div class="period-info-value">${state.periodDuration}天</div>
+                    <div class="period-info-label">经期天数</div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title">📝 设置经期信息</div>
+            <div class="period-form">
+                <div>
+                    <label>开始日期</label>
+                    <input type="date" id="periodStartInput" value="${state.periodStart}">
+                </div>
+                <div>
+                    <label>结束日期</label>
+                    <input type="date" id="periodEndInput" value="${state.periodEnd}">
+                </div>
+                <div>
+                    <label>周期（天）</label>
+                    <input type="number" id="periodCycleInput" value="${state.periodCycle}" min="20" max="45">
+                </div>
+                <div>
+                    <label>经期天数</label>
+                    <input type="number" id="periodDurationInput" value="${state.periodDuration}" min="2" max="10">
+                </div>
+                <div style="grid-column:1/-1;">
+                    <label>今日备注（身体感受等）</label>
+                    <textarea id="periodNoteInput" placeholder="例：腰酸、腹痛、心情烦躁...">${state.periodNotes[today()]||''}</textarea>
+                </div>
+            </div>
+            <button class="btn-add" onclick="savePeriodInfo()">💾 保存信息</button>
+        </div>
+    `;
+}
+
+function prevMonth() { calOffset--; renderPage(); }
+function nextMonth() { calOffset++; renderPage(); }
+
+function getPeriodDays() {
+    if (!state.periodStart || !state.periodEnd) return [];
+    const start = new Date(state.periodStart);
+    const end = new Date(state.periodEnd);
+    const days = [];
+    for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+        days.push(d.toISOString().slice(0,10));
+    }
+    return days;
+}
+
+function getPredictedPeriodDays() {
+    if (!state.periodStart) return [];
+    const predictions = [];
+    for (let offset = 1; offset <= 3; offset++) {
+        const start = new Date(state.periodStart);
+        start.setDate(start.getDate() + state.periodCycle * offset);
+        for (let i = 0; i < state.periodDuration; i++) {
+            const d = new Date(start);
+            d.setDate(d.getDate() + i);
+            predictions.push(d.toISOString().slice(0,10));
+        }
+    }
+    return predictions;
+}
+
+function setPeriodDate(date) {
+    if (!state.periodStart || state.periodEnd) {
+        state.periodStart = date;
+        state.periodEnd = '';
+        showToast('已设置经期开始日，请再选择结束日');
+    } else {
+        state.periodEnd = date;
+        showToast('经期记录已更新 ✅');
+    }
+    renderPage();
+}
+
+function savePeriodInfo() {
+    state.periodStart = $('periodStartInput').value;
+    state.periodEnd = $('periodEndInput').value;
+    state.periodCycle = parseInt($('periodCycleInput').value) || 28;
+    state.periodDuration = parseInt($('periodDurationInput').value) || 5;
+    const note = $('periodNoteInput').value.trim();
+    if (note) state.periodNotes[today()] = note;
+    renderPage();
+    showToast('经期信息已保存 ✅');
+}
+
+// --- 吃药打卡 ---
+function renderMedicine() {
+    const todayKey = today();
+    return `
+        <div class="card">
+            <div class="card-title">💊 吃药打卡</div>
+            <div class="medicine-grid">
+                ${state.medicines.length === 0 ? '<p style="color:var(--text-muted);grid-column:1/-1;text-align:center;padding:20px;">还没有添加药品，点击下方添加</p>' : ''}
+                ${state.medicines.map((m, i) => {
+                    const taken = m.history && m.history[todayKey];
+                    return `
+                    <div class="medicine-card ${taken?'taken':''}" onclick="toggleMedicine(${i})">
+                        <div class="medicine-icon">${taken?'💊':'🔵'}</div>
+                        <div class="medicine-name">${m.name}</div>
+                        <div class="medicine-desc">${m.desc||'每日一次'}</div>
+                        <div class="medicine-streak">🔥 连续 ${m.streak||0} 天</div>
+                    </div>
+                    `;
+                }).join('')}
+            </div>
+            <div class="add-medicine">
+                <input type="text" id="newMedInput" placeholder="输入药品名称..." onkeydown="if(event.key==='Enter')addMedicine()">
+                <input type="text" id="newMedDesc" placeholder="备注（选填）" onkeydown="if(event.key==='Enter')addMedicine()">
+                <button class="btn-add" onclick="addMedicine()">➕ 添加药品</button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title">📅 打卡日历</div>
+            ${renderMedicineCalendar()}
+        </div>
+    `;
+}
+
+function renderMedicineCalendar() {
+    const todayDate = new Date();
+    const year = todayDate.getFullYear();
+    const month = todayDate.getMonth();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const firstDay = new Date(year, month, 1).getDay();
+
+    let html = '<div class="period-calendar">';
+    ['日','一','二','三','四','五','六'].forEach(d => {
+        html += `<div class="cal-header">${d}</div>`;
+    });
+    for (let i = 0; i < firstDay; i++) html += '<div class="cal-day empty"></div>';
+    for (let d = 1; d <= daysInMonth; d++) {
+        const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+        const allTaken = state.medicines.length > 0 && state.medicines.every(m => m.history && m.history[dateStr]);
+        let cls = 'cal-day' + (allTaken ? ' period' : '');
+        if (dateStr === today()) cls += ' today';
+        html += `<div class="${cls}">${d}</div>`;
+    }
+    html += '</div>';
+    return html;
+}
+
+function addMedicine() {
+    const name = $('newMedInput').value.trim();
+    const desc = $('newMedDesc').value.trim();
+    if (!name) return showToast('请输入药品名称', 'error');
+    state.medicines.push({ name, desc, streak: 0, history: {} });
+    $('newMedInput').value = '';
+    $('newMedDesc').value = '';
+    renderPage();
+    showToast('药品已添加 ✅');
+}
+
+function toggleMedicine(idx) {
+    const m = state.medicines[idx];
+    const todayKey = today();
+    m.history = m.history || {};
+    if (m.history[todayKey]) {
+        delete m.history[todayKey];
+        m.streak = Math.max(0, (m.streak || 0) - 1);
+    } else {
+        m.history[todayKey] = true;
+        m.streak = (m.streak || 0) + 1;
+    }
+    renderPage();
+}
+
+// ========== 养生知识 ==========
+function renderHealth(container) {
+    const todaySeed = new Date().getDate();
+    const dailyTip = healthKnowledge[todaySeed % healthKnowledge.length];
+    const otherTips = healthKnowledge.filter((_, i) => i !== todaySeed % healthKnowledge.length);
+
+    container.innerHTML = `
+        <div class="page-header">
+            <h2>☕ 养生知识</h2>
+            <p>每日一条，积少成多，养成健康好习惯</p>
+        </div>
+        <div class="card">
+            <div class="card-title">🎯 今日推荐</div>
+            <div class="health-card" onclick="handleHealthClick('${dailyTip.type}', '${dailyTip.title}')">
+                <div class="health-tag">${dailyTip.tag}</div>
+                <div class="health-title">${dailyTip.title}</div>
+                <div class="health-content">${dailyTip.content.replace(/\n/g,'<br>')}</div>
+            </div>
+            <div class="health-actions">
+                <button class="btn-favorite ${state.healthFavorites.includes(dailyTip.title)?'active':''}" onclick="toggleFavorite('${dailyTip.title}')">
+                    ${state.healthFavorites.includes(dailyTip.title)?'❤️ 已收藏':'🤍 收藏'}
+                </button>
+                <button class="btn-note" onclick="showNoteModal()">📒 写笔记</button>
+            </div>
+            ${state.healthNotes ? `<div style="margin-top:14px;padding:14px;background:var(--hover-bg);border-radius:var(--radius);font-size:13px;color:var(--text-secondary);white-space:pre-wrap;">📒 ${escapeHtml(state.healthNotes)}</div>` : ''}
+        </div>
+        <div class="card">
+            <div class="card-title">📚 更多养生内容</div>
+            ${otherTips.slice(0, 6).map(t => `
+                <div class="health-card" onclick="handleHealthClick('${t.type}','${t.title}')">
+                    <div class="health-tag">${t.tag}</div>
+                    <div class="health-title" style="font-size:15px;">${t.title}</div>
+                    <div class="health-content" style="font-size:13px;">${t.content.replace(/\n/g,' ').slice(0,80)}...</div>
+                </div>
+            `).join('')}
+        </div>
+        ${state.healthFavorites.length > 0 ? `
+        <div class="card">
+            <div class="card-title">❤️ 我的收藏</div>
+            ${state.healthFavorites.map(title => `
+                <div style="padding:10px 14px;background:var(--hover-bg);border-radius:8px;margin-bottom:6px;font-size:14px;">${title}</div>
+            `).join('')}
+        </div>` : ''}
+    `;
+}
+
+function handleHealthClick(type, title) {
+    if (type === 'video') {
+        showToast('🎬 视频播放：' + title);
+    } else {
+        showToast('📖 展开：' + title);
+    }
+}
+
+function toggleFavorite(title) {
+    const idx = state.healthFavorites.indexOf(title);
+    if (idx >= 0) {
+        state.healthFavorites.splice(idx, 1);
+        showToast('已取消收藏');
+    } else {
+        state.healthFavorites.push(title);
+        showToast('已收藏 ❤️');
+    }
+    renderPage();
+}
+
+function showNoteModal() {
+    $('modalContent').innerHTML = `
+        <h3>📒 养生笔记</h3>
+        <label>记录你的养生心得</label>
+        <textarea id="noteInput" placeholder="比如：今天试了玫瑰花茶，确实感觉心情放松了不少...">${state.healthNotes}</textarea>
+        <div class="modal-actions">
+            <button class="btn-cancel" onclick="closeModal()">取消</button>
+            <button class="btn-confirm" onclick="saveNote()">保存</button>
+        </div>
+    `;
+    $('modalOverlay').classList.add('show');
+}
+
+function saveNote() {
+    state.healthNotes = $('noteInput').value.trim();
+    closeModal();
+    renderPage();
+    showToast('笔记已保存 ✅');
+}
+
+// ========== 备忘录 ==========
+function renderMemo(container) {
+    container.innerHTML = `
+        <div class="page-header">
+            <h2>📝 备忘录</h2>
+            <p>随手记录，灵感不再丢失</p>
+        </div>
+        <div class="memo-grid">
+            ${state.memos.map((m, i) => `
+                <div class="memo-card" onclick="editMemo(${i})">
+                    <div class="memo-card-header">
+                        <span class="memo-card-title">${m.title || '无标题'}</span>
+                        <span class="memo-card-date">${m.date}</span>
+                    </div>
+                    <div class="memo-card-content">${escapeHtml(m.content)}</div>
+                    <button class="memo-card-delete" onclick="deleteMemo(${i});event.stopPropagation()">×</button>
+                </div>
+            `).join('')}
+            <div class="add-memo-btn" onclick="addNewMemo()">
+                <span class="plus-icon">+</span>
+                <span>新建备忘录</span>
+            </div>
+        </div>
+    `;
+}
+
+function addNewMemo() {
+    $('modalContent').innerHTML = `
+        <h3>📝 新建备忘录</h3>
+        <label>标题</label>
+        <input type="text" id="memoTitle" placeholder="输入标题...">
+        <label>内容</label>
+        <textarea id="memoContent" placeholder="写点什么吧..."></textarea>
+        <div class="modal-actions">
+            <button class="btn-cancel" onclick="closeModal()">取消</button>
+            <button class="btn-confirm" onclick="saveMemo()">保存</button>
+        </div>
+    `;
+    $('modalOverlay').classList.add('show');
+}
+
+function saveMemo() {
+    const title = $('memoTitle').value.trim();
+    const content = $('memoContent').value.trim();
+    if (!title && !content) return showToast('内容不能为空', 'error');
+    state.memos.unshift({ title: title || '无标题', content: content || '', date: today() });
+    closeModal();
+    renderPage();
+    showToast('备忘录已保存 ✅');
+}
+
+function editMemo(idx) {
+    const m = state.memos[idx];
+    $('modalContent').innerHTML = `
+        <h3>📝 编辑备忘录</h3>
+        <label>标题</label>
+        <input type="text" id="memoTitle" value="${m.title.replace(/"/g,'&quot;')}">
+        <label>内容</label>
+        <textarea id="memoContent">${m.content.replace(/</g,'&lt;')}</textarea>
+        <div class="modal-actions">
+            <button class="btn-cancel" onclick="closeModal()">取消</button>
+            <button class="btn-confirm" onclick="updateMemo(${idx})">保存</button>
+        </div>
+    `;
+    $('modalOverlay').classList.add('show');
+}
+
+function updateMemo(idx) {
+    state.memos[idx].title = $('memoTitle').value.trim() || '无标题';
+    state.memos[idx].content = $('memoContent').value.trim();
+    closeModal();
+    renderPage();
+    showToast('已更新 ✅');
+}
+
+function deleteMemo(idx) {
+    state.memos.splice(idx, 1);
+    renderPage();
+    showToast('已删除');
+}
+
+// ========== 健身打卡 ==========
+function renderFitness(container) {
+    const todayKey = today();
+    const weekDays = ['日','一','二','三','四','五','六'];
+    const todayDow = new Date().getDay();
+
+    const weekData = [];
+    for (let i = 6; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        const key = d.toISOString().slice(0,10);
+        const dow = weekDays[d.getDay()];
+        weekData.push({ key, dow, isToday: key === todayKey, checked: state.fitnessWeek && state.fitnessWeek[key] });
+    }
+
+    const weekChecked = weekData.filter(d => d.checked).length;
+    const weekPct = Math.round(weekChecked / 7 * 100);
+
+    container.innerHTML = `
+        <div class="page-header">
+            <h2>💪 健身打卡</h2>
+            <p>坚持运动，遇见更好的自己</p>
+        </div>
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-value" style="color:var(--accent-green);">${weekChecked}/7</div>
+                <div class="stat-label">本周打卡</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color:var(--accent-orange);">${state.fitnessStreak||0}</div>
+                <div class="stat-label">连续天数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color:var(--accent-blue);">${state.fitnessTotal||0}</div>
+                <div class="stat-label">累计打卡</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color:var(--accent-purple);">${weekPct}%</div>
+                <div class="stat-label">本周完成率</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title">📅 本周打卡（点击切换）</div>
+            <div class="fitness-ring">
+                ${weekData.map(d => `
+                    <div style="text-align:center;cursor:pointer;" onclick="toggleFitness('${d.key}')">
+                        <div style="width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;background:${d.checked?'var(--accent-green)':'var(--hover-bg)'};border:2px solid ${d.checked?'var(--accent-green)':(d.isToday?'var(--accent-blue)':'var(--border-color)')};transition:all 0.3s;">
+                            ${d.checked?'✓':d.dow}
+                        </div>
+                        <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">${d.isToday?'今天':d.dow}</div>
+                    </div>
+                `).join('')}
+            </div>
+            <div style="text-align:center;margin-top:16px;">
+                <button class="btn-add" onclick="syncFitness()" style="padding:10px 28px;">☁️ 同步到手机云端</button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title">🏋️ 训练记录</div>
+            <div class="add-todo-row">
+                <input type="text" id="fitnessInput" placeholder="记录今天的训练内容，如：跑步30分钟、深蹲50个..." onkeydown="if(event.key==='Enter')addFitnessRecord()">
+                <button class="btn-add" onclick="addFitnessRecord()">📝 记录</button>
+            </div>
+            <div style="margin-top:16px;">
+                ${(state.fitnessRecords||[]).slice(0,10).map(r => `
+                    <div style="padding:12px 16px;background:var(--hover-bg);border-radius:var(--radius);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
+                        <span style="font-size:14px;">${escapeHtml(r.content)}</span>
+                        <span style="font-size:12px;color:var(--text-muted);">${r.date}</span>
+                    </div>
+                `).join('') || '<p style="color:var(--text-muted);text-align:center;padding:16px;">还没有训练记录</p>'}
+            </div>
+        </div>
+    `;
+}
+
+function toggleFitness(key) {
+    state.fitnessWeek = state.fitnessWeek || {};
+    if (state.fitnessWeek[key]) {
+        delete state.fitnessWeek[key];
+        state.fitnessTotal = Math.max(0, (state.fitnessTotal||0) - 1);
+    } else {
+        state.fitnessWeek[key] = true;
+        state.fitnessTotal = (state.fitnessTotal||0) + 1;
+    }
+    // 计算连续天数
+    let streak = 0;
+    for (let i = 0; i < 30; i++) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        const key = d.toISOString().slice(0,10);
+        if (state.fitnessWeek[key]) streak++;
+        else break;
+    }
+    state.fitnessStreak = streak;
+    renderPage();
+}
+
+function addFitnessRecord() {
+    const input = $('fitnessInput');
+    const text = input.value.trim();
+    if (!text) return showToast('请输入训练内容', 'error');
+    state.fitnessRecords = state.fitnessRecords || [];
+    state.fitnessRecords.unshift({ content: text, date: today() });
+    input.value = '';
+    renderPage();
+    showToast('训练记录已保存 💪');
+}
+
+function syncFitness() {
+    showToast('☁️ 已同步到云端（演示）');
+}
+
+// ========== 存钱计划 ==========
+function renderSavings(container) {
+    const pct = state.savingsGoal > 0 ? Math.min(100, Math.round(state.savingsCurrent / state.savingsGoal * 100)) : 0;
+    const remain = Math.max(0, state.savingsGoal - state.savingsCurrent);
+
+    // 近6个月趋势
+    const months = [];
+    for (let i = 5; i >= 0; i--) {
+        const d = new Date();
+        d.setMonth(d.getMonth() - i);
+        const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+        const monthRecords = (state.savingsHistory||[]).filter(r => r.date.startsWith(key));
+        const sum = monthRecords.reduce((s,r) => s + r.amount, 0);
+        months.push({ label: `${d.getMonth()+1}月`, amount: sum || Math.round(state.savingsCurrent/4) });
+    }
+    const maxMonth = Math.max(...months.map(m => m.amount), 1);
+
+    container.innerHTML = `
+        <div class="page-header">
+            <h2>💰 存钱计划</h2>
+            <p>小钱积少成多，实现财务目标</p>
+        </div>
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-value" style="color:var(--accent-yellow);">¥${formatMoney(state.savingsCurrent)}</div>
+                <div class="stat-label">已存金额</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color:var(--accent-green);">${pct}%</div>
+                <div class="stat-label">目标进度</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color:var(--accent-orange);">¥${formatMoney(remain)}</div>
+                <div class="stat-label">还需存入</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color:var(--accent-blue);font-size:16px;">📈 趋势</div>
+                <div class="stat-label">近6个月</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="savings-goal">
+                <div class="savings-circle" style="--savings-progress:${pct}">
+                    <div class="savings-circle-inner">
+                        <div class="savings-amount">¥${formatMoney(state.savingsCurrent)}</div>
+                        <div class="savings-label">/ ¥${formatMoney(state.savingsGoal)}</div>
+                    </div>
+                </div>
+                <div style="font-size:14px;color:var(--text-secondary);">已完成 ${pct}% · 还差 ¥${formatMoney(remain)}</div>
+            </div>
+            <div class="savings-form">
+                <input type="number" id="savingsAddInput" placeholder="存入金额..." min="1">
+                <button class="btn-add" onclick="addSavings()">💰 存入</button>
+                <input type="number" id="savingsGoalInput" placeholder="目标金额" value="${state.savingsGoal}" style="max-width:150px;">
+                <button class="btn-add" onclick="updateSavingsGoal()" style="background:var(--accent-blue);">🎯 设目标</button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title">📊 每月存入趋势（近6个月）</div>
+            <div style="display:flex;align-items:flex-end;gap:16px;height:140px;padding:10px 0;">
+                ${months.map(m => `
+                    <div style="flex:1;text-align:center;">
+                        <div style="height:${m.amount/maxMonth*110}px;background:linear-gradient(180deg,var(--accent-yellow),#b8860b);border-radius:6px 6px 0 0;min-height:4px;transition:all 0.3s;display:flex;align-items:flex-end;justify-content:center;padding-bottom:4px;">
+                            <span style="font-size:11px;color:var(--bg-dark);font-weight:700;">¥${formatMoney(m.amount)}</span>
+                        </div>
+                        <div style="font-size:11px;color:var(--text-muted);margin-top:6px;">${m.label}</div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title">📜 存入记录</div>
+            ${(state.savingsHistory||[]).length === 0 ? '<p style="color:var(--text-muted);text-align:center;padding:16px;">暂无记录</p>' :
+            state.savingsHistory.slice().reverse().map(r => `
+                <div class="savings-item">
+                    <span class="savings-item-date">${r.date}</span>
+                    <span class="savings-item-amount">+¥${formatMoney(r.amount)}</span>
+                </div>
+            `).join('')}
+        </div>
+        <div class="card">
+            <div class="card-title">💡 理财小贴士</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;">
+                <div style="padding:14px;background:var(--hover-bg);border-radius:var(--radius);">
+                    <div style="font-size:18px;margin-bottom:6px;">🏦</div>
+                    <div style="font-size:13px;font-weight:600;margin-bottom:4px;">先存后花</div>
+                    <div style="font-size:12px;color:var(--text-muted);line-height:1.6;">工资到账先转存30%，剩下的再安排开销，避免月底存不下钱。</div>
+                </div>
+                <div style="padding:14px;background:var(--hover-bg);border-radius:var(--radius);">
+                    <div style="font-size:18px;margin-bottom:6px;">📊</div>
+                    <div style="font-size:13px;font-weight:600;margin-bottom:4px;">50/30/20法则</div>
+                    <div style="font-size:12px;color:var(--text-muted);line-height:1.6;">50%必要开支 + 30%想要消费 + 20%储蓄投资，简单好记的分配法。</div>
+                </div>
+                <div style="padding:14px;background:var(--hover-bg);border-radius:var(--radius);">
+                    <div style="font-size:18px;margin-bottom:6px;">🎯</div>
+                    <div style="font-size:13px;font-weight:600;margin-bottom:4px;">设小目标</div>
+                    <div style="font-size:12px;color:var(--text-muted);line-height:1.6;">把大目标拆成每月/每周小目标，更容易坚持，成就感也更强。</div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function addSavings() {
+    const amount = parseFloat($('savingsAddInput').value);
+    if (!amount || amount <= 0) return showToast('请输入有效金额', 'error');
+    state.savingsCurrent += amount;
+    state.savingsHistory = state.savingsHistory || [];
+    state.savingsHistory.push({ amount, date: today() });
+    $('savingsAddInput').value = '';
+    renderPage();
+    showToast(`成功存入 ¥${formatMoney(amount)} 🎉`);
+}
+
+function updateSavingsGoal() {
+    const goal = parseFloat($('savingsGoalInput').value);
+    if (!goal || goal <= 0) return showToast('请输入有效目标金额', 'error');
+    state.savingsGoal = goal;
+    renderPage();
+    showToast('目标已更新 🎯');
+}
+
+// ========== 每日记账 ==========
+function renderAccount(container) {
+    const expenses = state.accounts.filter(a => a.type === 'expense');
+    const incomes = state.accounts.filter(a => a.type === 'income');
+    const totalExp = expenses.reduce((s, a) => s + a.amount, 0);
+    const totalInc = incomes.reduce((s, a) => s + a.amount, 0);
+    const balance = totalInc - totalExp;
+
+    const categories = {
+        expense: ['🍜 餐饮', '🚌 交通', '🛒 购物', '🎬 娱乐', '📱 通讯', '💊 医疗', '📚 学习', '🏠 住房', '👔 服饰', '🐱 宠物', '🎁 礼物', '📦 其他'],
+        income: ['💼 工资', '📈 投资', '🎯 奖金', '💰 兼职', '🎁 红包', '📦 其他']
     };
-    window.API = API;
 
-    const STORAGE_KEY = "yuniqiu-summer-site-v1";
-    const MEDIA_DB = "yuniqiu-media-v1"; // session 内媒体用内存 Map，metadata 进 localStorage
+    // 分类统计
+    const catStats = {};
+    expenses.forEach(a => {
+        const parts = a.category.split(' ');
+        const cat = parts.length > 1 ? parts[1] : a.category;
+        catStats[cat] = (catStats[cat] || 0) + a.amount;
+    });
+    const catEntries = Object.entries(catStats).sort((a,b) => b[1]-a[1]);
+    const catColors = ['#f87171','#fb923c','#fbbf24','#4ade80','#60a5fa','#a78bfa','#f472b6','#2dd4bf','#94a3b8','#fb923c','#fbbf24','#4ade80'];
+    const maxCat = catEntries.length > 0 ? catEntries[0][1] : 1;
 
-    const $ = (sel, root) => (root || document).querySelector(sel);
-    const $$ = (sel, root) => Array.from((root || document).querySelectorAll(sel));
+    // 近7天趋势
+    const trend = [];
+    for (let i = 6; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        const key = d.toISOString().slice(0,10);
+        const dayExp = expenses.filter(a => a.date === key).reduce((s,a) => s+a.amount, 0);
+        const dayInc = incomes.filter(a => a.date === key).reduce((s,a) => s+a.amount, 0);
+        trend.push({ label: (d.getMonth()+1) + '/' + d.getDate(), exp: dayExp, inc: dayInc });
+    }
+    const maxTrend = Math.max(...trend.map(t => Math.max(t.exp, t.inc)), 1);
 
-    /* session 媒体缓存：id -> dataURL（会话内可预览；刷新后媒体需重传） */
-    const mediaStore = new Map();
+    // 餐饮预算
+    const foodThisMonth = expenses.filter(a => a.category.includes('餐饮')).reduce((s,a) => s+a.amount, 0);
+    const foodBudget = 600;
+    const foodPct = Math.round(foodThisMonth / foodBudget * 100);
 
-    const defaultState = () => ({
-      diaries: [
-        {
-          id: uid(),
-          date: daysAgo(2),
-          title: "树荫下的十分钟",
-          body: "午后风很软，光斑在草地上慢慢挪动。把耳机音量调低一点，卡农刚好合适。",
-          media: [],
-          createdAt: Date.now() - 2 * 864e5,
-          updatedAt: Date.now() - 2 * 864e5,
-        },
-        {
-          id: uid(),
-          date: daysAgo(5),
-          title: "第一次把运动写进本子",
-          body: "跑完两公里，配速不算快，但心情是五星。想把这种轻盈记久一点。",
-          media: [],
-          createdAt: Date.now() - 5 * 864e5,
-          updatedAt: Date.now() - 5 * 864e5,
-        },
-      ],
-      sports: [
-        {
-          id: uid(),
-          date: daysAgo(1),
-          type: "跑步",
-          duration: 32,
-          distance: 5.2,
-          pace: "6'09\"/km",
-          mood: 5,
-          note: "傍晚河边，风里有青草味。",
-          media: [],
-          createdAt: Date.now() - 864e5,
-          updatedAt: Date.now() - 864e5,
-        },
-      ],
-      profile: {
-        name: "芋泥球香柑",
-        bio: "喜欢在树荫下散步，把阳光、风声和脚步记进本子里。这里是我的夏日手记：日记、运动，以及一点点关于我。",
-        avatar: "assets/avatar.jpg",
-      },
-      musicMuted: false,
+    container.innerHTML = `
+        <div class="page-header">
+            <h2>🧾 每日记账</h2>
+            <p>每一笔都清清楚楚</p>
+        </div>
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-value" style="color:var(--accent-green);">¥${formatMoney(totalInc)}</div>
+                <div class="stat-label">总收入</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color:var(--accent-red);">¥${formatMoney(totalExp)}</div>
+                <div class="stat-label">总支出</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color:var(--accent-blue);">¥${formatMoney(balance)}</div>
+                <div class="stat-label">结余</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color:${foodPct>100?'var(--accent-red)':'var(--accent-orange)'};font-size:16px;">${foodPct}%</div>
+                <div class="stat-label">餐饮预算</div>
+            </div>
+        </div>
+        <div class="account-tabs">
+            <button class="account-tab ${state.accountType==='expense'?'active':''}" onclick="state.accountType='expense';renderPage()">💸 支出</button>
+            <button class="account-tab ${state.accountType==='income'?'active':''}" onclick="state.accountType='income';renderPage()">💵 收入</button>
+        </div>
+        <div class="card">
+            <div class="card-title">${state.accountType==='expense'?'➖ 记一笔支出':'➕ 记一笔收入'}</div>
+            <div class="account-form">
+                <input type="number" id="accAmount" placeholder="金额" step="0.01" min="0">
+                <select id="accCategory">
+                    ${categories[state.accountType].map(c => `<option value="${c}">${c}</option>`).join('')}
+                </select>
+                <input type="text" id="accNote" placeholder="备注（选填）">
+                <button class="btn-add" onclick="addAccount()">✅ 记录</button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title">📊 支出分类占比</div>
+            ${catEntries.length === 0 ? '<p style="color:var(--text-muted);text-align:center;padding:12px;">暂无支出数据</p>' :
+            catEntries.map(([cat, amt], i) => `
+                <div style="margin-bottom:10px;">
+                    <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
+                        <span>${cat}</span>
+                        <span style="color:var(--text-muted);">¥${formatMoney(amt)} (${Math.round(amt/totalExp*100)}%)</span>
+                    </div>
+                    <div style="height:8px;background:var(--hover-bg);border-radius:4px;overflow:hidden;">
+                        <div style="height:100%;width:${amt/maxCat*100}%;background:${catColors[i%catColors.length]};border-radius:4px;transition:all 0.5s;"></div>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+        <div class="card">
+            <div class="card-title">📈 近7天收支趋势</div>
+            <div style="display:flex;align-items:flex-end;gap:14px;height:130px;padding:10px 0;">
+                ${trend.map(t => `
+                    <div style="flex:1;text-align:center;">
+                        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;height:110px;justify-content:flex-end;">
+                            ${t.inc>0?`<div style="width:100%;background:var(--accent-green);border-radius:3px;height:${t.inc/maxTrend*100}px;min-height:2px;font-size:9px;color:var(--bg-dark);display:flex;align-items:flex-end;justify-content:center;padding-bottom:2px;">${t.inc>0?formatMoney(t.inc):''}</div>`:'<div style="height:0;"></div>'}
+                            ${t.exp>0?`<div style="width:100%;background:var(--accent-red);border-radius:3px;height:${t.exp/maxTrend*100}px;min-height:2px;font-size:9px;color:white;display:flex;align-items:flex-end;justify-content:center;padding-bottom:2px;">${t.exp>0?formatMoney(t.exp):''}</div>`:'<div style="height:0;"></div>'}
+                        </div>
+                        <div style="font-size:10px;color:var(--text-muted);margin-top:4px;">${t.label}</div>
+                    </div>
+                `).join('')}
+            </div>
+            <div style="font-size:11px;color:var(--text-muted);text-align:center;margin-top:4px;">
+                <span style="color:var(--accent-green);">■</span> 收入
+                <span style="color:var(--accent-red);margin-left:12px;">■</span> 支出
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title">📋 最近记录</div>
+            <div class="account-list">
+                ${state.accounts.length === 0 ? '<p style="color:var(--text-muted);text-align:center;padding:16px;">还没有记账记录</p>' :
+                state.accounts.slice().reverse().slice(0, 20).map(a => {
+                    const parts = a.category.split(' ');
+                    const icon = parts[0] || '📦';
+                    const name = parts.length > 1 ? parts[1] : a.category;
+                    return `
+                    <div class="account-item">
+                        <div class="account-item-info">
+                            <div class="account-item-icon">${icon}</div>
+                            <div>
+                                <div class="account-item-name">${name}</div>
+                                <div class="account-item-category">${a.note||a.date}</div>
+                            </div>
+                        </div>
+                        <div class="account-item-amount ${a.type}">${a.type==='expense'?'-':'+'}${formatMoney(a.amount)}</div>
+                    </div>
+                    `;
+                }).join('')}
+            </div>
+        </div>
+    `;
+}
+
+function addAccount() {
+    const amount = parseFloat($('accAmount').value);
+    const category = $('accCategory').value;
+    const note = $('accNote').value.trim();
+    if (!amount || amount <= 0) return showToast('请输入有效金额', 'error');
+    state.accounts.push({ type: state.accountType, amount, category, note, date: today() });
+    $('accAmount').value = '';
+    $('accNote').value = '';
+    renderPage();
+    showToast('记账成功 ✅');
+}
+
+// ========== 月计划复盘 ==========
+function renderReview(container) {
+    const now = new Date();
+    const monthKey = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+    const review = state.reviews[monthKey] || {
+        summary: '这个月整体节奏不错，工作按时完成，健身坚持了15天，存钱也达到了32%。学习上投入时间还不够，下月要增加到每天2小时。',
+        achievements: '✅ 完成季度项目交付\n✅ 坚持健身15天\n✅ 读完2本书\n✅ 存钱达3200元\n✅ 养成早起习惯',
+        improvements: '⚠️ 学习时间不稳定，有几天完全没碰\n⚠️ 记账有几天漏记\n⚠️ 晚睡情况出现3次\n⚠️ 零食消费超预算',
+        nextMonth: '🎯 每天至少学AI 2小时\n🎯 健身目标20天\n🎯 存钱再存3000\n🎯 早睡达标率90%\n🎯 读完3本书',
+    };
+
+    const monthAccounts = state.accounts.filter(a => a.date.startsWith(monthKey));
+    const monthExp = monthAccounts.filter(a => a.type==='expense').reduce((s,a)=>s+a.amount,0);
+    const monthInc = monthAccounts.filter(a => a.type==='income').reduce((s,a)=>s+a.amount,0);
+    const fitnessCount = Object.values(state.fitnessWeek||{}).filter(Boolean).length;
+    const waterDays = Object.keys(state.waterHistory||{}).filter(k => k.startsWith(monthKey) && (state.waterHistory[k]||0)>0).length;
+    const studyDays = Object.keys(state.studyRecords||{}).filter(k => k.startsWith(monthKey)).length;
+
+    const daysInMonth = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
+    const dayOfMonth = Math.min(now.getDate(), daysInMonth);
+    const fitnessRate = Math.round(fitnessCount / Math.min(dayOfMonth,7) * 100);
+    const waterRate = Math.round(waterDays / dayOfMonth * 100);
+    const studyRate = Math.round(studyDays / dayOfMonth * 100);
+    const saveRate = state.savingsGoal > 0 ? Math.round(state.savingsCurrent / state.savingsGoal * 100) : 0;
+
+    const histKeys = Object.keys(state.reviews).sort().reverse();
+
+    container.innerHTML = `
+        <div class="page-header">
+            <h2>✍️ 月计划复盘</h2>
+            <p>${now.getFullYear()}年${now.getMonth()+1}月 · 回顾过去，规划未来</p>
+        </div>
+        <div class="review-summary">
+            <div class="review-card">
+                <div class="review-card-value" style="color:var(--accent-green);">¥${formatMoney(monthInc)}</div>
+                <div class="review-card-label">本月收入</div>
+            </div>
+            <div class="review-card">
+                <div class="review-card-value" style="color:var(--accent-red);">¥${formatMoney(monthExp)}</div>
+                <div class="review-card-label">本月支出</div>
+            </div>
+            <div class="review-card">
+                <div class="review-card-value" style="color:var(--accent-orange);">${fitnessCount}天</div>
+                <div class="review-card-label">健身打卡</div>
+            </div>
+            <div class="review-card">
+                <div class="review-card-value" style="color:var(--accent-blue);">${waterDays}天</div>
+                <div class="review-card-label">喝水达标</div>
+            </div>
+            <div class="review-card">
+                <div class="review-card-value" style="color:var(--accent-purple);">${studyDays}天</div>
+                <div class="review-card-label">AI学习</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title">📊 本月习惯完成率</div>
+            <div style="margin-bottom:14px;">
+                <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
+                    <span>💪 健身</span><span style="color:var(--accent-orange);">${fitnessRate}%</span>
+                </div>
+                <div style="height:8px;background:var(--hover-bg);border-radius:4px;overflow:hidden;">
+                    <div style="height:100%;width:${fitnessRate}%;background:var(--accent-orange);border-radius:4px;transition:all 0.5s;"></div>
+                </div>
+            </div>
+            <div style="margin-bottom:14px;">
+                <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
+                    <span>💧 喝水</span><span style="color:var(--accent-blue);">${waterRate}%</span>
+                </div>
+                <div style="height:8px;background:var(--hover-bg);border-radius:4px;overflow:hidden;">
+                    <div style="height:100%;width:${waterRate}%;background:var(--accent-blue);border-radius:4px;transition:all 0.5s;"></div>
+                </div>
+            </div>
+            <div style="margin-bottom:14px;">
+                <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
+                    <span>🎓 学习</span><span style="color:var(--accent-purple);">${studyRate}%</span>
+                </div>
+                <div style="height:8px;background:var(--hover-bg);border-radius:4px;overflow:hidden;">
+                    <div style="height:100%;width:${studyRate}%;background:var(--accent-purple);border-radius:4px;transition:all 0.5s;"></div>
+                </div>
+            </div>
+            <div>
+                <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
+                    <span>💰 存钱</span><span style="color:var(--accent-yellow);">${saveRate}%</span>
+                </div>
+                <div style="height:8px;background:var(--hover-bg);border-radius:4px;overflow:hidden;">
+                    <div style="height:100%;width:${Math.min(saveRate,100)}%;background:var(--accent-yellow);border-radius:4px;transition:all 0.5s;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title">📝 月度复盘</div>
+            <label style="font-size:13px;color:var(--text-secondary);display:block;margin-bottom:8px;">📖 本月总结</label>
+            <textarea class="review-textarea" id="reviewSummary" style="min-height:80px;">${review.summary}</textarea>
+            <label style="font-size:13px;color:var(--text-secondary);display:block;margin:16px 0 8px;">✅ 成就与亮点</label>
+            <textarea class="review-textarea" id="reviewAchievements" style="min-height:80px;">${review.achievements}</textarea>
+            <label style="font-size:13px;color:var(--text-secondary);display:block;margin:16px 0 8px;">🔧 需要改进</label>
+            <textarea class="review-textarea" id="reviewImprovements" style="min-height:80px;">${review.improvements}</textarea>
+            <label style="font-size:13px;color:var(--text-secondary);display:block;margin:16px 0 8px;">🎯 下月计划</label>
+            <textarea class="review-textarea" id="reviewNextMonth" style="min-height:80px;">${review.nextMonth}</textarea>
+            <div style="margin-top:20px;text-align:right;">
+                <button class="btn-add" onclick="saveReview()">💾 保存复盘</button>
+            </div>
+        </div>
+        ${histKeys.length > 0 ? `
+        <div class="card">
+            <div class="card-title">📚 历史复盘</div>
+            ${histKeys.map(key => {
+                const r = state.reviews[key];
+                const [y, m] = key.split('-');
+                return `
+                <div style="padding:14px;background:var(--hover-bg);border-radius:var(--radius);margin-bottom:8px;cursor:pointer;" onclick="loadHistoryReview('${key}')">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                        <span style="font-size:14px;font-weight:600;">📅 ${y}年${parseInt(m)}月复盘</span>
+                        <span style="font-size:11px;color:var(--text-muted);">点击查看</span>
+                    </div>
+                    ${r.summary ? `<div style="font-size:12px;color:var(--text-muted);line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${r.summary.replace(/\n/g,' ')}</div>` : ''}
+                </div>
+                `;
+            }).join('')}
+        </div>` : ''}
+    `;
+}
+
+function saveReview() {
+    const now = new Date();
+    const monthKey = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+    state.reviews[monthKey] = {
+        summary: $('reviewSummary').value.trim(),
+        achievements: $('reviewAchievements').value.trim(),
+        improvements: $('reviewImprovements').value.trim(),
+        nextMonth: $('reviewNextMonth').value.trim(),
+    };
+    renderPage();
+    showToast('月度复盘已保存 ✅');
+}
+
+function loadHistoryReview(key) {
+    const r = state.reviews[key];
+    if (!r) return;
+    $('reviewSummary').value = r.summary || '';
+    $('reviewAchievements').value = r.achievements || '';
+    $('reviewImprovements').value = r.improvements || '';
+    $('reviewNextMonth').value = r.nextMonth || '';
+    $('reviewSummary').focus();
+    showToast(`已加载 ${key.replace('-','年')}月 复盘，可编辑后保存`);
+}
+
+// ========== AI学习打卡 ==========
+function renderStudy(container) {
+    const todayKey = today();
+    const todayHours = state.studyRecords[todayKey] || 0;
+    const allDays = Object.keys(state.studyRecords).length;
+    const totalHours = Object.values(state.studyRecords).reduce((s,h) => s+h, 0);
+    const avgHours = allDays > 0 ? (totalHours/allDays).toFixed(1) : 0;
+
+    // 学习日历
+    const todayDate = new Date();
+    const year = todayDate.getFullYear();
+    const month = todayDate.getMonth();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const firstDay = new Date(year, month, 1).getDay();
+
+    let calHtml = '<div class="study-calendar">';
+    ['日','一','二','三','四','五','六'].forEach(d => {
+        calHtml += `<div class="cal-header">${d}</div>`;
+    });
+    for (let i = 0; i < firstDay; i++) calHtml += '<div class="study-cal-day empty"></div>';
+    for (let d = 1; d <= daysInMonth; d++) {
+        const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+        const hours = state.studyRecords[dateStr] || 0;
+        let cls = 'study-cal-day' + (hours > 0 ? ' studied' : '');
+        if (dateStr === todayKey) cls += ' today';
+        calHtml += `<div class="${cls}">${d}${hours>0?`<span class="study-hours">${hours}h</span>`:''}</div>`;
+    }
+    calHtml += '</div>';
+
+    // 每周分布
+    const weekDist = [0,0,0,0,0,0,0];
+    Object.entries(state.studyRecords).forEach(([k,v]) => {
+        const d = new Date(k);
+        if (!isNaN(d)) weekDist[d.getDay()] += v;
+    });
+    const maxWeek = Math.max(...weekDist, 1);
+    const weekNames = ['周日','周一','周二','周三','周四','周五','周六'];
+
+    // 技能树
+    const skills = [
+        { name: 'Python基础', pct: 80, color: '#60a5fa' },
+        { name: '数据分析', pct: 55, color: '#4ade80' },
+        { name: '机器学习', pct: 30, color: '#a78bfa' },
+        { name: '深度学习', pct: 15, color: '#f472b6' },
+        { name: 'NLP', pct: 20, color: '#fb923c' },
+    ];
+
+    const resources = [
+        { type: '📖', title: '吴恩达《机器学习》课程', desc: '经典入门，配套作业用Python实现' },
+        { type: '📖', title: '《动手学深度学习》李沐', desc: '理论+代码，适合有基础后系统学' },
+        { type: '🎬', title: 'Kaggle Learn 微课程', desc: '每课30分钟，边学边练' },
+        { type: '💻', title: 'LeetCode 热题100', desc: '算法基本功，面试必备' },
+    ];
+
+    container.innerHTML = `
+        <div class="page-header">
+            <h2>🎓 AI学习打卡</h2>
+            <p>每天进步一点点，AI技能持续升级</p>
+        </div>
+        <div class="study-hero">
+            <div class="study-hero-icon">🤖</div>
+            <div class="study-hero-title">今日AI学习</div>
+            <div class="study-hero-desc">记录你今天学习AI/编程的时长，坚持打卡提升技能</div>
+            <div class="study-input-row">
+                <input type="number" id="studyHours" placeholder="小时" min="0" max="24" step="0.5" value="${todayHours||''}">
+                <span style="color:var(--text-muted);">小时</span>
+                <button class="btn-add" onclick="saveStudy()">📝 打卡</button>
+            </div>
+            ${todayHours>0?`<p style="margin-top:12px;color:var(--accent-green);font-weight:600;">✅ 今日已打卡 ${todayHours} 小时</p>`:'<p style="margin-top:12px;color:var(--text-muted);font-size:13px;">今天还没打卡哦，快去学习吧～</p>'}
+        </div>
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-value" style="color:var(--accent-blue);">${allDays}天</div>
+                <div class="stat-label">累计学习天数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color:var(--accent-green);">${totalHours.toFixed(1)}h</div>
+                <div class="stat-label">累计学习时长</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color:var(--accent-orange);">${avgHours}h</div>
+                <div class="stat-label">日均学习</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color:var(--accent-purple);">${allDays>0?Math.round(totalHours/24):0}天</div>
+                <div class="stat-label">相当于全日制</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title">📅 学习日历</div>
+            ${calHtml}
+        </div>
+        <div class="card">
+            <div class="card-title">📊 每周学习分布</div>
+            <div style="display:flex;align-items:flex-end;gap:12px;height:120px;padding:10px 0;">
+                ${weekDist.map((h,i) => `
+                    <div style="flex:1;text-align:center;">
+                        <div style="height:${h/maxWeek*90}px;background:linear-gradient(180deg,var(--accent-purple),var(--accent-blue));border-radius:6px 6px 0 0;min-height:2px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:2px;">
+                            ${h>0?`<span style="font-size:10px;color:white;font-weight:600;">${h}h</span>`:''}
+                        </div>
+                        <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">${weekNames[i].slice(1)}</div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title">🌳 技能树</div>
+            ${skills.map(s => `
+                <div style="margin-bottom:12px;">
+                    <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
+                        <span>${s.name}</span>
+                        <span style="color:var(--text-muted);">${s.pct}%</span>
+                    </div>
+                    <div style="height:10px;background:var(--hover-bg);border-radius:5px;overflow:hidden;">
+                        <div style="height:100%;width:${s.pct}%;background:${s.color};border-radius:5px;transition:all 0.5s;"></div>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+        <div class="card">
+            <div class="card-title">📚 推荐学习资源</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;">
+                ${resources.map(r => `
+                    <div style="padding:14px;background:var(--hover-bg);border-radius:var(--radius);cursor:pointer;transition:all 0.2s;" onclick="showToast('📖 ${r.title}')">
+                        <div style="font-size:15px;margin-bottom:6px;">${r.type} ${r.title}</div>
+                        <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">${r.desc}</div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title">🧠 训练AI智能</div>
+            <p style="color:var(--text-secondary);font-size:14px;line-height:1.8;margin-bottom:16px;">
+                通过每日打卡记录，系统会学习你的学习节奏和习惯，未来可以为你：
+            </p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;">
+                <div style="padding:14px;background:var(--hover-bg);border-radius:var(--radius);">
+                    <div style="font-size:20px;margin-bottom:6px;">📊</div>
+                    <div style="font-size:13px;font-weight:600;margin-bottom:4px;">学习分析</div>
+                    <div style="font-size:12px;color:var(--text-muted);">分析你的学习高峰时段和效率</div>
+                </div>
+                <div style="padding:14px;background:var(--hover-bg);border-radius:var(--radius);">
+                    <div style="font-size:20px;margin-bottom:6px;">🔔</div>
+                    <div style="font-size:13px;font-weight:600;margin-bottom:4px;">智能提醒</div>
+                    <div style="font-size:12px;color:var(--text-muted);">在你容易懈怠时推送鼓励</div>
+                </div>
+                <div style="padding:14px;background:var(--hover-bg);border-radius:var(--radius);">
+                    <div style="font-size:20px;margin-bottom:6px;">🎯</div>
+                    <div style="font-size:13px;font-weight:600;margin-bottom:4px;">个性化目标</div>
+                    <div style="font-size:12px;color:var(--text-muted);">根据你的进度推荐学习路径</div>
+                </div>
+            </div>
+            <div style="margin-top:16px;text-align:center;">
+                <button class="btn-add" onclick="trainAI()" style="background:linear-gradient(135deg,var(--accent-purple),var(--accent-blue));">🚀 训练AI模型</button>
+            </div>
+        </div>
+    `;
+}
+
+function saveStudy() {
+    const hours = parseFloat($('studyHours').value);
+    if (isNaN(hours) || hours < 0) return showToast('请输入有效时长', 'error');
+    state.studyRecords[today()] = hours;
+    renderPage();
+    showToast(`打卡成功！今日学习 ${hours} 小时 🎉`);
+}
+
+function trainAI() {
+    showToast('🧠 AI模型训练中...（演示功能）');
+}
+
+// ========== 模态框 ==========
+function closeModal() {
+    $('modalOverlay').classList.remove('show');
+}
+
+// ========== 初始化 ==========
+function init() {
+    loadState();
+    renderNav();
+    renderPage();
+
+    // 键盘快捷键
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
     });
 
-    function uid() {
-      return "id_" + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
-    }
-    function daysAgo(n) {
-      const d = new Date();
-      d.setDate(d.getDate() - n);
-      return d.toISOString().slice(0, 10);
-    }
-    function today() {
-      return new Date().toISOString().slice(0, 10);
-    }
-    function fmtDate(iso) {
-      if (!iso) return "";
-      const [y, m, d] = iso.split("-");
-      return y + "." + m + "." + d;
-    }
-    function escapeHtml(s) {
-      return String(s ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;");
-    }
-    function stars(n) {
-      const v = Math.max(1, Math.min(5, Number(n) || 1));
-      return "★".repeat(v) + "☆".repeat(5 - v);
-    }
-
-    /* —— Persistence —— */
-    let state = load();
-
-    function load() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return defaultState();
-        const parsed = JSON.parse(raw);
-        return {
-          ...defaultState(),
-          ...parsed,
-          diaries: Array.isArray(parsed.diaries) ? parsed.diaries : defaultState().diaries,
-          sports: Array.isArray(parsed.sports) ? parsed.sports : defaultState().sports,
-          profile: { ...defaultState().profile, ...(parsed.profile || {}) },
-        };
-      } catch (e) {
-        return defaultState();
-      }
-    }
-
-    function save() {
-      const payload = {
-        diaries: state.diaries.map(stripHeavy),
-        sports: state.sports.map(stripHeavy),
-        profile: {
-          name: state.profile.name,
-          bio: state.profile.bio,
-          // 头像若为 dataURL 过大则不写盘，仅会话保留
-          avatar: (state.profile.avatar || "").startsWith("data:")
-            ? "assets/avatar.jpg"
-            : state.profile.avatar,
-        },
-        musicMuted: state.musicMuted,
-        _avatarSession: (state.profile.avatar || "").startsWith("data:")
-          ? state.profile.avatar
-          : null,
-      };
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({
-          diaries: payload.diaries,
-          sports: payload.sports,
-          profile: payload.profile,
-          musicMuted: payload.musicMuted,
-        }));
-      } catch (e) {
-        toast("本地存储空间不足，文字已尽量保存");
-      }
-      if (API.baseUrl) API.sync().catch(() => {});
-    }
-
-    function stripHeavy(item) {
-      return {
-        ...item,
-        media: (item.media || []).map((m) => ({
-          id: m.id,
-          type: m.type,
-          name: m.name || "",
-          // dataURL 不进 localStorage，会话内靠 mediaStore
-        })),
-      };
-    }
-
-    /* —— Toast —— */
-    function toast(msg) {
-      const host = $("#toastHost");
-      const el = document.createElement("div");
-      el.className = "toast";
-      el.textContent = msg;
-      host.appendChild(el);
-      setTimeout(() => {
-        el.style.opacity = "0";
-        el.style.transition = "opacity .25s";
-        setTimeout(() => el.remove(), 280);
-      }, 2200);
-    }
-
-    /* —— Media helpers —— */
-    function readFiles(fileList) {
-      const files = Array.from(fileList || []);
-      return Promise.all(
-        files.map(
-          (file) =>
-            new Promise((resolve, reject) => {
-              const reader = new FileReader();
-              reader.onload = () => {
-                const id = uid();
-                const type = file.type.startsWith("video/") ? "video" : "image";
-                const url = reader.result;
-                mediaStore.set(id, url);
-                resolve({ id, type, name: file.name, url });
-              };
-              reader.onerror = reject;
-              reader.readAsDataURL(file);
-            })
-        )
-      );
-    }
-
-    function mediaUrl(m) {
-      if (!m) return "";
-      if (m.url) return m.url;
-      return mediaStore.get(m.id) || "";
-    }
-
-    function renderPreviews(container, list, onRemove) {
-      container.innerHTML = "";
-      list.forEach((m, idx) => {
-        const url = mediaUrl(m);
-        if (!url) return;
-        const div = document.createElement("div");
-        div.className = "preview-item";
-        if (m.type === "video") {
-          const v = document.createElement("video");
-          v.src = url;
-          v.muted = true;
-          div.appendChild(v);
-        } else {
-          const img = document.createElement("img");
-          img.src = url;
-          img.alt = m.name || "预览";
-          div.appendChild(img);
-        }
-        const rm = document.createElement("button");
-        rm.type = "button";
-        rm.className = "preview-remove";
-        rm.setAttribute("aria-label", "删除");
-        rm.textContent = "×";
-        rm.addEventListener("click", (e) => {
-          e.stopPropagation();
-          onRemove(idx);
-        });
-        div.appendChild(rm);
-        container.appendChild(div);
-      });
-    }
-
-    /* —— Navigation —— */
-    let currentView = "home";
-
-    function showView(name) {
-      currentView = name;
-      $$(".view").forEach((v) => {
-        const on = v.id === "view-" + name;
-        v.classList.toggle("is-active", on);
-        if (on) v.removeAttribute("hidden");
-        else v.setAttribute("hidden", "");
-      });
-      $$(".nav-item[data-view]").forEach((btn) => {
-        btn.classList.toggle("is-active", btn.getAttribute("data-view") === name);
-      });
-      if (name !== "home") window.scrollTo(0, 0);
-      try {
-        localStorage.setItem("yuniqiu-last-view", name);
-      } catch (_) {}
-    }
-
-    $$("#sideNav .nav-item, #bottomNav .nav-item").forEach((btn) => {
-      btn.addEventListener("click", () => showView(btn.getAttribute("data-view")));
+    // 点击遮罩关闭
+    $('modalOverlay').addEventListener('click', (e) => {
+        if (e.target === $('modalOverlay')) closeModal();
     });
-    $$("[data-go]").forEach((btn) => {
-      btn.addEventListener("click", () => showView(btn.getAttribute("data-go")));
-    });
+}
 
-    /* —— Music —— */
-    const bgm = $("#bgm");
-    bgm.volume = 0.38;
-    let musicPlaying = false;
-
-    function setMusicUI(playing) {
-      musicPlaying = playing;
-      const iconPlay = $("#iconPlay");
-      const iconPause = $("#iconPause");
-      const fabPlay = $("#fabIconPlay");
-      const fabPause = $("#fabIconPause");
-      if (iconPlay) iconPlay.hidden = playing;
-      if (iconPause) iconPause.hidden = !playing;
-      if (fabPlay) fabPlay.hidden = playing;
-      if (fabPause) fabPause.hidden = !playing;
-      $("#fabMusic").classList.toggle("is-muted", !playing);
-      $("#musicHint").textContent = playing ? "播放中 · 卡农" : "已暂停 · 轻触继续";
-    }
-
-    async function playMusic() {
-      try {
-        await bgm.play();
-        setMusicUI(true);
-        state.musicMuted = false;
-        save();
-      } catch (e) {
-        setMusicUI(false);
-        $("#musicHint").textContent = "浏览器拦截了自动播放，请点击播放";
-        toast("请点击播放按钮开启音乐");
-      }
-    }
-
-    function pauseMusic() {
-      bgm.pause();
-      setMusicUI(false);
-      state.musicMuted = true;
-      save();
-    }
-
-    function toggleMusic() {
-      if (musicPlaying && !bgm.paused) pauseMusic();
-      else playMusic();
-    }
-
-    $("#musicToggle").addEventListener("click", toggleMusic);
-    $("#fabMusic").addEventListener("click", toggleMusic);
-
-    // 尝试自动播放；失败则等首次交互
-    function tryAutoplay() {
-      if (state.musicMuted) {
-        setMusicUI(false);
-        $("#musicHint").textContent = "已静音 · 轻触播放";
-        return;
-      }
-      playMusic();
-    }
-
-    let unlocked = false;
-    function unlockOnce() {
-      if (unlocked) return;
-      unlocked = true;
-      if (!state.musicMuted && bgm.paused) playMusic();
-    }
-    ["pointerdown", "keydown", "touchstart"].forEach((ev) => {
-      document.addEventListener(ev, unlockOnce, { once: true, passive: true });
-    });
-
-    /* —— Parallax —— */
-    const stageBg = $("#stageBg");
-    let raf = 0;
-    function onScroll() {
-      if (raf) return;
-      raf = requestAnimationFrame(() => {
-        const y = window.scrollY || 0;
-        const shift = Math.min(y * 0.06, 48);
-        stageBg.style.transform = "translate3d(0, " + shift + "px, 0) scale(1.06)";
-        raf = 0;
-      });
-    }
-    window.addEventListener("scroll", onScroll, { passive: true });
-
-    /* —— Diary —— */
-    let diaryDraft = emptyDiaryDraft();
-    let diaryEditId = null;
-
-    function emptyDiaryDraft() {
-      return { date: today(), title: "", body: "", media: [] };
-    }
-
-    function openDiaryComposer(entry) {
-      const box = $("#diaryComposer");
-      box.hidden = false;
-      if (entry) {
-        diaryEditId = entry.id;
-        diaryDraft = {
-          date: entry.date,
-          title: entry.title,
-          body: entry.body,
-          media: (entry.media || []).map((m) => ({
-            ...m,
-            url: mediaUrl(m),
-          })),
-        };
-        $("#diaryComposerTitle").textContent = "编辑日记";
-      } else {
-        diaryEditId = null;
-        diaryDraft = emptyDiaryDraft();
-        $("#diaryComposerTitle").textContent = "新日记";
-      }
-      $("#diaryDate").value = diaryDraft.date;
-      $("#diaryTitle").value = diaryDraft.title;
-      $("#diaryBody").value = diaryDraft.body;
-      bindDiaryPreviewRemove();
-      $("#diaryTitle").focus();
-    }
-
-    function bindDiaryPreviewRemove() {
-      renderPreviews($("#diaryPreviews"), diaryDraft.media, (i) => {
-        diaryDraft.media.splice(i, 1);
-        bindDiaryPreviewRemove();
-      });
-    }
-
-    function closeDiaryComposer() {
-      $("#diaryComposer").hidden = true;
-      diaryEditId = null;
-      diaryDraft = emptyDiaryDraft();
-      $("#diaryImages").value = "";
-      $("#diaryVideos").value = "";
-    }
-
-    function saveDiary() {
-      const date = $("#diaryDate").value || today();
-      const title = ($("#diaryTitle").value || "").trim() || "无题";
-      const body = ($("#diaryBody").value || "").trim();
-      if (!body && diaryDraft.media.length === 0) {
-        toast("写点文字或加一张图吧");
-        return;
-      }
-      const now = Date.now();
-      if (diaryEditId) {
-        const idx = state.diaries.findIndex((d) => d.id === diaryEditId);
-        if (idx >= 0) {
-          state.diaries[idx] = {
-            ...state.diaries[idx],
-            date,
-            title,
-            body,
-            media: diaryDraft.media.map(({ id, type, name, url }) => {
-              if (url) mediaStore.set(id, url);
-              return { id, type, name, url };
-            }),
-            updatedAt: now,
-          };
-        }
-        toast("日记已更新");
-      } else {
-        state.diaries.unshift({
-          id: uid(),
-          date,
-          title,
-          body,
-          media: diaryDraft.media.map(({ id, type, name, url }) => {
-            if (url) mediaStore.set(id, url);
-            return { id, type, name, url };
-          }),
-          createdAt: now,
-          updatedAt: now,
-        });
-        toast("日记已保存");
-      }
-      save();
-      closeDiaryComposer();
-      renderDiaries();
-    }
-
-    function deleteDiary(id) {
-      state.diaries = state.diaries.filter((d) => d.id !== id);
-      save();
-      renderDiaries();
-      toast("已删除");
-    }
-
-    function renderDiaries() {
-      const list = $("#diaryList");
-      const items = [...state.diaries].sort((a, b) => {
-        if (a.date !== b.date) return a.date < b.date ? 1 : -1;
-        return (b.updatedAt || 0) - (a.updatedAt || 0);
-      });
-      if (!items.length) {
-        list.innerHTML =
-          '<div class="card empty"><strong>还没有日记</strong>点右上角「新建日记」，留下今天的光。</div>';
-        return;
-      }
-      list.innerHTML = items
-        .map((d) => {
-          const snippet = escapeHtml((d.body || "").slice(0, 90));
-          const mediaHtml = (d.media || [])
-            .map((m) => {
-              const url = mediaUrl(m);
-              if (!url) {
-                return '<div class="preview-item" style="display:grid;place-items:center;font-size:11px;color:var(--muted);padding:8px;text-align:center">媒体仅会话内可预览</div>';
-              }
-              if (m.type === "video") {
-                return '<video src="' + url + '" controls playsinline></video>';
-              }
-              return '<img src="' + url + '" alt="" loading="lazy" />';
-            })
-            .join("");
-          return (
-            '<article class="card entry" data-id="' +
-            d.id +
-            '" data-od-id="diary-entry-' +
-            d.id +
-            '">' +
-            '<div class="entry-head" data-toggle>' +
-            '<div class="entry-date">' +
-            fmtDate(d.date) +
-            "</div>" +
-            '<div class="entry-main">' +
-            '<div class="entry-title">' +
-            escapeHtml(d.title) +
-            "</div>" +
-            '<div class="entry-snippet">' +
-            snippet +
-            (d.body && d.body.length > 90 ? "…" : "") +
-            "</div>" +
-            "</div>" +
-            '<div class="entry-tools" data-stop>' +
-            '<button type="button" class="btn-icon" data-edit aria-label="编辑">' +
-            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 17.5V20h2.5L18 8.5 15.5 6 4 17.5z"/><path d="M13.5 7.5l3 3"/></svg>' +
-            "</button>" +
-            '<button type="button" class="btn-icon" data-del aria-label="删除">' +
-            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 7h14M9 7V5h6v2m-8 0 1 12h6l1-12"/></svg>' +
-            "</button>" +
-            "</div>" +
-            "</div>" +
-            '<div class="entry-body">' +
-            '<div class="entry-content">' +
-            escapeHtml(d.body) +
-            "</div>" +
-            (mediaHtml ? '<div class="entry-media">' + mediaHtml + "</div>" : "") +
-            "</div>" +
-            "</article>"
-          );
-        })
-        .join("");
-
-      list.querySelectorAll(".entry").forEach((el) => {
-        const id = el.getAttribute("data-id");
-        el.querySelector("[data-toggle]").addEventListener("click", (e) => {
-          if (e.target.closest("[data-stop]")) return;
-          el.classList.toggle("is-open");
-        });
-        el.querySelector("[data-edit]").addEventListener("click", (e) => {
-          e.stopPropagation();
-          const entry = state.diaries.find((d) => d.id === id);
-          if (entry) openDiaryComposer(entry);
-        });
-        el.querySelector("[data-del]").addEventListener("click", (e) => {
-          e.stopPropagation();
-          deleteDiary(id);
-        });
-      });
-    }
-
-    $("#diaryNewBtn").addEventListener("click", () => openDiaryComposer(null));
-    $("#diaryComposerClose").addEventListener("click", closeDiaryComposer);
-    $("#diaryCancel").addEventListener("click", closeDiaryComposer);
-    $("#diarySave").addEventListener("click", saveDiary);
-
-    $("#diaryImages").addEventListener("change", async (e) => {
-      const added = await readFiles(e.target.files);
-      diaryDraft.media = diaryDraft.media.concat(added);
-      bindDiaryPreviewRemove();
-      e.target.value = "";
-    });
-    $("#diaryVideos").addEventListener("change", async (e) => {
-      const added = await readFiles(e.target.files);
-      diaryDraft.media = diaryDraft.media.concat(added);
-      bindDiaryPreviewRemove();
-      e.target.value = "";
-    });
-
-    /* —— Sport —— */
-    let sportDraft = emptySportDraft();
-    let sportEditId = null;
-
-    function emptySportDraft() {
-      return {
-        date: today(),
-        type: "跑步",
-        duration: "",
-        distance: "",
-        pace: "",
-        mood: 4,
-        note: "",
-        media: [],
-      };
-    }
-
-    function openSportComposer(entry) {
-      $("#sportComposer").hidden = false;
-      if (entry) {
-        sportEditId = entry.id;
-        sportDraft = {
-          date: entry.date,
-          type: entry.type,
-          duration: entry.duration,
-          distance: entry.distance,
-          pace: entry.pace || "",
-          mood: entry.mood || 4,
-          note: entry.note || "",
-          media: (entry.media || []).map((m) => ({ ...m, url: mediaUrl(m) })),
-        };
-        $("#sportComposerTitle").textContent = "编辑记录";
-      } else {
-        sportEditId = null;
-        sportDraft = emptySportDraft();
-        $("#sportComposerTitle").textContent = "新运动";
-      }
-      $("#sportDate").value = sportDraft.date;
-      $("#sportType").value = sportDraft.type;
-      $("#sportDuration").value = sportDraft.duration;
-      $("#sportDistance").value = sportDraft.distance;
-      $("#sportPace").value = sportDraft.pace;
-      $("#sportMood").value = sportDraft.mood;
-      $("#sportMoodVal").textContent = sportDraft.mood;
-      $("#sportNote").value = sportDraft.note;
-      bindSportPreviewRemove();
-    }
-
-    function bindSportPreviewRemove() {
-      renderPreviews($("#sportPreviews"), sportDraft.media, (i) => {
-        sportDraft.media.splice(i, 1);
-        bindSportPreviewRemove();
-      });
-    }
-
-    function closeSportComposer() {
-      $("#sportComposer").hidden = true;
-      sportEditId = null;
-      sportDraft = emptySportDraft();
-      $("#sportImages").value = "";
-      $("#sportVideos").value = "";
-    }
-
-    function saveSport() {
-      const date = $("#sportDate").value || today();
-      const type = $("#sportType").value || "其他";
-      const duration = Number($("#sportDuration").value) || 0;
-      const distance = Number($("#sportDistance").value) || 0;
-      const pace = ($("#sportPace").value || "").trim();
-      const mood = Number($("#sportMood").value) || 3;
-      const note = ($("#sportNote").value || "").trim();
-      if (!duration && !distance) {
-        toast("请至少填写时长或距离");
-        return;
-      }
-      const now = Date.now();
-      const media = sportDraft.media.map(({ id, type: t, name, url }) => {
-        if (url) mediaStore.set(id, url);
-        return { id, type: t, name, url };
-      });
-      if (sportEditId) {
-        const idx = state.sports.findIndex((s) => s.id === sportEditId);
-        if (idx >= 0) {
-          state.sports[idx] = {
-            ...state.sports[idx],
-            date,
-            type,
-            duration,
-            distance,
-            pace,
-            mood,
-            note,
-            media,
-            updatedAt: now,
-          };
-        }
-        toast("运动记录已更新");
-      } else {
-        state.sports.unshift({
-          id: uid(),
-          date,
-          type,
-          duration,
-          distance,
-          pace,
-          mood,
-          note,
-          media,
-          createdAt: now,
-          updatedAt: now,
-        });
-        toast("运动记录已保存");
-      }
-      save();
-      closeSportComposer();
-      renderSports();
-    }
-
-    function deleteSport(id) {
-      state.sports = state.sports.filter((s) => s.id !== id);
-      save();
-      renderSports();
-      toast("已删除");
-    }
-
-    function renderSports() {
-      const list = $("#sportList");
-      const items = [...state.sports].sort((a, b) => {
-        if (a.date !== b.date) return a.date < b.date ? 1 : -1;
-        return (b.updatedAt || 0) - (a.updatedAt || 0);
-      });
-      if (!items.length) {
-        list.innerHTML =
-          '<div class="card empty" style="margin-left:0"><strong>还没有运动记录</strong>跑一段、走一圈，回来记一笔。</div>';
-        return;
-      }
-      list.innerHTML = items
-        .map((s) => {
-          const mediaHtml = (s.media || [])
-            .map((m) => {
-              const url = mediaUrl(m);
-              if (!url) {
-                return '<div class="preview-item" style="aspect-ratio:4/3;display:grid;place-items:center;font-size:11px;color:var(--muted);padding:8px;text-align:center;border-radius:12px;border:1px solid var(--border)">媒体仅会话内</div>';
-              }
-              if (m.type === "video") {
-                return '<video src="' + url + '" controls playsinline style="width:100%;border-radius:12px;aspect-ratio:4/3;object-fit:cover"></video>';
-              }
-              return '<img src="' + url + '" alt="" loading="lazy" style="width:100%;border-radius:12px;aspect-ratio:4/3;object-fit:cover" />';
-            })
-            .join("");
-          return (
-            '<article class="card sport-card" data-id="' +
-            s.id +
-            '" data-od-id="sport-card-' +
-            s.id +
-            '">' +
-            '<div class="sport-top">' +
-            "<div>" +
-            '<div class="sport-type">' +
-            escapeHtml(s.type) +
-            "</div>" +
-            '<div class="sport-date">' +
-            fmtDate(s.date) +
-            "</div>" +
-            "</div>" +
-            '<div class="entry-tools">' +
-            '<button type="button" class="btn-icon" data-edit aria-label="编辑">' +
-            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 17.5V20h2.5L18 8.5 15.5 6 4 17.5z"/><path d="M13.5 7.5l3 3"/></svg>' +
-            "</button>" +
-            '<button type="button" class="btn-icon" data-del aria-label="删除">' +
-            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 7h14M9 7V5h6v2m-8 0 1 12h6l1-12"/></svg>' +
-            "</button>" +
-            "</div>" +
-            "</div>" +
-            '<div class="sport-stats">' +
-            '<div class="stat"><div class="stat-label">时长</div><div class="stat-value">' +
-            (s.duration || "—") +
-            '<span style="font-size:.75rem;color:var(--muted);margin-left:2px">分</span></div></div>' +
-            '<div class="stat"><div class="stat-label">距离</div><div class="stat-value">' +
-            (s.distance || "—") +
-            '<span style="font-size:.75rem;color:var(--muted);margin-left:2px">km</span></div></div>' +
-            '<div class="stat"><div class="stat-label">配速</div><div class="stat-value" style="font-size:.95rem">' +
-            escapeHtml(s.pace || "—") +
-            "</div></div>" +
-            '<div class="stat"><div class="stat-label">心情</div><div class="stat-value"><span class="stars" aria-label="' +
-            s.mood +
-            '星">' +
-            stars(s.mood) +
-            "</span></div></div>" +
-            "</div>" +
-            (s.note
-              ? '<p style="margin-top:12px;color:var(--muted);font-size:.9rem;line-height:1.55">' +
-                escapeHtml(s.note) +
-                "</p>"
-              : "") +
-            (mediaHtml
-              ? '<div class="entry-media" style="margin-top:12px">' + mediaHtml + "</div>"
-              : "") +
-            "</article>"
-          );
-        })
-        .join("");
-
-      list.querySelectorAll(".sport-card").forEach((el) => {
-        const id = el.getAttribute("data-id");
-        el.querySelector("[data-edit]").addEventListener("click", () => {
-          const entry = state.sports.find((s) => s.id === id);
-          if (entry) openSportComposer(entry);
-        });
-        el.querySelector("[data-del]").addEventListener("click", () => deleteSport(id));
-      });
-    }
-
-    $("#sportNewBtn").addEventListener("click", () => openSportComposer(null));
-    $("#sportComposerClose").addEventListener("click", closeSportComposer);
-    $("#sportCancel").addEventListener("click", closeSportComposer);
-    $("#sportSave").addEventListener("click", saveSport);
-    $("#sportMood").addEventListener("input", (e) => {
-      $("#sportMoodVal").textContent = e.target.value;
-    });
-    $("#sportImages").addEventListener("change", async (e) => {
-      const added = await readFiles(e.target.files);
-      sportDraft.media = sportDraft.media.concat(added);
-      bindSportPreviewRemove();
-      e.target.value = "";
-    });
-    $("#sportVideos").addEventListener("change", async (e) => {
-      const added = await readFiles(e.target.files);
-      sportDraft.media = sportDraft.media.concat(added);
-      bindSportPreviewRemove();
-      e.target.value = "";
-    });
-
-    /* —— About —— */
-    function renderAbout() {
-      const p = state.profile;
-      $("#aboutName").textContent = p.name || "芋泥球香柑";
-      $("#aboutBio").textContent =
-        p.bio ||
-        "喜欢在树荫下散步，把阳光、风声和脚步记进本子里。";
-      if (p.avatar) $("#aboutAvatar").src = p.avatar;
-      // restore session avatar if any
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        // already in state
-      } catch (_) {}
-    }
-
-    let aboutSaveTimer = 0;
-    function scheduleAboutSave() {
-      clearTimeout(aboutSaveTimer);
-      aboutSaveTimer = setTimeout(() => {
-        state.profile.name = ($("#aboutName").textContent || "").trim() || "芋泥球香柑";
-        state.profile.bio = ($("#aboutBio").textContent || "").trim();
-        save();
-        toast("资料已保存");
-      }, 500);
-    }
-
-    $("#aboutName").addEventListener("input", scheduleAboutSave);
-    $("#aboutName").addEventListener("blur", () => {
-      if (!($("#aboutName").textContent || "").trim()) {
-        $("#aboutName").textContent = "芋泥球香柑";
-      }
-      scheduleAboutSave();
-    });
-    $("#aboutBio").addEventListener("input", scheduleAboutSave);
-    $("#aboutBio").addEventListener("blur", scheduleAboutSave);
-
-    $("#aboutAvatarInput").addEventListener("change", async (e) => {
-      const files = e.target.files;
-      if (!files || !files[0]) return;
-      const [m] = await readFiles(files);
-      state.profile.avatar = m.url;
-      $("#aboutAvatar").src = m.url;
-      // 会话内显示；localStorage 只保留路径占位，见 save()
-      toast("头像已更新（当前会话）");
-      e.target.value = "";
-    });
-
-    /* —— Init —— */
-    function init() {
-      // restore last view optionally stay home first
-      renderDiaries();
-      renderSports();
-      renderAbout();
-      tryAutoplay();
-    }
-
-    init();
-  })();
-  </script>
+init();
+</script>
 </body>
 </html>
