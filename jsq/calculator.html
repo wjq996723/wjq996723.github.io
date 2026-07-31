@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f3f5f1">
+<title>简明计算器</title>
+<style>
+:root {
+    color-scheme: light;
+    --page: #f3f5f1;
+    --surface: #ffffff;
+    --surface-soft: #f7f8f5;
+    --text: #1d2420;
+    --muted: #6e7771;
+    --line: #dce1dc;
+    --line-strong: #c9d0ca;
+    --accent: #147a52;
+    --accent-hover: #0f6744;
+    --accent-soft: #e2f2e9;
+    --operator: #c65322;
+    --operator-soft: #fff0e8;
+    --danger: #b33b35;
+    --danger-soft: #fbe9e7;
+    --shadow: 0 18px 48px rgba(31, 43, 36, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        color-scheme: dark;
+        --page: #171a18;
+        --surface: #202522;
+        --surface-soft: #272d29;
+        --text: #f1f4f1;
+        --muted: #9ca69f;
+        --line: #353d38;
+        --line-strong: #465049;
+        --accent: #65c994;
+        --accent-hover: #7bd5a5;
+        --accent-soft: #203d2f;
+        --operator: #f29867;
+        --operator-soft: #452e24;
+        --danger: #f08b85;
+        --danger-soft: #452725;
+        --shadow: 0 18px 48px rgba(0, 0, 0, 0.25);
+    }
+}
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+    --page: #171a18;
+    --surface: #202522;
+    --surface-soft: #272d29;
+    --text: #f1f4f1;
+    --muted: #9ca69f;
+    --line: #353d38;
+    --line-strong: #465049;
+    --accent: #65c994;
+    --accent-hover: #7bd5a5;
+    --accent-soft: #203d2f;
+    --operator: #f29867;
+    --operator-soft: #452e24;
+    --danger: #f08b85;
+    --danger-soft: #452725;
+    --shadow: 0 18px 48px rgba(0, 0, 0, 0.25);
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--page);
+    color: var(--text);
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0;
+}
+
+button, textarea { font: inherit; }
+button { -webkit-tap-highlight-color: transparent; }
+
+.app {
+    width: min(100% - 32px, 940px);
+    margin: 0 auto;
+    padding: max(24px, env(safe-area-inset-top)) 0 max(24px, env(safe-area-inset-bottom));
+}
+
+.app-header {
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.brand { min-width: 0; }
+.brand h1 {
+    margin: 0;
+    font-size: 24px;
+    line-height: 1.2;
+    font-weight: 760;
+}
+.brand p {
+    margin: 5px 0 0;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.icon-button {
+    width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
+    display: inline-grid;
+    place-items: center;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+}
+.icon-button:hover { border-color: var(--line-strong); background: var(--surface-soft); }
+.icon-button:focus-visible, button:focus-visible, textarea:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--accent) 30%, transparent);
+    outline-offset: 2px;
+}
+.icon-button svg { width: 19px; height: 19px; }
+
+.workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 1.12fr) minmax(320px, 0.88fr);
+    gap: 16px;
+    align-items: stretch;
+}
+
+.panel {
+    min-width: 0;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+.batch-panel {
+    display: flex;
+    flex-direction: column;
+    padding: 22px;
+}
+
+.panel-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+.panel-heading h2 {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.35;
+}
+.panel-heading p {
+    margin: 4px 0 0;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.5;
+}
+.status-badge {
+    flex: 0 0 auto;
+    min-width: 66px;
+    padding: 5px 8px;
+    border-radius: 999px;
+    background: var(--surface-soft);
+    color: var(--muted);
+    font-size: 11px;
+    text-align: center;
+}
+.status-badge.valid { background: var(--accent-soft); color: var(--accent); }
+.status-badge.warning { background: var(--operator-soft); color: var(--operator); }
+
+.paste-input {
+    width: 100%;
+    min-height: 154px;
+    max-height: 300px;
+    resize: vertical;
+    padding: 13px 14px;
+    border: 1px solid var(--line-strong);
+    border-radius: 7px;
+    background: var(--surface-soft);
+    color: var(--text);
+    line-height: 1.65;
+    outline: none;
+}
+.paste-input::placeholder { color: var(--muted); opacity: 0.75; }
+.paste-input:focus { border-color: var(--accent); background: var(--surface); }
+
+.batch-operation {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 10px;
+}
+.batch-operation-label {
+    flex: 0 0 auto;
+    color: var(--muted);
+    font-size: 12px;
+}
+.segment-control {
+    flex: 1;
+    max-width: 250px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 3px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    background: var(--surface-soft);
+}
+.segment-button {
+    min-width: 42px;
+    height: 32px;
+    border: 0;
+    border-radius: 5px;
+    background: transparent;
+    color: var(--muted);
+    font-size: 17px;
+    cursor: pointer;
+}
+.segment-button:hover { color: var(--text); }
+.segment-button.active {
+    background: var(--surface);
+    box-shadow: 0 1px 4px rgba(20, 30, 24, 0.12);
+    color: var(--accent);
+    font-weight: 720;
+}
+
+.paste-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.action-button {
+    min-height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 8px 12px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    background: var(--surface);
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 650;
+    cursor: pointer;
+}
+.action-button:hover { background: var(--surface-soft); border-color: var(--line-strong); }
+.action-button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.action-button.primary:hover { background: var(--accent-hover); }
+.action-button svg { width: 16px; height: 16px; }
+
+.stats {
+    display: none;
+    margin-top: 18px;
+    border-top: 1px solid var(--line);
+}
+.stats.show { display: block; animation: reveal 180ms ease-out; }
+@keyframes reveal { from { opacity: 0; transform: translateY(4px); } }
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-bottom: 1px solid var(--line);
+}
+.stat {
+    min-width: 0;
+    padding: 14px 10px 13px;
+    border-right: 1px solid var(--line);
+}
+.stat:nth-child(3n) { border-right: 0; }
+.stat:nth-child(-n + 3) { border-bottom: 1px solid var(--line); }
+.stat-label { display: block; margin-bottom: 5px; color: var(--muted); font-size: 11px; }
+.stat-value {
+    display: block;
+    overflow: hidden;
+    color: var(--text);
+    font-size: clamp(15px, 2.1vw, 19px);
+    font-weight: 720;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.stat-value.accent { color: var(--accent); }
+.result-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 11px;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.5;
+}
+.result-footer span { min-width: 0; overflow-wrap: anywhere; }
+.copy-button { flex: 0 0 auto; }
+
+.calculator-panel {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+}
+.display {
+    min-height: 122px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 17px 16px;
+    border-radius: 7px;
+    background: var(--surface-soft);
+    text-align: right;
+    overflow: hidden;
+}
+.display-history {
+    min-height: 20px;
+    margin-bottom: 8px;
+    overflow: hidden;
+    color: var(--muted);
+    font-size: 13px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.display-current {
+    width: 100%;
+    overflow: hidden;
+    color: var(--text);
+    font-size: 38px;
+    font-weight: 720;
+    line-height: 1.05;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.display-current.error { color: var(--danger); font-size: 26px; }
+
+.keypad {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-rows: repeat(5, minmax(54px, 1fr));
+    gap: 8px;
+    margin-top: 10px;
+}
+.key {
+    min-width: 0;
+    min-height: 54px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    background: var(--surface);
+    color: var(--text);
+    font-size: 18px;
+    font-weight: 620;
+    cursor: pointer;
+    user-select: none;
+}
+.key:hover { background: var(--surface-soft); border-color: var(--line-strong); }
+.key:active { transform: translateY(1px); }
+.key.utility { color: var(--danger); background: var(--danger-soft); border-color: transparent; font-size: 15px; }
+.key.operator { color: var(--operator); background: var(--operator-soft); border-color: transparent; }
+.key.operator.active { background: var(--operator); color: #fff; }
+.key.equals { background: var(--accent); border-color: var(--accent); color: #fff; }
+.key.equals:hover { background: var(--accent-hover); }
+.key.zero { grid-column: span 2; }
+
+.history-section {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+}
+.history-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+.history-title h3 { margin: 0; font-size: 12px; color: var(--muted); font-weight: 650; }
+.text-button {
+    padding: 3px 0;
+    border: 0;
+    background: transparent;
+    color: var(--accent);
+    font-size: 11px;
+    cursor: pointer;
+}
+.history-list {
+    display: grid;
+    gap: 4px;
+    max-height: 92px;
+    overflow: auto;
+}
+.history-empty { padding: 7px 0; color: var(--muted); font-size: 11px; }
+.history-item {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 6px 7px;
+    border: 0;
+    border-radius: 5px;
+    background: transparent;
+    color: var(--muted);
+    font-size: 11px;
+    cursor: pointer;
+}
+.history-item:hover { background: var(--surface-soft); color: var(--text); }
+.history-item strong { color: var(--text); font-size: 12px; }
+
+.toast {
+    position: fixed;
+    left: 50%;
+    bottom: max(22px, env(safe-area-inset-bottom));
+    z-index: 10;
+    max-width: calc(100vw - 32px);
+    padding: 10px 14px;
+    border-radius: 7px;
+    background: #242a26;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.22);
+    color: #fff;
+    font-size: 13px;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 10px);
+    transition: opacity 160ms ease, transform 160ms ease;
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+.toast.error { background: #a73530; }
+
+@media (max-width: 760px) {
+    .app { width: min(100% - 24px, 560px); padding-top: 18px; }
+    .workspace { grid-template-columns: 1fr; }
+    .calculator-panel { order: -1; }
+    .history-section { display: none; }
+    .keypad { grid-template-rows: repeat(5, 58px); }
+}
+
+@media (max-width: 420px) {
+    .app { width: 100%; padding: 0 0 env(safe-area-inset-bottom); }
+    .app-header { margin: 0; padding: 14px 16px 10px; }
+    .brand h1 { font-size: 21px; }
+    .brand p { display: none; }
+    .workspace { gap: 10px; }
+    .panel { border-right: 0; border-left: 0; border-radius: 0; box-shadow: none; }
+    .calculator-panel, .batch-panel { padding: 14px; }
+    .display { min-height: 105px; }
+    .display-current { font-size: 34px; }
+    .keypad { grid-template-rows: repeat(5, 55px); }
+    .paste-input { min-height: 120px; }
+    .batch-operation { align-items: stretch; flex-direction: column; gap: 7px; }
+    .segment-control { width: 100%; max-width: none; }
+    .paste-actions .action-button { flex: 1 1 auto; }
+    .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .stat:nth-child(n) { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .stat:nth-child(2n) { border-right: 0; }
+    .stat:nth-last-child(-n + 2) { border-bottom: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { scroll-behavior: auto !important; animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+<main class="app">
+    <header class="app-header">
+        <div class="brand">
+            <h1>简明计算器</h1>
+            <p>日常运算与批量数据统计</p>
+        </div>
+        <button class="icon-button" id="themeButton" type="button" aria-label="切换深色模式" title="切换深色模式">
+            <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+            </svg>
+        </button>
+    </header>
+
+    <div class="workspace">
+        <section class="panel batch-panel" aria-labelledby="batchTitle">
+            <div class="panel-heading">
+                <div>
+                    <h2 id="batchTitle">批量统计</h2>
+                    <p>支持空格、逗号、分号、Tab 和换行分隔</p>
+                </div>
+                <span class="status-badge" id="parseStatus">等待数据</span>
+            </div>
+
+            <textarea class="paste-input" id="pasteInput" spellcheck="false" placeholder="粘贴数字，例如：&#10;128.5, 96, 77.5&#10;42  35  18"></textarea>
+
+            <div class="batch-operation">
+                <span class="batch-operation-label">选择连续运算</span>
+                <div class="segment-control" id="batchOperator" role="group" aria-label="批量运算方式">
+                    <button class="segment-button active" type="button" data-batch-operator="+" aria-pressed="true" title="依次相加">+</button>
+                    <button class="segment-button" type="button" data-batch-operator="-" aria-pressed="false" title="按顺序依次相减">−</button>
+                    <button class="segment-button" type="button" data-batch-operator="*" aria-pressed="false" title="依次相乘">×</button>
+                    <button class="segment-button" type="button" data-batch-operator="/" aria-pressed="false" title="按顺序依次相除">÷</button>
+                </div>
+            </div>
+
+            <div class="paste-actions">
+                <button class="action-button primary" id="analyzeButton" type="button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg>
+                    计算
+                </button>
+                <button class="action-button" id="useSumButton" type="button">将结果用于计算</button>
+                <button class="action-button" id="clearPasteButton" type="button">清空</button>
+            </div>
+
+            <div class="stats" id="resultBox" aria-live="polite">
+                <div class="stats-grid">
+                    <div class="stat"><span class="stat-label">数据个数</span><span class="stat-value" id="rCount">0</span></div>
+                    <div class="stat"><span class="stat-label" id="rResultLabel">加法结果</span><span class="stat-value accent" id="rSum">0</span></div>
+                    <div class="stat"><span class="stat-label">平均值</span><span class="stat-value" id="rAvg">0</span></div>
+                    <div class="stat"><span class="stat-label">中位数</span><span class="stat-value" id="rMedian">0</span></div>
+                    <div class="stat"><span class="stat-label">最大值</span><span class="stat-value" id="rMax">0</span></div>
+                    <div class="stat"><span class="stat-label">最小值</span><span class="stat-value" id="rMin">0</span></div>
+                </div>
+                <div class="result-footer">
+                    <span id="resultDetail">尚未统计</span>
+                    <button class="text-button copy-button" id="copyStatsButton" type="button">复制结果</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel calculator-panel" aria-label="计算器">
+            <div class="display" aria-live="polite" aria-atomic="true">
+                <div class="display-history" id="displayHistory">&nbsp;</div>
+                <div class="display-current" id="displayCurrent">0</div>
+            </div>
+
+            <div class="keypad" id="keypad">
+                <button class="key utility" type="button" data-action="clear">AC</button>
+                <button class="key utility" type="button" data-action="sign">±</button>
+                <button class="key utility" type="button" data-action="percent">%</button>
+                <button class="key operator" type="button" data-operator="/">÷</button>
+
+                <button class="key" type="button" data-number="7">7</button>
+                <button class="key" type="button" data-number="8">8</button>
+                <button class="key" type="button" data-number="9">9</button>
+                <button class="key operator" type="button" data-operator="*">×</button>
+
+                <button class="key" type="button" data-number="4">4</button>
+                <button class="key" type="button" data-number="5">5</button>
+                <button class="key" type="button" data-number="6">6</button>
+                <button class="key operator" type="button" data-operator="-">−</button>
+
+                <button class="key" type="button" data-number="1">1</button>
+                <button class="key" type="button" data-number="2">2</button>
+                <button class="key" type="button" data-number="3">3</button>
+                <button class="key operator" type="button" data-operator="+">+</button>
+
+                <button class="key zero" type="button" data-number="0">0</button>
+                <button class="key" type="button" data-number=".">.</button>
+                <button class="key equals" type="button" data-action="equals">=</button>
+            </div>
+
+            <div class="history-section">
+                <div class="history-title">
+                    <h3>最近计算</h3>
+                    <button class="text-button" id="clearHistoryButton" type="button">清除记录</button>
+                </div>
+                <div class="history-list" id="historyList"></div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+    'use strict';
+
+    const MAX_DIGITS = 15;
+    const HISTORY_LIMIT = 8;
+    const storage = {
+        get(key, fallback) {
+            try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; }
+        },
+        set(key, value) {
+            try { localStorage.setItem(key, JSON.stringify(value)); } catch { /* Storage may be unavailable. */ }
+        }
+    };
+
+    const state = {
+        current: '0',
+        previous: null,
+        operator: null,
+        waitingForOperand: false,
+        justCalculated: false,
+        expression: '',
+        error: false,
+        records: storage.get('calculator-history', [])
+    };
+
+    const els = {
+        current: document.getElementById('displayCurrent'),
+        history: document.getElementById('displayHistory'),
+        keypad: document.getElementById('keypad'),
+        paste: document.getElementById('pasteInput'),
+        parseStatus: document.getElementById('parseStatus'),
+        resultBox: document.getElementById('resultBox'),
+        resultDetail: document.getElementById('resultDetail'),
+        resultLabel: document.getElementById('rResultLabel'),
+        historyList: document.getElementById('historyList'),
+        toast: document.getElementById('toast'),
+        themeButton: document.getElementById('themeButton'),
+        themeIcon: document.getElementById('themeIcon')
+    };
+
+    let toastTimer;
+    let lastStats = null;
+    let batchOperator = '+';
+
+    function decimalPlaces(value) {
+        const text = String(value).toLowerCase();
+        if (text.includes('e-')) return Number(text.split('e-')[1]);
+        return (text.split('.')[1] || '').length;
+    }
+
+    function preciseOperation(a, b, operator) {
+        if (operator === '/' && b === 0) throw new Error('不能除以 0');
+        const places = Math.min(Math.max(decimalPlaces(a), decimalPlaces(b)), 12);
+        const factor = 10 ** places;
+        let result;
+        if (operator === '+') result = (Math.round(a * factor) + Math.round(b * factor)) / factor;
+        if (operator === '-') result = (Math.round(a * factor) - Math.round(b * factor)) / factor;
+        if (operator === '*') result = a * b;
+        if (operator === '/') result = a / b;
+        if (!Number.isFinite(result)) throw new Error('结果超出范围');
+        return Number(result.toPrecision(14));
+    }
+
+    function formatDisplay(value) {
+        const n = Number(value);
+        if (!Number.isFinite(n)) return String(value);
+        if (n === 0) return '0';
+        const abs = Math.abs(n);
+        if (abs >= 1e15 || abs < 1e-9) return n.toExponential(8).replace(/\.0+e/, 'e').replace(/(\.\d*?)0+e/, '$1e');
+        return new Intl.NumberFormat('zh-CN', { maximumSignificantDigits: 15, useGrouping: true }).format(n);
+    }
+
+    function formatStat(value) {
+        const n = Number(value);
+        if (!Number.isFinite(n)) return '—';
+        const abs = Math.abs(n);
+        if (abs >= 1e12 || (abs > 0 && abs < 0.000001)) return n.toExponential(6);
+        return new Intl.NumberFormat('zh-CN', { maximumFractionDigits: 8 }).format(n);
+    }
+
+    function render() {
+        els.current.textContent = state.error ? state.current : formatDisplay(state.current);
+        els.current.title = state.current;
+        els.current.classList.toggle('error', state.error);
+        els.history.textContent = state.expression || '\u00a0';
+        document.querySelectorAll('[data-operator]').forEach(button => {
+            button.classList.toggle('active', button.dataset.operator === state.operator && state.waitingForOperand);
+        });
+    }
+
+    function resetCalculator() {
+        Object.assign(state, {
+            current: '0', previous: null, operator: null, waitingForOperand: false,
+            justCalculated: false, expression: '', error: false
+        });
+        render();
+    }
+
+    function recoverFromError() {
+        if (state.error) resetCalculator();
+    }
+
+    function inputDigit(digit) {
+        recoverFromError();
+        if (state.justCalculated || state.waitingForOperand) {
+            state.current = digit === '.' ? '0.' : digit;
+            state.waitingForOperand = false;
+            if (state.justCalculated) {
+                state.expression = '';
+                state.operator = null;
+                state.previous = null;
+                state.justCalculated = false;
+            }
+        } else if (digit === '.') {
+            if (!state.current.includes('.')) state.current += '.';
+        } else {
+            const digitCount = state.current.replace(/[-.]/g, '').length;
+            if (digitCount >= MAX_DIGITS) return showToast(`最多输入 ${MAX_DIGITS} 位数字`, true);
+            state.current = state.current === '0' ? digit : state.current + digit;
+        }
+        render();
+    }
+
+    function chooseOperator(nextOperator) {
+        recoverFromError();
+        const inputValue = Number(state.current);
+        if (state.operator && state.waitingForOperand) {
+            state.operator = nextOperator;
+            state.expression = `${formatDisplay(state.previous)} ${symbolFor(nextOperator)}`;
+            return render();
+        }
+        if (state.operator && state.previous !== null) {
+            try {
+                state.current = String(preciseOperation(state.previous, inputValue, state.operator));
+            } catch (error) {
+                return showCalculatorError(error.message);
+            }
+        }
+        state.previous = Number(state.current);
+        state.operator = nextOperator;
+        state.waitingForOperand = true;
+        state.justCalculated = false;
+        state.expression = `${formatDisplay(state.previous)} ${symbolFor(nextOperator)}`;
+        render();
+    }
+
+    function calculate() {
+        if (state.error || !state.operator || state.previous === null || state.waitingForOperand) return;
+        const a = state.previous;
+        const b = Number(state.current);
+        const op = state.operator;
+        try {
+            const result = preciseOperation(a, b, op);
+            const expression = `${formatDisplay(a)} ${symbolFor(op)} ${formatDisplay(b)} =`;
+            state.current = String(result);
+            state.expression = expression;
+            state.previous = null;
+            state.operator = null;
+            state.waitingForOperand = false;
+            state.justCalculated = true;
+            addHistory(expression, result);
+            render();
+        } catch (error) {
+            showCalculatorError(error.message);
+        }
+    }
+
+    function toggleSign() {
+        recoverFromError();
+        if (state.current !== '0') state.current = state.current.startsWith('-') ? state.current.slice(1) : `-${state.current}`;
+        render();
+    }
+
+    function percent() {
+        recoverFromError();
+        const value = Number(state.current);
+        const result = state.previous !== null && (state.operator === '+' || state.operator === '-')
+            ? state.previous * value / 100
+            : value / 100;
+        state.current = String(Number(result.toPrecision(14)));
+        state.waitingForOperand = false;
+        render();
+    }
+
+    function backspace() {
+        if (state.error || state.justCalculated) return resetCalculator();
+        if (state.waitingForOperand) return;
+        state.current = state.current.length > 1 ? state.current.slice(0, -1) : '0';
+        if (state.current === '-') state.current = '0';
+        render();
+    }
+
+    function showCalculatorError(message) {
+        state.current = message;
+        state.expression = '';
+        state.error = true;
+        state.operator = null;
+        state.previous = null;
+        state.waitingForOperand = false;
+        render();
+        showToast(message, true);
+    }
+
+    function symbolFor(operator) {
+        return ({ '+': '+', '-': '−', '*': '×', '/': '÷' })[operator];
+    }
+
+    function addHistory(expression, result) {
+        state.records.unshift({ expression, result: String(result) });
+        state.records = state.records.slice(0, HISTORY_LIMIT);
+        storage.set('calculator-history', state.records);
+        renderHistory();
+    }
+
+    function renderHistory() {
+        els.historyList.replaceChildren();
+        if (!state.records.length) {
+            const empty = document.createElement('div');
+            empty.className = 'history-empty';
+            empty.textContent = '暂无记录';
+            els.historyList.append(empty);
+            return;
+        }
+        state.records.forEach(record => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'history-item';
+            button.title = '使用此结果';
+            const expression = document.createElement('span');
+            expression.textContent = record.expression;
+            const result = document.createElement('strong');
+            result.textContent = formatDisplay(record.result);
+            button.append(expression, result);
+            button.addEventListener('click', () => setCalculatorValue(record.result, '来自计算记录'));
+            els.historyList.append(button);
+        });
+    }
+
+    function normalizeNumberToken(raw) {
+        let token = raw.trim().replace(/[￥¥$€£]/g, '').replace(/[，]/g, ',');
+        if (!token) return null;
+        const negativeByParentheses = /^\(.+\)$/.test(token);
+        if (negativeByParentheses) token = token.slice(1, -1);
+        token = token.replace(/,/g, '');
+        if (!/^[+-]?(?:\d+\.?\d*|\.\d+)(?:e[+-]?\d+)?$/i.test(token)) return null;
+        const number = Number(token);
+        if (!Number.isFinite(number)) return null;
+        return negativeByParentheses ? -Math.abs(number) : number;
+    }
+
+    function parsePastedData(text) {
+        const normalized = text
+            .replace(/，/g, ',')
+            .replace(/；/g, ';')
+            .replace(/\r\n?/g, '\n');
+        const rawTokens = normalized.split(/[\s;|]+|,(?=\s|[+-]?(?:\d|\.))/).filter(Boolean);
+        const numbers = [];
+        const invalid = [];
+        rawTokens.forEach(raw => {
+            const number = normalizeNumberToken(raw);
+            if (number === null) invalid.push(raw.trim());
+            else numbers.push(number);
+        });
+        return { numbers, invalid };
+    }
+
+    function updateParseStatus() {
+        const text = els.paste.value.trim();
+        els.parseStatus.className = 'status-badge';
+        if (!text) {
+            els.parseStatus.textContent = '等待数据';
+            return;
+        }
+        const { numbers, invalid } = parsePastedData(text);
+        if (!numbers.length) {
+            els.parseStatus.textContent = '未识别';
+            els.parseStatus.classList.add('warning');
+        } else if (invalid.length) {
+            els.parseStatus.textContent = `${numbers.length} 项有效`;
+            els.parseStatus.classList.add('warning');
+        } else {
+            els.parseStatus.textContent = `${numbers.length} 项有效`;
+            els.parseStatus.classList.add('valid');
+        }
+    }
+
+    function analyzeData(quiet = false) {
+        if (!els.paste.value.trim()) {
+            if (!quiet) showToast('请先粘贴数据', true);
+            return null;
+        }
+        const { numbers, invalid } = parsePastedData(els.paste.value);
+        if (!numbers.length) {
+            if (!quiet) showToast('没有识别到有效数字', true);
+            return null;
+        }
+        const sorted = [...numbers].sort((a, b) => a - b);
+        const sum = numbers.reduce((total, value) => preciseOperation(total, value, '+'), 0);
+        let batchResult;
+        try {
+            batchResult = batchOperator === '+'
+                ? sum
+                : numbers.slice(1).reduce((result, value) => preciseOperation(result, value, batchOperator), numbers[0]);
+        } catch (error) {
+            if (!quiet) showToast(`批量运算失败：${error.message}`, true);
+            return null;
+        }
+        const middle = Math.floor(sorted.length / 2);
+        const median = sorted.length % 2 ? sorted[middle] : preciseOperation(sorted[middle - 1], sorted[middle], '+') / 2;
+        lastStats = {
+            count: numbers.length,
+            sum,
+            result: batchResult,
+            operator: batchOperator,
+            average: sum / numbers.length,
+            median,
+            max: sorted[sorted.length - 1],
+            min: sorted[0],
+            invalid
+        };
+        document.getElementById('rCount').textContent = lastStats.count;
+        document.getElementById('rSum').textContent = formatStat(lastStats.result);
+        els.resultLabel.textContent = `${symbolFor(batchOperator)} 运算结果`;
+        document.getElementById('rAvg').textContent = formatStat(lastStats.average);
+        document.getElementById('rMedian').textContent = formatStat(lastStats.median);
+        document.getElementById('rMax').textContent = formatStat(lastStats.max);
+        document.getElementById('rMin').textContent = formatStat(lastStats.min);
+        const orderHint = batchOperator === '-' || batchOperator === '/' ? '，已按粘贴顺序计算' : '';
+        els.resultDetail.textContent = invalid.length
+            ? `已忽略 ${invalid.length} 项无效内容：${invalid.slice(0, 3).join('、')}${invalid.length > 3 ? '…' : ''}${orderHint}`
+            : `已计算 ${numbers.length} 项有效数据${orderHint}`;
+        els.resultBox.classList.add('show');
+        updateParseStatus();
+        if (!quiet) showToast(`统计完成，共 ${numbers.length} 项`);
+        return lastStats;
+    }
+
+    function setCalculatorValue(value, source) {
+        Object.assign(state, {
+            current: String(value), previous: null, operator: null, waitingForOperand: false,
+            justCalculated: true, expression: source, error: false
+        });
+        render();
+    }
+
+    function useSum() {
+        const stats = analyzeData(true);
+        if (!stats) return showToast('没有可用的批量运算结果', true);
+        setCalculatorValue(stats.result, `批量 ${symbolFor(stats.operator)} 运算 · ${stats.count} 项`);
+        showToast('批量运算结果已放入计算器');
+    }
+
+    function clearPaste() {
+        els.paste.value = '';
+        lastStats = null;
+        els.resultBox.classList.remove('show');
+        updateParseStatus();
+        els.paste.focus();
+    }
+
+    async function copyStats() {
+        if (!lastStats) return;
+        const text = [
+            `数据个数：${lastStats.count}`,
+            `${symbolFor(lastStats.operator)} 运算结果：${formatStat(lastStats.result)}`,
+            `平均值：${formatStat(lastStats.average)}`,
+            `中位数：${formatStat(lastStats.median)}`,
+            `最大值：${formatStat(lastStats.max)}`,
+            `最小值：${formatStat(lastStats.min)}`
+        ].join('\n');
+        try {
+            await navigator.clipboard.writeText(text);
+            showToast('统计结果已复制');
+        } catch {
+            const helper = document.createElement('textarea');
+            helper.value = text;
+            helper.style.position = 'fixed';
+            helper.style.opacity = '0';
+            document.body.append(helper);
+            helper.select();
+            document.execCommand('copy');
+            helper.remove();
+            showToast('统计结果已复制');
+        }
+    }
+
+    function showToast(message, isError = false) {
+        clearTimeout(toastTimer);
+        els.toast.textContent = message;
+        els.toast.className = `toast show${isError ? ' error' : ''}`;
+        toastTimer = setTimeout(() => { els.toast.className = 'toast'; }, 2200);
+    }
+
+    function updateThemeIcon() {
+        const dark = document.documentElement.dataset.theme === 'dark' ||
+            (!document.documentElement.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches);
+        els.themeIcon.innerHTML = dark
+            ? '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"/>'
+            : '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>';
+        els.themeButton.setAttribute('aria-label', dark ? '切换浅色模式' : '切换深色模式');
+        els.themeButton.title = els.themeButton.getAttribute('aria-label');
+    }
+
+    function toggleTheme() {
+        const currentDark = document.documentElement.dataset.theme === 'dark' ||
+            (!document.documentElement.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches);
+        document.documentElement.dataset.theme = currentDark ? 'light' : 'dark';
+        storage.set('calculator-theme', document.documentElement.dataset.theme);
+        updateThemeIcon();
+    }
+
+    els.keypad.addEventListener('click', event => {
+        const button = event.target.closest('button');
+        if (!button) return;
+        if (button.dataset.number) inputDigit(button.dataset.number);
+        if (button.dataset.operator) chooseOperator(button.dataset.operator);
+        if (button.dataset.action === 'clear') resetCalculator();
+        if (button.dataset.action === 'sign') toggleSign();
+        if (button.dataset.action === 'percent') percent();
+        if (button.dataset.action === 'equals') calculate();
+    });
+
+    document.addEventListener('keydown', event => {
+        const editing = event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLInputElement || event.target.isContentEditable;
+        if (editing) {
+            if (event.target === els.paste && (event.ctrlKey || event.metaKey) && event.key === 'Enter') analyzeData();
+            return;
+        }
+        if (/^\d$/.test(event.key) || event.key === '.') inputDigit(event.key);
+        else if (['+', '-', '*', '/'].includes(event.key)) chooseOperator(event.key);
+        else if (event.key === 'Enter' || event.key === '=') calculate();
+        else if (event.key === 'Backspace') backspace();
+        else if (event.key === 'Escape' || event.key === 'Delete') resetCalculator();
+        else if (event.key === '%') percent();
+        else return;
+        event.preventDefault();
+    });
+
+    els.paste.addEventListener('input', updateParseStatus);
+    document.getElementById('batchOperator').addEventListener('click', event => {
+        const button = event.target.closest('[data-batch-operator]');
+        if (!button) return;
+        batchOperator = button.dataset.batchOperator;
+        document.querySelectorAll('[data-batch-operator]').forEach(item => {
+            const selected = item === button;
+            item.classList.toggle('active', selected);
+            item.setAttribute('aria-pressed', String(selected));
+        });
+        if (els.resultBox.classList.contains('show')) analyzeData(true);
+    });
+    document.getElementById('analyzeButton').addEventListener('click', () => analyzeData());
+    document.getElementById('useSumButton').addEventListener('click', useSum);
+    document.getElementById('clearPasteButton').addEventListener('click', clearPaste);
+    document.getElementById('copyStatsButton').addEventListener('click', copyStats);
+    document.getElementById('clearHistoryButton').addEventListener('click', () => {
+        state.records = [];
+        storage.set('calculator-history', []);
+        renderHistory();
+    });
+    els.themeButton.addEventListener('click', toggleTheme);
+
+    const savedTheme = storage.get('calculator-theme', null);
+    if (savedTheme === 'light' || savedTheme === 'dark') document.documentElement.dataset.theme = savedTheme;
+    render();
+    renderHistory();
+    updateParseStatus();
+    updateThemeIcon();
+})();
+</script>
+</body>
+</html>
